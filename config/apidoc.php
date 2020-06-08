@@ -6,7 +6,7 @@ return [
     'copyright'=>'Powered By HG',
     //生成文档的控制器
     'controllers' => [
-//        'controller\\ApiTest',
+        // 'api\\controller\\ApiTest',
     ],
     // 设置可选版本
     'versions'=>[
@@ -29,7 +29,7 @@ return [
         'with_auth'=>false,
         // 验证类型为 password 时验证的密码，前端md5回传
         'auth_password'=>"123456",
-        // 验证请求头中token的字段，需在跨域请求头Access-Control-Allow-Headers中加入该字段
+        // 验证请求头中apidocToken的字段
         'headers_key'=>"apidocToken",
     ],
     // 指定公共注释定义的文件地址

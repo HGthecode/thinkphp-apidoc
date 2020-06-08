@@ -20,6 +20,8 @@
     <img width="300" src="https://cdn.nlark.com/yuque/0/2020/jpeg/920342/1590718533577-6d744090-fdae-4132-92ed-ac3d930f425b.jpeg">
 </p>
 
+### 文档
+<a href="https://www.yuque.com/books/share/b549c4c1-b7d2-4cb7-8dee-4fb6c5e542fe?#">ThinkPHP API文档生成插件 使用指南</a>
 
 ### 特性
 
@@ -41,7 +43,7 @@
 ### 安装
 1、安装插件：进入ThinkPHP6 项目根目录，执行如下命令：
 ```bash
-$ composer require hg/apidoc-tp6 
+$ composer require hg/apidoc
 ```
 
 2、安装前端页面：执行以下命令下载UI。

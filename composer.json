@@ -28,10 +28,7 @@
     "extra": {
         "think": {
             "config": {
-                "apidoc": "src/config/apidoc.php"
-            },
-            "route": {
-                "apidoc": "src/route/apidoc.php"
+                "apidoc": "config/apidoc.php"
             }
         }
     },

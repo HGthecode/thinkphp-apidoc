@@ -174,14 +174,6 @@ class Controller
         }
 
 
-//        if ($this->config['multiApp']){
-//            // 多应用模式
-//            $list = $this->getMultiAppList();
-//        }else{
-//            // 单应用模式
-//            $list = $this->getApiList($version);
-//        }
-
         $res=array(
             "title"=>$this->config['title'],
             "version"=>$version,
@@ -199,7 +191,7 @@ class Controller
     }
 
     /**
-     * 获取单应用api接口文档
+     * 获取api接口文档
      */
     public function getApiList($version){
         $list=[];
@@ -251,60 +243,7 @@ class Controller
         return $list;
     }
 
-    /**
-     * 获取多应用api接口文档
-     */
-    public function getMultiAppList(){
-        $list=[];
-        $apps = $this->config['apps'];
-        foreach ($apps as $appName){
-            $file = $this->listDirFiles($appName['name'] . '/controller');
-            $classApiList = [];
-            foreach ($file as $k => $class) {
-                $class = "app\\" . $class;
 
-                if (class_exists($class)) {
-                    $reflection = new \ReflectionClass($class);
-                    $doc_str = $reflection->getDocComment();
-                    $doc = new Parser($this->config);
-                    // 解析控制器类的注释
-                    $class_doc = $doc->parseClass($doc_str);
-
-                    // 获取当前控制器Class的所有方法
-                    $method = $reflection->getMethods(\ReflectionMethod::IS_PUBLIC);
-                    $filter_method = array_merge(['__construct'], $this->config['filter_method']);
-                    $actions=[];
-                    foreach ($method as $action){
-                        // 过滤不解析的方法
-                        if(!in_array($action->name, $filter_method))
-                        {
-                            // 获取当前方法的注释
-                            $doc = new Parser($this->config);
-                            $doc_str = $action->getDocComment();
-                            if($doc_str)
-                            {
-
-                                // 解析当前方法的注释
-                                $action_doc = $doc->parseAction($doc_str);
-//                                $action_doc['name'] = $class."::".$action->name;
-//                                // 解析方法
-                                $actions[] = $action_doc;
-                            }
-                        }
-                    }
-                    $class_doc['children'] = $actions;
-                    $classApiList[] = $class_doc;
-                }
-            }
-            $appTitle = !empty($appName['title'])?$appName['title']:$appName['name'];
-            $list[] = [
-                "title"=>$appTitle,
-                "name" =>$appName['name'],
-                "children" =>$classApiList
-            ];
-        }
-        return $list;
-    }
 
     /**
      * 获取文件夹内的所有文件
