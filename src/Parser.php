@@ -124,6 +124,23 @@ class Parser
                                 $desc [$param][] = $valueObj["params"];
                             }
 
+                        }else if (!empty($valueObj['type']) && $valueObj['type'] === 'tree') {
+                            // 类型为tree的
+                            $childrenField = "children";
+                            if (!empty($valueObj['childrenField'])){
+                                $childrenField=$valueObj['childrenField'];
+                            }
+                            $childrenDesc = "children";
+                            if (!empty($valueObj['childrenDesc'])){
+                                $childrenDesc=$valueObj['childrenDesc'];
+                            }
+                            $valueObj['params'][] = array(
+                                'params'=>$valueObj['params'],
+                                'name'=>$childrenField,
+                                'type'=>'array',
+                                'desc'=>$childrenDesc,
+                            );
+                            $desc [$param][] = $valueObj;
                         } else {
                             $desc [$param][] = $valueObj;
                         }
@@ -140,6 +157,23 @@ class Parser
                             } else {
                                 $desc [$param][] = $valueObj["params"];
                             }
+                        }else if (!empty($valueObj['type']) && $valueObj['type'] === 'tree') {
+                            // 类型为tree的
+                            $childrenField = "children";
+                            if (!empty($valueObj['childrenField'])){
+                                $childrenField=$valueObj['childrenField'];
+                            }
+                            $childrenDesc = "children";
+                            if (!empty($valueObj['childrenDesc'])){
+                                $childrenDesc=$valueObj['childrenDesc'];
+                            }
+                            $valueObj['params'][] = array(
+                                'params'=>$valueObj['params'],
+                                'name'=>$childrenField,
+                                'type'=>'array',
+                                'desc'=>$childrenDesc,
+                            );
+                            $desc [$param][] = $valueObj;
                         } else {
                             $desc [$param][] = $valueObj;
                         }
@@ -238,6 +272,10 @@ class Parser
                     // 排除模型指定字段
                     $param["params"] = $this->filterModelTableField($param["params"],$value,"withoutField");
                 }
+//                if ($paramKey == "type" && $value === 'tree') {
+//                    // 数据结构为树形结构
+//                    $value =$param;
+//                }
                 $param[$paramKey] =$value;
             }
             return $param;
