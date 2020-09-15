@@ -5,7 +5,6 @@ namespace hg\apidoc;
 
 use hg\apidoc\Parser;
 use think\facade\Request;
-use think\facade\Cache;
 
 class Controller
 {
@@ -74,7 +73,7 @@ class Controller
         if ($this->config['auth']['with_auth'] === true){
             // 密码验证
             if (md5($this->config['auth']['auth_password']) === $params['password']){
-                $token = (new Auth())->getToken();
+                $token = md5($params['password'].strtotime(date('Y-m-d',time())));
                 return array("token"=>$token);
             }else{
                 throw new \think\Exception("密码不正确，请重新输入");
@@ -88,8 +87,8 @@ class Controller
         if (!empty($this->config['auth'])) {
             if ($this->config['auth']['with_auth'] === true){
                 $token = $request->header($this->config['auth']['headers_key']);
-                $tokenInfo = Cache::get($token);
-                if ($tokenInfo){
+
+                if ($token === md5($this->config['auth']['with_auth'].strtotime(date('Y-m-d',time())))){
                     return true;
                 }else{
                     throw new \think\exception\HttpException(401, "身份令牌已过期，请重新登录");
