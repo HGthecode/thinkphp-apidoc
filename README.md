@@ -57,7 +57,7 @@ $ git clone https://github.com/HGthecode/apidoc-ui.git
  http://你的域名/apidoc/
 
 ### 链接
- <a href="https://github.com/HGthecode/apidoc-ui" target="_blank">ApiDoc UI </a>
+ <a href="https://github.com/HGthecode/apidoc-ui" target="_blank">ApiDoc UI 前端</a>
 
 
 
