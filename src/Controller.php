@@ -88,7 +88,7 @@ class Controller
             if ($this->config['auth']['with_auth'] === true){
                 $token = $request->header($this->config['auth']['headers_key']);
 
-                if ($token === md5($this->config['auth']['with_auth'].strtotime(date('Y-m-d',time())))){
+                if ($token === md5(md5($this->config['auth']['auth_password']).strtotime(date('Y-m-d',time())))){
                     return true;
                 }else{
                     throw new \think\exception\HttpException(401, "身份令牌已过期，请重新登录");
@@ -199,46 +199,46 @@ class Controller
         if (!empty($version)){
             $versionPath = $version."\\";
         }
-            foreach ($controllers as $k => $class) {
-                $class = "app\\" .$versionPath. $class;
-                if (class_exists($class)) {
-                    $reflection = new \ReflectionClass($class);
-                    $doc_str = $reflection->getDocComment();
-                    $doc = new Parser($this->config);
-                    // 解析控制器类的注释
-                    $class_doc = $doc->parseClass($doc_str);
+        foreach ($controllers as $k => $class) {
+            $class = "app\\" .$versionPath. $class;
+            if (class_exists($class)) {
+                $reflection = new \ReflectionClass($class);
+                $doc_str = $reflection->getDocComment();
+                $doc = new Parser($this->config);
+                // 解析控制器类的注释
+                $class_doc = $doc->parseClass($doc_str);
 
-                    // 获取当前控制器Class的所有方法
-                    $method = $reflection->getMethods(\ReflectionMethod::IS_PUBLIC);
-                    $filter_method = array_merge(['__construct'], $this->config['filter_method']);
-                    $actions=[];
-                    foreach ($method as $j=>$action){
-                        // 过滤不解析的方法
-                        if(!in_array($action->name, $filter_method))
+                // 获取当前控制器Class的所有方法
+                $method = $reflection->getMethods(\ReflectionMethod::IS_PUBLIC);
+                $filter_method = array_merge(['__construct'], $this->config['filter_method']);
+                $actions=[];
+                foreach ($method as $j=>$action){
+                    // 过滤不解析的方法
+                    if(!in_array($action->name, $filter_method))
+                    {
+                        // 获取当前方法的注释
+                        $actionDoc = new Parser($this->config);
+                        $actionDocStr = $action->getDocComment();
+                        if($actionDocStr)
                         {
-                            // 获取当前方法的注释
-                            $actionDoc = new Parser($this->config);
-                            $actionDocStr = $action->getDocComment();
-                            if($actionDocStr)
-                            {
 
-                                // 解析当前方法的注释
-                                $action_doc = $actionDoc->parseAction($actionDocStr);
+                            // 解析当前方法的注释
+                            $action_doc = $actionDoc->parseAction($actionDocStr);
 //                                $action_doc['name'] = $class."::".$action->name;
-                                $action_doc['id'] = $k."-".$j;
+                            $action_doc['id'] = $k."-".$j;
 //                                // 解析方法
-                                $actions[] = $action_doc;
-                            }
+                            $actions[] = $action_doc;
                         }
                     }
-                    $class_doc['children'] = $actions;
-                    $class_doc['id'] = $k."";
-                    if (empty($class_doc['title']) && empty($class_doc['controller'])){
-                        $class_doc['title']=$controllers[$k];
-                    }
-                    $list[]  = $class_doc;
                 }
+                $class_doc['children'] = $actions;
+                $class_doc['id'] = $k."";
+                if (empty($class_doc['title']) && empty($class_doc['controller'])){
+                    $class_doc['title']=$controllers[$k];
+                }
+                $list[]  = $class_doc;
             }
+        }
         return $list;
     }
 

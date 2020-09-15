@@ -38,7 +38,7 @@
 ### 支持环境
 
 - ThinkPHP 6.x 
-- PHP >= 7.1.0 （使用ThinkPHP 6 的基本要求）
+- PHP >= 7.1.0 （ThinkPHP 6 的基本要求）
 
 ### 安装
 1、安装插件：进入ThinkPHP6 项目根目录，执行如下命令：
@@ -58,6 +58,4 @@ $ git clone https://github.com/HGthecode/apidoc-ui.git
 
 ### 链接
  <a href="https://github.com/HGthecode/apidoc-ui" target="_blank">ApiDoc UI 前端</a>
-
-
 
