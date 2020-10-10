@@ -173,7 +173,7 @@ class Controller
         }
 
 
-        $res=array(
+        $data=array(
             "title"=>$this->config['title'],
             "version"=>$version,
             "copyright"=>$this->config['copyright'],
@@ -183,9 +183,11 @@ class Controller
             "cacheName"=>$cacheName
         );
 
-
-
-        return returnSuccess($res);
+        $res=[
+            'code'=>0,
+            'data'=>$data,
+        ];
+        return json($res);
 
     }
 
@@ -193,6 +195,8 @@ class Controller
      * 获取api接口文档
      */
     public function getApiList($version){
+        $config = config('apidoc');
+        $this->config = array_merge($this->config, $config);
         $list=[];
         $controllers = $this->config['controllers'];
         $versionPath = "";
