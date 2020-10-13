@@ -46,7 +46,10 @@
 $ composer require hg/apidoc
 ```
 
-2、安装前端页面：执行以下命令下载UI。
+2、添加路由
+将 `vendor/hg/apidoc/route/apidoc.php` 文件复制到项目目录route目录下
+
+3、安装前端页面：执行以下命令下载UI。
 ```bash
 $ git clone https://github.com/HGthecode/apidoc-ui.git
 ```
