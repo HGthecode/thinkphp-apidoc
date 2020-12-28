@@ -1,0 +1,15 @@
+{
+  "name": "doc-vuePress",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "hg-code",
+  "license": "MIT",
+  "scripts": {
+    "docs:dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs",
+    "deploy": "bash deploy.sh"
+  },
+  "devDependencies": {
+    "vuepress": "^2.0.0-alpha.13"
+  }
+}
