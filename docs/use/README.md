@@ -193,3 +193,132 @@ class ApiTest
 
 效果如下
 <img :src="$withBase('/images/apidoc-api-dictionary-demo.png')" style="width:100%;" alt="apidoc-api-dictionary-demo">
+
+
+### 逻辑层注释
+
+在实际开发中，控制器只对参数做基础校验等处理，实际的业务逻辑处理通常会分层给逻辑层来处理（我这里把业务逻辑层叫server，您也可以根据自己开发来定义 业务逻辑层），我们可直接引入业务逻辑层的注释来实现接口参数的定义
+
+#### 增加业务逻辑层
+1、在项目 app 目录下新建 server 文件夹（您也可以叫别的）
+
+2、在此文件夹下新建一个ApiDoc.php文件，内容如下：
+```php
+<?php
+namespace app\servers;
+class ApiDoc
+{
+    /**
+     * @title 返回会员信息
+     * @param name:id type:int require:1 desc:唯一id
+     * @return name:id type:int desc:唯一id
+     * @return name:name type:string desc:姓名
+     * @return name:phone type:string desc:电话
+     */
+    public function getUserInfo(){}
+
+    /**
+     * @title 返回会员列表
+     * @return ref:app\model\User\getList
+     */
+    public function getUserList(){}
+}
+```
+
+#### 引用逻辑层注释
+
+在控制器的接口注释中的 param 与 retrun 可通过 ref:app\servers\ApiDoc\getUserInfo来指定引入逻辑层的注释
+
+```php
+<?php
+namespace app\controller;
+/**
+ * @title Api接口文档测试
+ * @desc 测试一些注释的解析能力
+ */
+class ApiTest
+{ 
+    /**
+     * @title 引入逻辑层定义注释
+     * @desc 引入业务逻辑层的注释参数
+     * @author HG
+     * @url /api/server
+     * @method GET
+     * @param ref:app\servers\ApiDoc\getUserInfo
+     * @return name:userInfo type:object ref:app\servers\ApiDoc\getUserInfo
+     * @return name:userList type:array ref:app\servers\ApiDoc\getUserList
+     */
+    public function test(){
+       ...
+    }
+}
+```
+
+:::tip 以上param请求参数直接引入了逻辑层定义的参数，return返回结果，引入逻辑层的两种方式返回
+- 直接返回逻辑层定义的参数
+- 逻辑层也可以再引入模型的数据表字段注释，从而减少注释量
+:::
+
+效果如下
+<img :src="$withBase('/images/apidoc-api-server-demo.png')" style="width:100%;" alt="apidoc-api-server-demo">
+
+
+
+### 模型注释
+接口参数都与数据表息息相关，很多接口参数均由数据表字段而来。我们可以直接引入指定模型的数据表字段来生成参数说明，省去了一大堆接口注释与维护工作。
+
+#### 给数据表字段添加注释
+
+建议为数据表字段添加注释，即让数据表字段可读性更高，也让文档可读性更高。
+我们直接在数据表给相应字段添加注释，如下SQL供参考
+
+```php
+CREATE TABLE `user` (↵  
+`id` int(11) NOT NULL AUTO_INCREMENT COMMENT '用户id',↵  
+`username` varchar(64) NOT NULL COMMENT '用户名',↵  
+`nickname` varchar(64) DEFAULT NULL COMMENT '昵称',↵  
+`password` char(64) NOT NULL COMMENT '登录密码',↵  
+`regip` bigint(11) NOT NULL COMMENT '注册IP',↵  
+`state` tinyint(1) NOT NULL DEFAULT '1' COMMENT '状态',↵  
+`phone` char(32) DEFAULT NULL COMMENT '联系电话',↵  
+`create_time` int(10) DEFAULT NULL COMMENT '创建时间',↵  
+`login_num` int(11) unsigned DEFAULT NULL COMMENT '登录次数',↵  
+`sex` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '性别',↵  
+`delete_time` int(10) DEFAULT NULL,↵  
+`role` varchar(64) DEFAULT NULL COMMENT '角色',↵  
+`name` varchar(64) DEFAULT NULL COMMENT '姓名',↵  
+PRIMARY KEY (`id`)↵) ENGINE=MyISAM AUTO_INCREMENT=23 DEFAULT CHARSET=utf8"
+```
+
+#### 模型方法的注释
+可为引入的数据模型方法添加相应注释来实现 field（返回指定字段）、withoutField（排除指定字段）、addField（添加指定字段）
+
+|参数|说明|书写规范|
+|-|-|-|
+|field|返回指定字段|英文格式逗号 , 分开指定的字段|
+|withoutField|排除指定字段|英文格式逗号 , 分开指定的字段|
+|addField|添加指定字段|可定义多个，每行为一个参数|
+|   \|— name|参数的字段名|如：name:group_name|
+|   \|— type|字段类型|int \| string \| ... 等|
+|   \|— default|默认值|如：default:1|
+|   \|— desc|字段说明文字||
+
+```php
+<?php
+namespace app\model;
+
+class User extends BaseModel
+{
+    /**
+     * @title 根据id获取明细
+     * @field id,username,nickname,state,sex
+     * @addField name:group_name type:string desc:会员组名称
+     * @addField name:role_name type:string desc:角色名称
+     */
+    public function getInfo($id){
+        $res = $this->get($id);
+        return $res;
+    }
+}
+```
+<img :src="$withBase('/images/apidoc-api-model-demo.png')" style="width:100%;" alt="apidoc-api-model-demo">

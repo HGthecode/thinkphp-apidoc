@@ -1,18 +1,39 @@
 ---
 home: true
-heroImage: /hero.png
+heroImage: images/home-logo.png
 heroText: ThinkPHP-ApiDoc
-tagline: 根据注释生成api文档
+tagline: 根据注释自动生成API文档
 actionText: 快速上手 →
-actionLink: /zh/guide/
+actionLink: /use/
 features:
-- title: 简洁至上
-  details: 以 Markdown 为中心的项目结构，以最少的配置帮助你专注于写作。
-- title: Vue驱动
-  details: 享受 Vue + webpack 的开发体验，在 Markdown 中使用 Vue 组件，同时可以使用 Vue 来开发自定义主题。
-- title: 高性能
-  details: VuePress 为每个页面预渲染生成静态的 HTML，同时在页面被加载的时候，将作为 SPA 运行。
+- title: 开箱即用
+  details: 无繁杂的配置、安装后按文档编写注释即可自动生成API文档。
+- title: 在线调试
+  details: 在线文档可直接调试，支持设置全局请求头参数Authorize，接口调试省时省力。
+- title: 轻松编写
+  details: 支持公共注释定义、业务逻辑层、数据表字段注释的引用，几句注释即可完成。
+- title: 功能丰富
+  details: 多应用、单应用均可用；支持多版本，可生成不同版本的接口文档，任意切换。
+- title: 安全高效
+  details: 支持访问API文档页面需密码验证；支持缓存接口数据，无需每次都生成数据。
+- title: 使用靠谱
+  details: 完善的说明文档及各种使用示例，让你用得明明白白。
 footer: MIT Licensed | Copyright © 2018-present Evan You
 ---
+
+<!-- <a href="https://github.com/HGthecode/thinkphp-apidoc" target="_blank">
+  <img
+    height="22"
+    :src="
+      'https://img.shields.io/github/stars/HGthecode/thinkphp-apidoc?style=social'
+    "
+    class="attachment-full size-full"
+    alt="Star me on GitHub"
+    data-recalc-dims="1"
+  />
+</a> -->
+
+
+
 
 
