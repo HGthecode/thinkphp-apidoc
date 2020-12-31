@@ -2,10 +2,11 @@
 sidebar: false
 ---
 
-## 支持我们
+## 来个Star呗
 
-ThinkPHP-ApiDoc 是采用 MIT 许可的开源项目，使用完全免费。 项目但如果本项目对您有所帮助，请给个Star
+ThinkPHP-ApiDoc 是采用 MIT 许可的开源项目，使用完全免费。 如果本项目对您有所帮助，请点个Star
 
+传送门 ->
 <a href="https://github.com/HGthecode/thinkphp-apidoc" target="_blank">
   <img
     height="22"

@@ -1,3 +1,6 @@
+---
+sidebarDepth: 2
+---
 # 编写注释
 ::: tip
 由于API接口文档根据解析代码中的注释生成，需按照一定的书写规则来生成
@@ -43,11 +46,12 @@
 | require|	是否必填 |	如：require:1 为必填 |	
 | default|默认值 |	如：default:123 |	
 | desc|	字段说明 |	 |	
-| ref|	引入定义的路径，可引入全局定义、server方法类、模型方法 |<div>如：ref:definitions\pagingParam</div><div>或：ref:app\servers\ApiTest\get</div><div>或：ref:app\model\Apps\getList</div>	 |	
+| ref|	引入定义的路径，可引入全局定义、服务层方法类、模型方法 |<div>如：ref:definitions\pagingParam</div><div>或：ref:app\services\ApiDocTest\get</div><div>或：ref:app\model\Apps\getList</div>	 |	
 | field|	当ref配置为引入模型字段时，用field来指定引入的字段 | 如：field:id,username,nickname ；则只会引入模型的 id,username,nickname字段	 |	
 | withoutField|	当ref配置为引入模型字段时，用withoutField来指定过滤掉的字段 | 如：withoutField:id,username,nickname；则引入模型除 id,username,nickname字段外的所有字段	 |	
 | params|	字段类型为`object`或`array`，给其定义子节点参数 |	如：params:id int 1 唯一id,name:string 0 姓名 |	
-
+| childrenField|	字段类型为`tree`时，给其定义子节点字段名 |	默认为 children |	
+| childrenDesc|	字段类型为`tree`时，给其定义子节点字段名的备注 |	 |
 
 ## 控制器注释
 1、接口文档将按照在配置文件`/config/apidoc.php`中配置的 controllers 控制器列表，来生成.
@@ -55,9 +59,9 @@
 若你希望 某个控制器被解析，那么首先在配置项中加入该控制器，如下：
 ```php
 // config/apidoc.php
-// 将 app\controller\ApiTest.php 控制器加入配置
+// 将 app\controller\ApiDocTest.php 控制器加入配置
 'controllers' => [
-    'controller\\ApiTest',
+    'controller\\ApiDocTest',
 ],
 ```
 
@@ -67,11 +71,11 @@
 namespace app\controller;
 /**
  * @title Api接口文档测试
- * @desc 测试一些注释的解析能力
+ * @controller ApiDocTest
  */
-class ApiTest
+class ApiDocTest
 {
-  ...    
+  //...    
 }
 ```
 
@@ -94,15 +98,15 @@ class ApiTest
 namespace app\controller;
 /**
  * @title Api接口文档测试
- * @desc 测试一些注释的解析能力
+ * @controller ApiDocTest
  */
-class ApiTest
+class ApiDocTest
 { 
     /**
      * @title 基础的注释方法
-     * @desc 一个很基础的接口注释解析能力
+     * @desc 最基础的接口注释写法
      * @author HG
-     * @url /api/test
+     * @url /apidocTest/base
      * @method GET
      * @tag 测试 基础
      * @header name:Authorization require:1 desc:Token
@@ -113,7 +117,7 @@ class ApiTest
      * @return name:id type:int desc:新增用户的id
      */
     public function test(){
-        return returnSuccess(["id"=>1]);
+        return json(["id"=>1]);
     }
   
 }
@@ -165,23 +169,20 @@ class Definitions
 ```php
 <?php
 namespace app\controller;
-/**
- * @title Api接口文档测试
- * @desc 测试一些注释的解析能力
- */
-class ApiTest
+
+class ApiDocTest
 { 
     /**
      * @title 引入定义注释
-     * @desc 引入定义文件所定义的通用参数来
+     * @desc 引入通用注释所定义的通用参数
      * @author HG
-     * @url /api/test
-     * @method GET
+     * @url /apidocTest/definitions
+     * @method POST
      * @param name:page type:object ref:definitions\pagingParam desc:分页参数
      * @param ref:definitions\pagingParam
      * @return name:list type:array ref:definitions\dictionary
      */
-    public function test(){
+    public function definitions(){
         //...
     }
 }
@@ -197,15 +198,15 @@ class ApiTest
 
 ### 逻辑层注释
 
-在实际开发中，控制器只对参数做基础校验等处理，实际的业务逻辑处理通常会分层给逻辑层来处理（我这里把业务逻辑层叫server，您也可以根据自己开发来定义 业务逻辑层），我们可直接引入业务逻辑层的注释来实现接口参数的定义
+在实际开发中，控制器只对参数做基础校验等处理，实际的业务逻辑处理通常会分层给逻辑层来处理（我这里把业务逻辑层叫service，您也可以根据自己开发来定义 业务逻辑层），我们可直接引入业务逻辑层的注释来实现接口参数的定义
 
 #### 增加业务逻辑层
-1、在项目 app 目录下新建 server 文件夹（您也可以叫别的）
+1、在项目 app 目录下新建 service 文件夹（您也可以叫别的）
 
 2、在此文件夹下新建一个ApiDoc.php文件，内容如下：
 ```php
 <?php
-namespace app\servers;
+namespace app\services;
 class ApiDoc
 {
     /**
@@ -217,47 +218,35 @@ class ApiDoc
      */
     public function getUserInfo(){}
 
-    /**
-     * @title 返回会员列表
-     * @return ref:app\model\User\getList
-     */
-    public function getUserList(){}
+    
 }
 ```
 
 #### 引用逻辑层注释
 
-在控制器的接口注释中的 param 与 retrun 可通过 ref:app\servers\ApiDoc\getUserInfo来指定引入逻辑层的注释
+在控制器的接口注释中的 param 与 retrun 可通过 ref:app\services\ApiDoc\getUserInfo来指定引入逻辑层的注释
 
 ```php
 <?php
 namespace app\controller;
-/**
- * @title Api接口文档测试
- * @desc 测试一些注释的解析能力
- */
-class ApiTest
+
+class ApiDocTest
 { 
     /**
-     * @title 引入逻辑层定义注释
+     * @title 引入逻辑层注释
      * @desc 引入业务逻辑层的注释参数
      * @author HG
-     * @url /api/server
+     * @url /apidocTest/service
      * @method GET
-     * @param ref:app\servers\ApiDoc\getUserInfo
-     * @return name:userInfo type:object ref:app\servers\ApiDoc\getUserInfo
-     * @return name:userList type:array ref:app\servers\ApiDoc\getUserList
+     * @param ref:app\services\ApiDoc\getUserInfo
+     * @return name:userInfo type:object ref:app\services\ApiDoc\getUserInfo
      */
-    public function test(){
-       ...
+    public function service(){
+       //...
     }
 }
 ```
 
-:::tip 以上param请求参数直接引入了逻辑层定义的参数，return返回结果，引入逻辑层的两种方式返回
-- 直接返回逻辑层定义的参数
-- 逻辑层也可以再引入模型的数据表字段注释，从而减少注释量
-:::
 
 效果如下
 <img :src="$withBase('/images/apidoc-api-server-demo.png')" style="width:100%;" alt="apidoc-api-server-demo">
@@ -274,19 +263,20 @@ class ApiTest
 
 ```php
 CREATE TABLE `user` (↵  
-`id` int(11) NOT NULL AUTO_INCREMENT COMMENT '用户id',↵  
-`username` varchar(64) NOT NULL COMMENT '用户名',↵  
-`nickname` varchar(64) DEFAULT NULL COMMENT '昵称',↵  
-`password` char(64) NOT NULL COMMENT '登录密码',↵  
-`regip` bigint(11) NOT NULL COMMENT '注册IP',↵  
-`state` tinyint(1) NOT NULL DEFAULT '1' COMMENT '状态',↵  
-`phone` char(32) DEFAULT NULL COMMENT '联系电话',↵  
-`create_time` int(10) DEFAULT NULL COMMENT '创建时间',↵  
-`login_num` int(11) unsigned DEFAULT NULL COMMENT '登录次数',↵  
-`sex` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '性别',↵  
-`delete_time` int(10) DEFAULT NULL,↵  
-`role` varchar(64) DEFAULT NULL COMMENT '角色',↵  
-`name` varchar(64) DEFAULT NULL COMMENT '姓名',↵  
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '用户id',
+  `username` varchar(64) NOT NULL COMMENT '用户名',
+  `nickname` varchar(64) DEFAULT NULL COMMENT '昵称',
+  `password` char(64) NOT NULL COMMENT '登录密码',
+  `avatar` varchar(255) DEFAULT NULL COMMENT '头像',
+  `regip` bigint(11) DEFAULT NULL COMMENT '注册IP',
+  `update_time` int(11) unsigned DEFAULT NULL COMMENT '更新时间',
+  `state` tinyint(1) DEFAULT '1' COMMENT '状态',
+  `phone` char(32) DEFAULT NULL COMMENT '联系电话',
+  `create_time` int(10) DEFAULT NULL COMMENT '创建时间',
+  `sex` tinyint(1) unsigned DEFAULT '1' COMMENT '性别',
+  `delete_time` int(10) DEFAULT NULL COMMENT '删除时间',
+  `role` varchar(64) DEFAULT NULL COMMENT '角色',
+  `name` varchar(64) DEFAULT NULL COMMENT '姓名',
 PRIMARY KEY (`id`)↵) ENGINE=MyISAM AUTO_INCREMENT=23 DEFAULT CHARSET=utf8"
 ```
 
@@ -321,4 +311,31 @@ class User extends BaseModel
     }
 }
 ```
+
+#### 控制器引用模型注释
+```php
+<?php
+namespace app\controller;
+
+class ApiDocTest
+{ 
+    /**
+     * @title 引用模型注释
+     * @desc param参数为直接引用模型参数，return则是引用逻辑层，通过逻辑层引用模型参数
+     * @author HG
+     * @url /apidocTest/model
+     * @method GET
+     * @param ref:app\model\User\getInfo
+     * @return name:users type:array ref:app\services\ApiDoc\getUserList
+     */
+    public function model(){
+       //...
+    }
+}
+```
+
+
+
 <img :src="$withBase('/images/apidoc-api-model-demo.png')" style="width:100%;" alt="apidoc-api-model-demo">
+
+

@@ -1,15 +1,15 @@
 {
-  "name": "doc-vuePress",
+  "name": "thinkphp-apidoc",
   "version": "1.0.0",
+  "description": "thinkphp-apidoc documents",
   "main": "index.js",
-  "author": "hg-code",
-  "license": "MIT",
   "scripts": {
     "docs:dev": "vuepress dev docs",
-    "docs:build": "vuepress build docs",
-    "deploy": "bash deploy.sh"
+    "docs:build": "vuepress build docs"
   },
+  "author": "hg-code",
+  "license": "ISC",
   "devDependencies": {
-    "vuepress": "^2.0.0-alpha.13"
+    "vuepress": "^1.7.1"
   }
 }

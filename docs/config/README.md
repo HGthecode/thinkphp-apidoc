@@ -1,6 +1,9 @@
+---
+sidebarDepth: 2
+---
 # 配置参数
 ::: tip
-安装插件后会在 /config/ 目录下生成一个 apidoc.php 的配置文件，一下为该文件可配置的参数说明，
+安装插件后会在 /config/ 目录下生成一个 apidoc.php 的配置文件，以下为该文件可配置的参数说明，
 默认配置文件请查看 [apidoc.php](https://github.com/HGthecode/thinkphp-apidoc/blob/master/config/apidoc.php)
 :::
 

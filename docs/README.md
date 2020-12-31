@@ -1,6 +1,6 @@
 ---
 home: true
-heroImage: images/home-logo.png
+heroImage: images/logo.png
 heroText: ThinkPHP-ApiDoc
 tagline: 根据注释自动生成API文档
 actionText: 快速上手 →
@@ -16,22 +16,11 @@ features:
   details: 多应用、单应用均可用；支持多版本，可生成不同版本的接口文档，任意切换。
 - title: 安全高效
   details: 支持访问API文档页面需密码验证；支持缓存接口数据，无需每次都生成数据。
-- title: 使用靠谱
+- title: 放心使用
   details: 完善的说明文档及各种使用示例，让你用得明明白白。
-footer: MIT Licensed | Copyright © 2018-present Evan You
+footer: MIT Licensed | Copyright © 2020-present Evan You
 ---
 
-<!-- <a href="https://github.com/HGthecode/thinkphp-apidoc" target="_blank">
-  <img
-    height="22"
-    :src="
-      'https://img.shields.io/github/stars/HGthecode/thinkphp-apidoc?style=social'
-    "
-    class="attachment-full size-full"
-    alt="Star me on GitHub"
-    data-recalc-dims="1"
-  />
-</a> -->
 
 
 
