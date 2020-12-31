@@ -1,11 +1,11 @@
 <p align="center">
   <a href="#">
-    <img width="200" src="https://cdn.nlark.com/yuque/0/2020/png/920342/1590716607655-faf3ad2d-e36a-4fcc-9d01-7c76259739c5.png">
+    <img width="120" src="https://hgthecode.github.io/thinkphp-apidoc/images/logo.png">
   </a>
 </p>
 
 <h1 align="center">
-  <a href="#" target="_blank">ThinkPHP6 ApiDoc</a>
+  <a target="_blank">ThinkPHP6 ApiDoc</a>
 </h1>
 
 <div align="center">
@@ -14,14 +14,9 @@
 
 </div>
 
-<p align="center">
-    <img width="300" src="https://cdn.nlark.com/yuque/0/2020/jpeg/920342/1590718471948-ffe9bea0-cade-4880-a39a-8ae36a647f5d.jpeg">
-    <img width="300" src="https://cdn.nlark.com/yuque/0/2020/jpeg/920342/1590718511617-1534b6a7-1261-44a6-804b-65482ed764c9.jpeg">
-    <img width="300" src="https://cdn.nlark.com/yuque/0/2020/jpeg/920342/1590718533577-6d744090-fdae-4132-92ed-ac3d930f425b.jpeg">
-</p>
 
 ### 文档
-<a href="https://www.yuque.com/books/share/b549c4c1-b7d2-4cb7-8dee-4fb6c5e542fe?#">ThinkPHP API文档生成插件 使用指南</a>
+<a href="https://hgthecode.github.io/thinkphp-apidoc/">ThinkPHP ApiDoc 文档</a>
 
 ### 特性
 
@@ -35,30 +30,48 @@
 - 支持缓存接口数据，无需每次访问都生成一次数据，更可随时切换。
 - 完善的文档及使用示例。
 
-### 支持环境
+### 环境
 
 - ThinkPHP 6.x 
-- PHP >= 7.1.0 （ThinkPHP 6 的基本要求）
 
 ### 安装
-1、安装插件：进入ThinkPHP6 项目根目录，执行如下命令：
-```bash
-$ composer require hg/apidoc
+1、进入ThinkPHP6 项目根目录，执行如下命令：
+```sh
+composer require hg/apidoc
 ```
 
 2、添加路由
-将 `vendor/hg/apidoc/route/apidoc.php` 文件复制到项目目录route目录下
+将以下路由加入到 `route/app.php`
 
-3、安装前端页面：执行以下命令下载UI。
-```bash
-$ git clone https://github.com/HGthecode/apidoc-ui.git
+```php
+Route::get('apidoc/config', "\\hg\\apidoc\\Controller@getConfig");
+Route::get('apidoc/data', "\\hg\\apidoc\\Controller@getList");
+Route::post('apidoc/auth', "\\hg\\apidoc\\Controller@verifyAuth");
 ```
-下载完成后，找到dist目录，将该目录放到你的项目public目录下，并将dist文件夹名，重命名为 apidoc
 
 
-3、浏览器访问文档页面：
- http://你的域名/apidoc/
+#### 添加前端页面
+
+##### 方式一 
+
+[点击下载](https://apidoc.demo.hg-code.com/download/apidoc.zip) ，下载完成后解压，将apidoc文件夹拷贝到你的项目 public 目录下
+
+##### 方式二 GitHub 下载
+ 1、执行以下命令下载UI
+```sh
+git clone https://github.com/HGthecode/apidoc-ui.git
+```
+ 2、下载完成后，将dist目录放到你的项目public目录下，并将dist文件夹名，重命名为`apidoc`
+
+安装插件完成后 打开浏览器访问   http://你的域名/apidoc/ ，出现接口文档页面，表示安装成功
+
+
+### 支持我们
+如果本项目对您有所帮助，请点个Star支持我们
+
+### 鸣谢
+[ThinkPHP](http://www.thinkphp.cn/) 
 
 ### 链接
- <a href="https://github.com/HGthecode/apidoc-ui" target="_blank">ApiDoc UI 前端</a>
+ <a href="https://github.com/HGthecode/apidoc-ui" target="_blank">ApiDoc UI前端</a>
 
