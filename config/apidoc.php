@@ -8,11 +8,13 @@ return [
     'controllers' => [
         // 'api\\controller\\ApiTest',
     ],
+    // 指定公共注释定义的文件地址
+    'definitions'=>"app\controller\Definitions",
     // 设置可选版本
     'versions'=>[
         ['title'=>'V1.0','folder'=>'']
     ],
-    // 是否开启缓存，开启后，如存在缓存数据优先取缓存数据，需手动更新接口参数，关闭则每次刷新重新生成接口数据
+    // 是否开启缓存
     'with_cache'=>false,
     // 统一的请求响应体
     'responses'=>'{
@@ -21,19 +23,17 @@ return [
     "data":"业务数据",
     "timestamp":"响应时间戳"
 }',
-    // 设置全局Authorize时请求头headers携带的key，对应token的key
+    // 设置全局Authorize时请求头headers携带的key
     'global_auth_key'=>"Authorization",
-    // 权限认证配置
+    // 密码验证配置
     'auth'=>[
-        // 是否启用权限认证，启用则需登录
+        // 是否启用密码验证
         'with_auth'=>false,
-        // 验证类型为 password 时验证的密码，前端md5回传
+        // 验证密码
         'auth_password'=>"123456",
-        // 验证请求头中apidocToken的字段
+        // 验证请求头中apidocToken的字段，默认即可
         'headers_key'=>"apidocToken",
     ],
-    // 指定公共注释定义的文件地址
-    'definitions'=>"app\controller\Definitions",
     // 过滤、不解析的方法名称
     'filter_method'=>[
         '_empty',

@@ -54,7 +54,6 @@ class Controller
             $this->config['auth'] = [
                 'with_auth'=>$this->config['auth']['with_auth'],
                 // 验证类型，password=密码验证，只在进入时做密码验证
-//                'auth_type'=>$this->config['auth']['auth_type'],
                 'headers_key'=>$this->config['auth']['headers_key'],
             ];
         }
@@ -201,7 +200,11 @@ class Controller
         $controllers = $this->config['controllers'];
         $versionPath = "";
         if (!empty($version)){
-            $versionPath = $version."\\";
+            foreach ($this->config['versions'] as $item){
+                if ($item['title'] == $version){
+                    $versionPath = $item['folder']."\\";
+                }
+            }
         }
         foreach ($controllers as $k => $class) {
             $class = "app\\" .$versionPath. $class;
