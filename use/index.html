@@ -5,11 +5,12 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>编写注释 | ThinkPHP-ApiDoc</title>
     <meta name="generator" content="VuePress 1.7.1">
-    
+    <script src="/thinkphp-apidoc/js/index.js"></script>
+    <link rel="stylesheet" type="text/css" href="/thinkphp-apidoc/css/index.css">
     <meta name="description" content="ThinkPHP-ApiDoc是一个基于ThinkPHP6开发的，根据注释自动生成API文档的插件">
     
-    <link rel="preload" href="/thinkphp-apidoc/assets/css/0.styles.736533ce.css" as="style"><link rel="preload" href="/thinkphp-apidoc/assets/js/app.619d81fe.js" as="script"><link rel="preload" href="/thinkphp-apidoc/assets/js/2.8f861319.js" as="script"><link rel="preload" href="/thinkphp-apidoc/assets/js/12.6313a15a.js" as="script"><link rel="prefetch" href="/thinkphp-apidoc/assets/js/10.0aedb775.js"><link rel="prefetch" href="/thinkphp-apidoc/assets/js/11.197cf6d4.js"><link rel="prefetch" href="/thinkphp-apidoc/assets/js/13.51e31a87.js"><link rel="prefetch" href="/thinkphp-apidoc/assets/js/3.f3001e8a.js"><link rel="prefetch" href="/thinkphp-apidoc/assets/js/4.d1ae9c7a.js"><link rel="prefetch" href="/thinkphp-apidoc/assets/js/5.b99a1609.js"><link rel="prefetch" href="/thinkphp-apidoc/assets/js/6.ffe6f60a.js"><link rel="prefetch" href="/thinkphp-apidoc/assets/js/7.c6a96efb.js"><link rel="prefetch" href="/thinkphp-apidoc/assets/js/8.6e5c813e.js"><link rel="prefetch" href="/thinkphp-apidoc/assets/js/9.9fed60aa.js">
-    <link rel="stylesheet" href="/thinkphp-apidoc/assets/css/0.styles.736533ce.css">
+    <link rel="preload" href="/thinkphp-apidoc/assets/css/0.styles.265fd90c.css" as="style"><link rel="preload" href="/thinkphp-apidoc/assets/js/app.cf568b62.js" as="script"><link rel="preload" href="/thinkphp-apidoc/assets/js/2.8f861319.js" as="script"><link rel="preload" href="/thinkphp-apidoc/assets/js/12.2cec4284.js" as="script"><link rel="prefetch" href="/thinkphp-apidoc/assets/js/10.34fda043.js"><link rel="prefetch" href="/thinkphp-apidoc/assets/js/11.71232df9.js"><link rel="prefetch" href="/thinkphp-apidoc/assets/js/13.0f8282e1.js"><link rel="prefetch" href="/thinkphp-apidoc/assets/js/3.a969e1d2.js"><link rel="prefetch" href="/thinkphp-apidoc/assets/js/4.09fd2c39.js"><link rel="prefetch" href="/thinkphp-apidoc/assets/js/5.b99a1609.js"><link rel="prefetch" href="/thinkphp-apidoc/assets/js/6.ffe6f60a.js"><link rel="prefetch" href="/thinkphp-apidoc/assets/js/7.4bcf017a.js"><link rel="prefetch" href="/thinkphp-apidoc/assets/js/8.a678f8d5.js"><link rel="prefetch" href="/thinkphp-apidoc/assets/js/9.051deee1.js">
+    <link rel="stylesheet" href="/thinkphp-apidoc/assets/css/0.styles.265fd90c.css">
   </head>
   <body>
     <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/thinkphp-apidoc/" class="home-link router-link-active"><img src="/thinkphp-apidoc/images/logo.png" alt="ThinkPHP-ApiDoc" class="logo"> <span class="site-name can-hide">ThinkPHP-ApiDoc</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/thinkphp-apidoc/" class="nav-link">
@@ -51,7 +52,7 @@
 <span class="token punctuation">{</span>
   <span class="token comment">//...    </span>
 <span class="token punctuation">}</span>
-</span></code></pre></div><p>此时刷新文档页面，得到一个控制器被解析</p> <img src="/thinkphp-apidoc/images/apidoc-controller-demo.png" alt="apidoc-controller-demo" style="width:100%;"> <h2 id="接口注释"><a href="#接口注释" class="header-anchor">#</a> 接口注释</h2> <p>控制器中的每一个符合注释规则的方法都会被解析成一个API接口</p> <h3 id="基础注释"><a href="#基础注释" class="header-anchor">#</a> 基础注释</h3> <p>先来体验一个最基本的注释，所得到的结果</p> <p>我们在控制器中加入如下方法，如下</p> <div class="language-php extra-class"><pre class="language-php"><code><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+</span></code></pre></div><p>此时刷新文档页面，得到一个控制器被解析</p> <img src="/thinkphp-apidoc/images/apidoc-controller-demo.png" alt="apidoc-controller-demo" class="img-view" style="width:100%;"> <h2 id="接口注释"><a href="#接口注释" class="header-anchor">#</a> 接口注释</h2> <p>控制器中的每一个符合注释规则的方法都会被解析成一个API接口</p> <h3 id="基础注释"><a href="#基础注释" class="header-anchor">#</a> 基础注释</h3> <p>先来体验一个最基本的注释，所得到的结果</p> <p>我们在控制器中加入如下方法，如下</p> <div class="language-php extra-class"><pre class="language-php"><code><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
 <span class="token keyword">namespace</span> <span class="token package">app<span class="token punctuation">\</span>controller</span><span class="token punctuation">;</span>
 <span class="token comment">/**
  * @title Api接口文档测试
@@ -79,7 +80,7 @@
   
 <span class="token punctuation">}</span>
 </span></code></pre></div><p>以上注释，我们得到的效果如下
-<img src="/thinkphp-apidoc/images/apidoc-api-base-demo.png" alt="apidoc-api-base-demo" style="width:100%;"></p> <h3 id="通用注释"><a href="#通用注释" class="header-anchor">#</a> 通用注释</h3> <p>通过定义通用的公共注释参数来实现 可复用性，避免每个接口都定义一大堆同样的参数</p> <h4 id="_1、增加配置"><a href="#_1、增加配置" class="header-anchor">#</a> 1、增加配置</h4> <p>首先，在配置文件 config/apidoc.php 配置文件中，指定一个控制器为定义公共注释的控制器</p> <div class="language-php extra-class"><pre class="language-php"><code><span class="token comment">// config/apidoc.php</span>
+<img src="/thinkphp-apidoc/images/apidoc-api-base-demo.png" alt="apidoc-api-base-demo" class="img-view" style="width:100%;"></p> <h3 id="通用注释"><a href="#通用注释" class="header-anchor">#</a> 通用注释</h3> <p>通过定义通用的公共注释参数来实现 可复用性，避免每个接口都定义一大堆同样的参数</p> <h4 id="_1、增加配置"><a href="#_1、增加配置" class="header-anchor">#</a> 1、增加配置</h4> <p>首先，在配置文件 config/apidoc.php 配置文件中，指定一个控制器为定义公共注释的控制器</p> <div class="language-php extra-class"><pre class="language-php"><code><span class="token comment">// config/apidoc.php</span>
 <span class="token comment">// 指定公共注释定义的文件地址</span>
 <span class="token single-quoted-string string">'definitions'</span><span class="token operator">=</span><span class="token operator">&gt;</span><span class="token double-quoted-string string">&quot;app\controller\Definitions&quot;</span><span class="token punctuation">,</span>
 </code></pre></div><h4 id="_2、定义通用注释"><a href="#_2、定义通用注释" class="header-anchor">#</a> 2、定义通用注释</h4> <p>添加一些通用的方法及注释，（定义param 与return 参数与定义接口书写规则一致）</p> <div class="language-php extra-class"><pre class="language-php"><code><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
@@ -122,7 +123,7 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 </span></code></pre></div><div class="custom-block tip"><p class="custom-block-title">以上param用了两种方式引入，分别是参数指定 字段名 name与 type ，与不指定字段名</p> <ul><li>指定字段名：会将引入的参数在该字段属性下，如下效果</li> <li>不指定字段名：直接引入所有参数</li></ul></div> <p>效果如下
-<img src="/thinkphp-apidoc/images/apidoc-api-dictionary-demo.png" alt="apidoc-api-dictionary-demo" style="width:100%;"></p> <h3 id="逻辑层注释"><a href="#逻辑层注释" class="header-anchor">#</a> 逻辑层注释</h3> <p>在实际开发中，控制器只对参数做基础校验等处理，实际的业务逻辑处理通常会分层给逻辑层来处理（我这里把业务逻辑层叫service，您也可以根据自己开发来定义 业务逻辑层），我们可直接引入业务逻辑层的注释来实现接口参数的定义</p> <h4 id="增加业务逻辑层"><a href="#增加业务逻辑层" class="header-anchor">#</a> 增加业务逻辑层</h4> <p>1、在项目 app 目录下新建 service 文件夹（您也可以叫别的）</p> <p>2、在此文件夹下新建一个ApiDoc.php文件，内容如下：</p> <div class="language-php extra-class"><pre class="language-php"><code><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+<img src="/thinkphp-apidoc/images/apidoc-api-dictionary-demo.png" alt="apidoc-api-dictionary-demo" class="img-view" style="width:100%;"></p> <h3 id="逻辑层注释"><a href="#逻辑层注释" class="header-anchor">#</a> 逻辑层注释</h3> <p>在实际开发中，控制器只对参数做基础校验等处理，实际的业务逻辑处理通常会分层给逻辑层来处理（我这里把业务逻辑层叫service，您也可以根据自己开发来定义 业务逻辑层），我们可直接引入业务逻辑层的注释来实现接口参数的定义</p> <h4 id="增加业务逻辑层"><a href="#增加业务逻辑层" class="header-anchor">#</a> 增加业务逻辑层</h4> <p>1、在项目 app 目录下新建 service 文件夹（您也可以叫别的）</p> <p>2、在此文件夹下新建一个ApiDoc.php文件，内容如下：</p> <div class="language-php extra-class"><pre class="language-php"><code><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
 <span class="token keyword">namespace</span> <span class="token package">app<span class="token punctuation">\</span>services</span><span class="token punctuation">;</span>
 <span class="token keyword">class</span> <span class="token class-name">ApiDoc</span>
 <span class="token punctuation">{</span>
@@ -156,7 +157,7 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 </span></code></pre></div><p>效果如下
-<img src="/thinkphp-apidoc/images/apidoc-api-server-demo.png" alt="apidoc-api-server-demo" style="width:100%;"></p> <h3 id="模型注释"><a href="#模型注释" class="header-anchor">#</a> 模型注释</h3> <p>接口参数都与数据表息息相关，很多接口参数均由数据表字段而来。我们可以直接引入指定模型的数据表字段来生成参数说明，省去了一大堆接口注释与维护工作。</p> <h4 id="给数据表字段添加注释"><a href="#给数据表字段添加注释" class="header-anchor">#</a> 给数据表字段添加注释</h4> <p>建议为数据表字段添加注释，即让数据表字段可读性更高，也让文档可读性更高。
+<img src="/thinkphp-apidoc/images/apidoc-api-server-demo.png" alt="apidoc-api-server-demo" class="img-view" style="width:100%;"></p> <h3 id="模型注释"><a href="#模型注释" class="header-anchor">#</a> 模型注释</h3> <p>接口参数都与数据表息息相关，很多接口参数均由数据表字段而来。我们可以直接引入指定模型的数据表字段来生成参数说明，省去了一大堆接口注释与维护工作。</p> <h4 id="给数据表字段添加注释"><a href="#给数据表字段添加注释" class="header-anchor">#</a> 给数据表字段添加注释</h4> <p>建议为数据表字段添加注释，即让数据表字段可读性更高，也让文档可读性更高。
 我们直接在数据表给相应字段添加注释，如下SQL供参考</p> <div class="language-php extra-class"><pre class="language-php"><code><span class="token constant">CREATE</span> <span class="token constant">TABLE</span> `user` <span class="token punctuation">(</span>↵  
   `id` <span class="token function">int</span><span class="token punctuation">(</span><span class="token number">11</span><span class="token punctuation">)</span> <span class="token constant">NOT</span> <span class="token constant">NULL</span> <span class="token constant">AUTO_INCREMENT</span> <span class="token constant">COMMENT</span> <span class="token single-quoted-string string">'用户id'</span><span class="token punctuation">,</span>
   `username` <span class="token function">varchar</span><span class="token punctuation">(</span><span class="token number">64</span><span class="token punctuation">)</span> <span class="token constant">NOT</span> <span class="token constant">NULL</span> <span class="token constant">COMMENT</span> <span class="token single-quoted-string string">'用户名'</span><span class="token punctuation">,</span>
@@ -207,11 +208,11 @@
        <span class="token comment">//...</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
-</span></code></pre></div><img src="/thinkphp-apidoc/images/apidoc-api-model-demo.png" alt="apidoc-api-model-demo" style="width:100%;"></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><!----> <span class="next"><a href="/thinkphp-apidoc/use/actions.html">
+</span></code></pre></div><img src="/thinkphp-apidoc/images/apidoc-api-model-demo.png" alt="apidoc-api-model-demo" class="img-view" style="width:100%;"></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><!----> <span class="next"><a href="/thinkphp-apidoc/use/actions.html">
         文档试用
       </a>
       →
     </span></p></div> </main></div><div class="global-ui"></div></div>
-    <script src="/thinkphp-apidoc/assets/js/app.619d81fe.js" defer></script><script src="/thinkphp-apidoc/assets/js/2.8f861319.js" defer></script><script src="/thinkphp-apidoc/assets/js/12.6313a15a.js" defer></script>
+    <script src="/thinkphp-apidoc/assets/js/app.cf568b62.js" defer></script><script src="/thinkphp-apidoc/assets/js/2.8f861319.js" defer></script><script src="/thinkphp-apidoc/assets/js/12.2cec4284.js" defer></script>
   </body>
 </html>
