@@ -81,7 +81,7 @@ class ApiDocTest
 
 此时刷新文档页面，得到一个控制器被解析
 
-<img :src="$withBase('/images/apidoc-controller-demo.png')" style="width:100%;" alt="apidoc-controller-demo">
+<img class="img-view" :src="$withBase('/images/apidoc-controller-demo.png')" style="width:100%;" alt="apidoc-controller-demo">
 
 
 ## 接口注释
@@ -124,7 +124,7 @@ class ApiDocTest
 ```
 
 以上注释，我们得到的效果如下
-<img :src="$withBase('/images/apidoc-api-base-demo.png')" style="width:100%;" alt="apidoc-api-base-demo">
+<img class="img-view" :src="$withBase('/images/apidoc-api-base-demo.png')" style="width:100%;" alt="apidoc-api-base-demo">
 
 
 ### 通用注释
@@ -193,7 +193,7 @@ class ApiDocTest
 :::
 
 效果如下
-<img :src="$withBase('/images/apidoc-api-dictionary-demo.png')" style="width:100%;" alt="apidoc-api-dictionary-demo">
+<img class="img-view" :src="$withBase('/images/apidoc-api-dictionary-demo.png')" style="width:100%;" alt="apidoc-api-dictionary-demo">
 
 
 ### 逻辑层注释
@@ -249,7 +249,7 @@ class ApiDocTest
 
 
 效果如下
-<img :src="$withBase('/images/apidoc-api-server-demo.png')" style="width:100%;" alt="apidoc-api-server-demo">
+<img class="img-view" :src="$withBase('/images/apidoc-api-server-demo.png')" style="width:100%;" alt="apidoc-api-server-demo">
 
 
 
@@ -336,6 +336,6 @@ class ApiDocTest
 
 
 
-<img :src="$withBase('/images/apidoc-api-model-demo.png')" style="width:100%;" alt="apidoc-api-model-demo">
+<img class="img-view" :src="$withBase('/images/apidoc-api-model-demo.png')" style="width:100%;" alt="apidoc-api-model-demo">
 
 

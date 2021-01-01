@@ -13,6 +13,11 @@ sidebarDepth: 2
 
 页面的标题，显示在左上角与封面页
 
+## desc
+- 类型: string
+
+文档封面处显示
+
 ## copyright
 - 类型: string
 - 默认值: Powered By HG
