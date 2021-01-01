@@ -1,5 +1,6 @@
 
 setTimeout(() => {
+    console.log('init');
     imgView.init()
 }, 1000);
 
@@ -15,10 +16,8 @@ var imgView = {
         }
     },
     bindImgEvent(el){
-        console.log(el);
         const that=this
         el.onclick=function(e){
-            console.log(e);
             const url = e.target.src;
             that.getImgWH(url).then(({width,height})=>{
                 that.createModal({url,width,height})
@@ -47,6 +46,8 @@ var imgView = {
             imgViewWraper.style.marginLeft = "-"+(width/2)+"px";
         }else{
             imgViewWraper.style.left='0px';
+            var bl = height / width;
+            height = winW*bl;
         }
         if (height<winH) {
             imgViewWraper.style.marginTop = "-"+(height/2)+"px";
