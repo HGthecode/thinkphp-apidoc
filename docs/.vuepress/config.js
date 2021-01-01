@@ -2,11 +2,14 @@ module.exports = {
     title: 'ThinkPHP-ApiDoc',
     description: 'ThinkPHP-ApiDoc是一个基于ThinkPHP6开发的，根据注释自动生成API文档的插件',
     base:"/thinkphp-apidoc/",
-    // head: [
-    //     ['script', { src: '/js/index.js' }],
-    //     ['link', { rel: 'stylesheet', type: 'text/css', href: '/css/index.css' }]
-    //   ],
-    plugins: ['@vuepress/medium-zoom'],
+    plugins: {
+        '@vuepress/medium-zoom': {
+          selector: 'img.img-view',
+          options: {
+            margin: 16
+          }
+        }
+      },
     themeConfig: {
         logo: '/images/logo.png',
         displayAllHeaders:true,
