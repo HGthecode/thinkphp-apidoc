@@ -1,6 +1,6 @@
 {
     "name": "hg/apidoc",
-    "description": "thinkphp6 API文档自动生成",
+    "description": "thinkphp API文档自动生成",
     "type": "think-extend",
     "keywords": [
         "thinkphp",
@@ -13,7 +13,7 @@
         "php接口文档"
       ],
     "require": {
-        "php": ">=7.1.0"
+        "php": ">=5.6"
     },
     "license": "MIT",
     "authors": [
@@ -29,8 +29,11 @@
     },
     "extra": {
         "think": {
+            "services": [
+                "hg\\apidoc\\Service"
+            ],
             "config": {
-                "apidoc": "config/apidoc.php"
+                "apidoc": "src/config.php"
             }
         }
     },

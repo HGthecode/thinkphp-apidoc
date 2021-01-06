@@ -15,6 +15,7 @@ class Controller
         ],
         'versions'=>[
         ],
+        'groups'=>[],
         'with_cache'=>false,
         'responses'=>'{
             "code":"状态码",
@@ -48,7 +49,7 @@ class Controller
      * @return array
      */
     public function getConfig(){
-        $config = config('apidoc');
+        $config = config('apidoc')?config('apidoc'):config('apidoc.');
         $this->config = array_merge($this->config, $config);
         if (!empty($this->config['auth'])){
             $this->config['auth'] = [
@@ -58,14 +59,14 @@ class Controller
             ];
         }
 
-        return $this->config;
+        return json($this->config);
     }
 
     /**
      * 验证身份
      */
     public function verifyAuth(){
-        $config = config('apidoc');
+        $config = config('apidoc')?config('apidoc'):config('apidoc.');
         $this->config = array_merge($this->config, $config);
         $request = Request::instance();
         $params = $request->param();
@@ -73,12 +74,12 @@ class Controller
             // 密码验证
             if (md5($this->config['auth']['auth_password']) === $params['password']){
                 $token = md5($params['password'].strtotime(date('Y-m-d',time())));
-                return array("token"=>$token);
+                return json(array("token"=>$token));
             }else{
                 throw new \think\Exception("密码不正确，请重新输入");
             }
         }
-        return $params;
+        return json($params);
     }
 
     public function verifyToken(){
@@ -106,7 +107,7 @@ class Controller
      */
     public function getList()
     {
-        $config = config('apidoc');
+        $config = config('apidoc')?config('apidoc'):config('apidoc.');
         $this->config = array_merge($this->config, $config);
         // 验证token身份
         if ($this->config['auth']['with_auth'] === true){
@@ -179,7 +180,8 @@ class Controller
             "responses"=>$this->config['responses'],
             "list"=>$list,
             "cacheFiles"=>$cacheFiles,
-            "cacheName"=>$cacheName
+            "cacheName"=>$cacheName,
+            "groups"=>$this->config['groups']
         );
 
         $res=[
@@ -194,14 +196,14 @@ class Controller
      * 获取api接口文档
      */
     public function getApiList($version){
-        $config = config('apidoc');
+        $config = config('apidoc')?config('apidoc'):config('apidoc.');
         $this->config = array_merge($this->config, $config);
         $list=[];
         $controllers = $this->config['controllers'];
         $versionPath = "";
         if (!empty($version)){
             foreach ($this->config['versions'] as $item){
-                if ($item['title'] == $version){
+                if ($item['title'] == $version && !empty($item['folder'])){
                     $versionPath = $item['folder']."\\";
                 }
             }
@@ -228,7 +230,6 @@ class Controller
                         $actionDocStr = $action->getDocComment();
                         if($actionDocStr)
                         {
-
                             // 解析当前方法的注释
                             $action_doc = $actionDoc->parseAction($actionDocStr);
 //                                $action_doc['name'] = $class."::".$action->name;

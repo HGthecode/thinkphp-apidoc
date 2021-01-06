@@ -5,7 +5,7 @@
 </p>
 
 <h1 align="center">
-  <a target="_blank">ThinkPHP6 ApiDoc</a>
+  <a target="_blank">ThinkPHP ApiDoc</a>
 </h1>
 
 <div align="center">
@@ -30,29 +30,20 @@
 - 支持缓存接口数据，无需每次访问都生成一次数据，更可随时切换。
 - 完善的文档及使用示例。
 
-### 环境
+### 兼容
 
+- ThinkPHP 5.x 
 - ThinkPHP 6.x 
 
 ### 安装
-1、进入ThinkPHP6 项目根目录，执行如下命令：
+进入ThinkPHP 项目根目录，执行如下命令：
 ```sh
 composer require hg/apidoc
 ```
 
-2、添加路由
-将以下路由加入到 `route/app.php`
-
-```php
-Route::get('apidoc/config', "\\hg\\apidoc\\Controller@getConfig");
-Route::get('apidoc/data', "\\hg\\apidoc\\Controller@getList");
-Route::post('apidoc/auth', "\\hg\\apidoc\\Controller@verifyAuth");
-```
-
-
 #### 添加前端页面
 
-##### 方式一 
+##### 方式一 (推荐)
 
 [点击下载](https://apidoc.demo.hg-code.com/download/apidoc.zip) ，下载完成后解压，将apidoc文件夹拷贝到你的项目 public 目录下
 
@@ -74,4 +65,6 @@ git clone https://github.com/HGthecode/apidoc-ui.git
 
 ### 链接
  <a href="https://github.com/HGthecode/apidoc-ui" target="_blank">ApiDoc UI前端</a>
+ 
+ <a href="https://github.com/HGthecode/thinkphp-apidoc-demo" target="_blank">ApiDoc Demo 示例项目</a>
 

@@ -14,6 +14,9 @@ return [
     'versions'=>[
         ['title'=>'V1.0','folder'=>'']
     ],
+    // 控制器分组列表
+    'groups'=>[
+    ],
     // 是否开启缓存
     'with_cache'=>false,
     // 统一的请求响应体

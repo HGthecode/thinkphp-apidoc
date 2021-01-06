@@ -3,6 +3,7 @@
 
 namespace hg\apidoc;
 use think\facade\Db;
+use think\Db as Db5;
 
 class Parser
 {
@@ -461,8 +462,12 @@ class Parser
      */
     public function getTableDocument($model)
     {
-        $createSQL = Db::query("show create table " . $model->getTable())[0]['Create Table'];
-//        preg_match_all("#`(.*?)`(.*?) COMMENT\s*'(.*?)',#", $createSQL, $matches);
+        $tp_version = \think\facade\App::version();
+        if (substr($tp_version, 0, 2) == '5.'){
+            $createSQL = Db5::query("show create table " . $model->getTable())[0]['Create Table'];
+        }else{
+            $createSQL = Db::query("show create table " . $model->getTable())[0]['Create Table'];
+        }
         preg_match_all("#`(.*?)`(.*?),#", $createSQL, $matches);
         $fields = $matches[1];
         $types = $matches[2];
