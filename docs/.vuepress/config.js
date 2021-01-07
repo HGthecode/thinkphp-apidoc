@@ -15,7 +15,13 @@ module.exports = {
         displayAllHeaders:true,
         nav: [
             { text: '指南', link: '/' },
-            { text: '安装', link: '/install/' },
+            { 
+              text: '安装', 
+              items: [
+                { text: '安装', link: '/install/' },
+                { text: '更新日志', link: '/changelog/' }
+              ]
+            },
             { text: '配置', link: '/config/' },
             { text: '使用', link: '/use/' },
             { text: '支持', link: '/sponsor/' },
@@ -29,6 +35,7 @@ module.exports = {
             '/use/': [
                 '', 
                 'actions',
+                'help',
             ],
         }
       }

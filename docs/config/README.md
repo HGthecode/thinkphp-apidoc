@@ -59,6 +59,25 @@ return [
 ]
 ```
 
+## groups  
+- 类型: Array
+- 默认值: undefined
+
+设置控制器分组
+```php
+// config/apidoc.php
+<?php
+return [
+    //设置控制器分组
+    'groups'=>[
+        ['title'=>'基础模块','name'=>'base'],
+        ['title'=>'示例模块','name'=>'demo'],
+    ],
+]
+```
+
+
+
 ## with_cache
 - 类型: boolean
 - 默认值: false

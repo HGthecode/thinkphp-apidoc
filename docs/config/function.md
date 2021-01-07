@@ -44,6 +44,35 @@ app
 :::
 
 
+## 控制器分组  -new
+> 支持版本 >= v1.1.1
+
+可通过控制器分组实现将多模块的控制器进行分组
+
+1、配置文件`/config/apidoc.php`中的 groups 配置分组列表：
+```php
+// /config/apidoc.php
+//设置控制器分组
+'groups'=>[
+    ['title'=>'基础模块','name'=>'base'],
+    ['title'=>'示例模块','name'=>'demo'],
+],
+```
+
+2、在对应控制器注释中，加入 `@group` 来指定该控制器所属分类的 name
+```php
+namespace app\controller;
+/**
+ * @title Api接口文档测试
+ * @controller ApiDocTest
+ * @group base
+ */
+class ApiDocTest
+{ 
+```
+
+
+
 ## 密码验证
 配置文件`/config/apidoc.php`中的 auth 设置如下，即可在访问接口文档时需输入密码访问：
 ```php

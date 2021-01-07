@@ -18,7 +18,7 @@ features:
   details: 支持访问API文档页面需密码验证；支持缓存接口数据，无需每次都生成数据。
 - title: 放心使用
   details: 完善的说明文档及各种使用示例，让你用得明明白白。
-footer: MIT Licensed | Copyright © 2020-present Evan You
+footer: MIT Licensed | Copyright © 2020-present HG-CODE
 ---
 
 
