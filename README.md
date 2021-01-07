@@ -1,6 +1,6 @@
 <p align="center">
   <a href="#">
-    <img width="120" src="https://hgthecode.github.io/thinkphp-apidoc/images/logo.png">
+    <img width="120" src="https://apidoc.demo.hg-code.com/images/logo.png">
   </a>
 </p>
 
