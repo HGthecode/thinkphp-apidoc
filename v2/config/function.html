@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="V2">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>功能配置 | ThinkPHP-ApiDoc</title>
+    <meta name="generator" content="VuePress 1.7.1">
+    
+    <meta name="description" content="基于ThinkPHP根据注释自动生成API文档的插件">
+    
+    <link rel="preload" href="/thinkphp-apidoc/assets/css/0.styles.2b9ceb77.css" as="style"><link rel="preload" href="/thinkphp-apidoc/assets/js/app.432094e3.js" as="script"><link rel="preload" href="/thinkphp-apidoc/assets/js/2.4da65e27.js" as="script"><link rel="preload" href="/thinkphp-apidoc/assets/js/19.8d9f406d.js" as="script"><link rel="prefetch" href="/thinkphp-apidoc/assets/js/10.618d1926.js"><link rel="prefetch" href="/thinkphp-apidoc/assets/js/11.42502c16.js"><link rel="prefetch" href="/thinkphp-apidoc/assets/js/12.b7b3a7b5.js"><link rel="prefetch" href="/thinkphp-apidoc/assets/js/13.a09b5fbf.js"><link rel="prefetch" href="/thinkphp-apidoc/assets/js/14.12b96ef7.js"><link rel="prefetch" href="/thinkphp-apidoc/assets/js/15.ebda5299.js"><link rel="prefetch" href="/thinkphp-apidoc/assets/js/16.a796db6c.js"><link rel="prefetch" href="/thinkphp-apidoc/assets/js/17.dfdd7f96.js"><link rel="prefetch" href="/thinkphp-apidoc/assets/js/18.ef1f9b9f.js"><link rel="prefetch" href="/thinkphp-apidoc/assets/js/20.2f9b4c4f.js"><link rel="prefetch" href="/thinkphp-apidoc/assets/js/21.4c62a489.js"><link rel="prefetch" href="/thinkphp-apidoc/assets/js/22.84c53d35.js"><link rel="prefetch" href="/thinkphp-apidoc/assets/js/23.07c679f1.js"><link rel="prefetch" href="/thinkphp-apidoc/assets/js/24.906108ea.js"><link rel="prefetch" href="/thinkphp-apidoc/assets/js/3.1b5889d7.js"><link rel="prefetch" href="/thinkphp-apidoc/assets/js/4.d37862ef.js"><link rel="prefetch" href="/thinkphp-apidoc/assets/js/5.9fe721ce.js"><link rel="prefetch" href="/thinkphp-apidoc/assets/js/6.73c063ed.js"><link rel="prefetch" href="/thinkphp-apidoc/assets/js/7.b4e343ac.js"><link rel="prefetch" href="/thinkphp-apidoc/assets/js/8.17abbe56.js"><link rel="prefetch" href="/thinkphp-apidoc/assets/js/9.2725535f.js">
+    <link rel="stylesheet" href="/thinkphp-apidoc/assets/css/0.styles.2b9ceb77.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/thinkphp-apidoc/" class="home-link router-link-active"><img src="/thinkphp-apidoc/images/logo.png" alt="ThinkPHP-ApiDoc" class="logo"> <span class="site-name can-hide">ThinkPHP-ApiDoc</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/thinkphp-apidoc/" class="nav-link">
+  指南
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="安装" class="dropdown-title"><span class="title">安装</span> <span class="arrow down"></span></button> <button type="button" aria-label="安装" class="mobile-dropdown-title"><span class="title">安装</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/thinkphp-apidoc/v2/install/" class="nav-link">
+  安装
+</a></li><li class="dropdown-item"><!----> <a href="/thinkphp-apidoc/v2/changelog/" class="nav-link">
+  更新日志
+</a></li></ul></div></div><div class="nav-item"><a href="/thinkphp-apidoc/v2/config/" class="nav-link router-link-active">
+  配置
+</a></div><div class="nav-item"><a href="/thinkphp-apidoc/v2/use/" class="nav-link">
+  使用
+</a></div><div class="nav-item"><a href="/thinkphp-apidoc/v2/sponsor/" class="nav-link">
+  支持
+</a></div><div class="nav-item"><a href="https://apidoc.demo.hg-code.com/apidoc/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  演示
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Select language" class="dropdown-title"><span class="title">版本</span> <span class="arrow down"></span></button> <button type="button" aria-label="Select language" class="mobile-dropdown-title"><span class="title">版本</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/thinkphp-apidoc/v2/config/function.html" aria-current="page" class="nav-link router-link-exact-active router-link-active">
+  V2
+</a></li><li class="dropdown-item"><!----> <a href="/thinkphp-apidoc/v1/" class="nav-link">
+  V1
+</a></li></ul></div></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/thinkphp-apidoc/" class="nav-link">
+  指南
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="安装" class="dropdown-title"><span class="title">安装</span> <span class="arrow down"></span></button> <button type="button" aria-label="安装" class="mobile-dropdown-title"><span class="title">安装</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/thinkphp-apidoc/v2/install/" class="nav-link">
+  安装
+</a></li><li class="dropdown-item"><!----> <a href="/thinkphp-apidoc/v2/changelog/" class="nav-link">
+  更新日志
+</a></li></ul></div></div><div class="nav-item"><a href="/thinkphp-apidoc/v2/config/" class="nav-link router-link-active">
+  配置
+</a></div><div class="nav-item"><a href="/thinkphp-apidoc/v2/use/" class="nav-link">
+  使用
+</a></div><div class="nav-item"><a href="/thinkphp-apidoc/v2/sponsor/" class="nav-link">
+  支持
+</a></div><div class="nav-item"><a href="https://apidoc.demo.hg-code.com/apidoc/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  演示
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Select language" class="dropdown-title"><span class="title">版本</span> <span class="arrow down"></span></button> <button type="button" aria-label="Select language" class="mobile-dropdown-title"><span class="title">版本</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/thinkphp-apidoc/v2/config/function.html" aria-current="page" class="nav-link router-link-exact-active router-link-active">
+  V2
+</a></li><li class="dropdown-item"><!----> <a href="/thinkphp-apidoc/v1/" class="nav-link">
+  V1
+</a></li></ul></div></div> <!----></nav>  <ul class="sidebar-links"><li><a href="/thinkphp-apidoc/v2/config/" aria-current="page" class="sidebar-link">配置参数</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/thinkphp-apidoc/v2/config/#title" class="sidebar-link">title</a></li><li class="sidebar-sub-header"><a href="/thinkphp-apidoc/v2/config/#desc" class="sidebar-link">desc</a></li><li class="sidebar-sub-header"><a href="/thinkphp-apidoc/v2/config/#copyright" class="sidebar-link">copyright</a></li><li class="sidebar-sub-header"><a href="/thinkphp-apidoc/v2/config/#versions" class="sidebar-link">versions</a></li><li class="sidebar-sub-header"><a href="/thinkphp-apidoc/v2/config/#groups" class="sidebar-link">groups</a></li><li class="sidebar-sub-header"><a href="/thinkphp-apidoc/v2/config/#definitions" class="sidebar-link">definitions</a></li><li class="sidebar-sub-header"><a href="/thinkphp-apidoc/v2/config/#controllers" class="sidebar-link">controllers</a></li><li class="sidebar-sub-header"><a href="/thinkphp-apidoc/v2/config/#filter-controllers" class="sidebar-link">filter_controllers</a></li><li class="sidebar-sub-header"><a href="/thinkphp-apidoc/v2/config/#cache" class="sidebar-link">cache</a></li><li class="sidebar-sub-header"><a href="/thinkphp-apidoc/v2/config/#auth" class="sidebar-link">auth</a></li><li class="sidebar-sub-header"><a href="/thinkphp-apidoc/v2/config/#global-auth-key" class="sidebar-link">globalauthkey</a></li><li class="sidebar-sub-header"><a href="/thinkphp-apidoc/v2/config/#responses" class="sidebar-link">responses</a></li><li class="sidebar-sub-header"><a href="/thinkphp-apidoc/v2/config/#filter-method" class="sidebar-link">filter_method</a></li><li class="sidebar-sub-header"><a href="/thinkphp-apidoc/v2/config/#docs" class="sidebar-link">docs</a></li></ul></li><li><a href="/thinkphp-apidoc/v2/config/function.html" aria-current="page" class="active sidebar-link">功能配置</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/thinkphp-apidoc/v2/config/function.html#多版本" class="sidebar-link">多版本</a></li><li class="sidebar-sub-header"><a href="/thinkphp-apidoc/v2/config/function.html#控制器分组" class="sidebar-link">控制器分组</a></li><li class="sidebar-sub-header"><a href="/thinkphp-apidoc/v2/config/function.html#密码验证" class="sidebar-link">密码验证</a></li><li class="sidebar-sub-header"><a href="/thinkphp-apidoc/v2/config/function.html#文档缓存" class="sidebar-link">文档缓存</a></li><li class="sidebar-sub-header"><a href="/thinkphp-apidoc/v2/config/function.html#markdown-文档" class="sidebar-link">Markdown 文档</a></li></ul></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="功能配置"><a href="#功能配置" class="header-anchor">#</a> 功能配置</h1> <h2 id="多版本"><a href="#多版本" class="header-anchor">#</a> 多版本</h2> <p>在单应用中，我们通常使用这样的目录接口来实现多版本接口开发</p> <div class="language-sh extra-class"><pre class="language-sh"><code>app
+ <span class="token operator">|</span>—— controller
+    <span class="token operator">|</span>—— v1
+        BaseDemo.php
+        CrudDemo.php
+        <span class="token punctuation">..</span>.
+    <span class="token operator">|</span>—— v2
+        BaseDemo.php
+        CrudDemo.php
+        <span class="token punctuation">..</span>.
+ <span class="token operator">|</span>—— model
+ <span class="token punctuation">..</span>.
+</code></pre></div><p>根据以上项目的目录结构，在配置文件<code>/config/apidoc.php</code>中的 versions 参数中配置你的可选版本，如下</p> <div class="language-php extra-class"><pre class="language-php"><code><span class="token comment">// /config/apidoc.php</span>
+<span class="token comment">// 设置可选版本</span>
+<span class="token single-quoted-string string">'versions'</span><span class="token operator">=</span><span class="token operator">&gt;</span><span class="token punctuation">[</span>
+    <span class="token punctuation">[</span><span class="token single-quoted-string string">'title'</span><span class="token operator">=</span><span class="token operator">&gt;</span><span class="token single-quoted-string string">'V1.0'</span><span class="token punctuation">,</span><span class="token single-quoted-string string">'folder'</span><span class="token operator">=</span><span class="token operator">&gt;</span><span class="token single-quoted-string string">'app\controller\v1'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token single-quoted-string string">'title'</span><span class="token operator">=</span><span class="token operator">&gt;</span><span class="token single-quoted-string string">'V2.0'</span><span class="token punctuation">,</span><span class="token single-quoted-string string">'folder'</span><span class="token operator">=</span><span class="token operator">&gt;</span><span class="token single-quoted-string string">'app\controller\v2'</span><span class="token punctuation">]</span>
+<span class="token punctuation">]</span><span class="token punctuation">,</span>
+</code></pre></div><p>如配置了 <code>controllers</code> 生成文档的控制器目录调整为：</p> <div class="language-php extra-class"><pre class="language-php"><code><span class="token comment">// /config/apidoc.php</span>
+<span class="token comment">//生成文档的控制器</span>
+<span class="token single-quoted-string string">'controllers'</span> <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token punctuation">[</span>
+    <span class="token single-quoted-string string">'BaseDemo'</span><span class="token punctuation">,</span>
+    <span class="token single-quoted-string string">'CrudDemo'</span><span class="token punctuation">,</span>
+<span class="token punctuation">]</span><span class="token punctuation">,</span>
+</code></pre></div><div class="custom-block warning"><p class="custom-block-title">folder</p> <p>多版本配置的关键点在于 folder 目录的配置，请根据你的项目结构调整，
+其原理为 当前版本的folder + 控制器 来生成接口文档</p></div> <h2 id="控制器分组"><a href="#控制器分组" class="header-anchor">#</a> 控制器分组</h2> <p>可通过控制器分组实现将多模块的控制器进行分组</p> <p>1、配置文件<code>/config/apidoc.php</code>中的 groups 配置分组列表：</p> <div class="language-php extra-class"><pre class="language-php"><code><span class="token comment">// /config/apidoc.php</span>
+<span class="token comment">//设置控制器分组</span>
+<span class="token single-quoted-string string">'groups'</span><span class="token operator">=</span><span class="token operator">&gt;</span><span class="token punctuation">[</span>
+    <span class="token punctuation">[</span><span class="token single-quoted-string string">'title'</span><span class="token operator">=</span><span class="token operator">&gt;</span><span class="token single-quoted-string string">'基础模块'</span><span class="token punctuation">,</span><span class="token single-quoted-string string">'name'</span><span class="token operator">=</span><span class="token operator">&gt;</span><span class="token single-quoted-string string">'base'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token single-quoted-string string">'title'</span><span class="token operator">=</span><span class="token operator">&gt;</span><span class="token single-quoted-string string">'示例模块'</span><span class="token punctuation">,</span><span class="token single-quoted-string string">'name'</span><span class="token operator">=</span><span class="token operator">&gt;</span><span class="token single-quoted-string string">'demo'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+<span class="token punctuation">]</span><span class="token punctuation">,</span>
+</code></pre></div><p>2、在对应控制器注释中，加入 <code>@group</code> 来指定该控制器所属分类的 name</p> <div class="language-php extra-class"><pre class="language-php"><code><span class="token keyword">namespace</span> <span class="token package">app<span class="token punctuation">\</span>controller</span><span class="token punctuation">;</span>
+
+<span class="token keyword">use</span> <span class="token package">hg<span class="token punctuation">\</span>apidoc<span class="token punctuation">\</span>annotation</span> <span class="token keyword">as</span> Apidoc<span class="token punctuation">;</span>
+
+<span class="token comment">/**
+ * @Apidoc\title(&quot;基础示例&quot;)
+ * @Apidoc\group(&quot;base&quot;)
+ */</span>
+<span class="token keyword">class</span> <span class="token class-name">ApiDocTest</span>
+<span class="token punctuation">{</span> 
+</code></pre></div><h2 id="密码验证"><a href="#密码验证" class="header-anchor">#</a> 密码验证</h2> <p>配置文件<code>/config/apidoc.php</code>中的 auth 设置如下，即可在访问文档页面时需输入密码访问：</p> <div class="language-php extra-class"><pre class="language-php"><code><span class="token comment">// /config/apidoc.php</span>
+<span class="token comment">// 权限认证配置</span>
+<span class="token single-quoted-string string">'auth'</span> <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token punctuation">[</span>
+    <span class="token comment">// 是否启用密码验证</span>
+    <span class="token single-quoted-string string">'enable'</span>     <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token boolean constant">true</span><span class="token punctuation">,</span>
+    <span class="token comment">// 验证密码</span>
+    <span class="token single-quoted-string string">'password'</span>   <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token double-quoted-string string">&quot;123456&quot;</span><span class="token punctuation">,</span>
+    <span class="token comment">// 密码加密盐</span>
+    <span class="token single-quoted-string string">'secret_key'</span> <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token double-quoted-string string">&quot;apidoc#hg_code&quot;</span><span class="token punctuation">,</span>
+<span class="token punctuation">]</span><span class="token punctuation">,</span>
+</code></pre></div><h2 id="文档缓存"><a href="#文档缓存" class="header-anchor">#</a> 文档缓存</h2> <div class="custom-block warning"><p class="custom-block-title">建议</p> <p>开发环境中关闭缓存，可方便实时修改查看效果，提升开发效率。正式发布后可开启。</p></div> <p>开启缓存后，每次访问接口文档则直接使用缓存数据展示文档，大大提升访问速度，也可在页面右上角切换历史文档。
+但当修改了接口注释后，需手动点击接口文档页面右上角的 <code>ReLoad</code> 按钮生成新的文档数据。</p> <p>配置文件<code>/config/apidoc.php</code>中的 with_cache 设置为 <code>true</code></p> <div class="language-php extra-class"><pre class="language-php"><code><span class="token comment">// /config/apidoc.php</span>
+<span class="token comment">// 缓存配置</span>
+<span class="token single-quoted-string string">'cache'</span> <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token punctuation">[</span>
+    <span class="token comment">// 是否开启缓存</span>
+    <span class="token single-quoted-string string">'enable'</span> <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token boolean constant">false</span><span class="token punctuation">,</span>
+    <span class="token comment">// 缓存文件路径</span>
+    <span class="token single-quoted-string string">'path'</span>   <span class="token operator">=</span><span class="token operator">&gt;</span>  <span class="token single-quoted-string string">'../runtime/apidoc/'</span><span class="token punctuation">,</span>
+    <span class="token comment">// 是否显示更新缓存按钮</span>
+    <span class="token single-quoted-string string">'reload'</span> <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token boolean constant">true</span><span class="token punctuation">,</span>
+    <span class="token comment">// 最大缓存文件数</span>
+    <span class="token single-quoted-string string">'max'</span>    <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token number">5</span><span class="token punctuation">,</span>  <span class="token comment">//最大缓存数量</span>
+<span class="token punctuation">]</span><span class="token punctuation">,</span>
+</code></pre></div><p>缓存的文件默认生成在 <code>/runtime/apidoc/</code>目录下，如需删除缓存记录，可直接删除该目录下的相应文件即可</p> <h2 id="markdown-文档"><a href="#markdown-文档" class="header-anchor">#</a> Markdown 文档</h2> <p>1、根目录下创建<code>docs</code>（你也可以是别的）目录，并创建md文档文件，如下</p> <div class="language-sh extra-class"><pre class="language-sh"><code>app
+config
+docs
+ <span class="token operator">|</span>—— Use.md
+ <span class="token operator">|</span>—— V1.0
+    <span class="token operator">|</span>—— HttpStatus.md
+    <span class="token operator">|</span>—— HttpCode.md
+ <span class="token operator">|</span>—— V2.0
+    <span class="token operator">|</span>—— HttpStatus.md
+    <span class="token operator">|</span>—— HttpCode.md 
+ <span class="token punctuation">..</span>.
+</code></pre></div><p>2、配置文档菜单</p> <blockquote><p>可使用 <code>{:version}</code> 做多版本区分</p></blockquote> <div class="language-php extra-class"><pre class="language-php"><code>// config/apidoc.php
+<span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+<span class="token keyword">return</span> <span class="token punctuation">[</span>
+    <span class="token comment">// markdown 文档</span>
+    <span class="token single-quoted-string string">'docs'</span> <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token punctuation">[</span>
+        <span class="token single-quoted-string string">'menu_title'</span> <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token single-quoted-string string">'开发文档'</span><span class="token punctuation">,</span>
+        <span class="token single-quoted-string string">'menus'</span>      <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token punctuation">[</span>
+            <span class="token punctuation">[</span><span class="token single-quoted-string string">'title'</span><span class="token operator">=</span><span class="token operator">&gt;</span><span class="token single-quoted-string string">'使用说明'</span><span class="token punctuation">,</span><span class="token single-quoted-string string">'path'</span><span class="token operator">=</span><span class="token operator">&gt;</span><span class="token single-quoted-string string">'docs/Use'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+            <span class="token punctuation">[</span>
+                <span class="token single-quoted-string string">'title'</span><span class="token operator">=</span><span class="token operator">&gt;</span><span class="token single-quoted-string string">'HTTP响应码'</span><span class="token punctuation">,</span>
+                <span class="token single-quoted-string string">'items'</span><span class="token operator">=</span><span class="token operator">&gt;</span><span class="token punctuation">[</span>
+                    <span class="token punctuation">[</span><span class="token single-quoted-string string">'title'</span><span class="token operator">=</span><span class="token operator">&gt;</span><span class="token single-quoted-string string">'status错误码说明'</span><span class="token punctuation">,</span><span class="token single-quoted-string string">'path'</span><span class="token operator">=</span><span class="token operator">&gt;</span><span class="token single-quoted-string string">'docs/{:version}/HttpStatus'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+                    <span class="token punctuation">[</span><span class="token single-quoted-string string">'title'</span><span class="token operator">=</span><span class="token operator">&gt;</span><span class="token single-quoted-string string">'code错误码说明'</span><span class="token punctuation">,</span><span class="token single-quoted-string string">'path'</span><span class="token operator">=</span><span class="token operator">&gt;</span><span class="token single-quoted-string string">'docs/{:version}/HttpCode'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+                <span class="token punctuation">]</span><span class="token punctuation">,</span>
+            <span class="token punctuation">]</span>
+        <span class="token punctuation">]</span>
+
+    <span class="token punctuation">]</span>
+<span class="token punctuation">]</span>
+</span></code></pre></div><img src="/thinkphp-apidoc/images/v2/apidoc-demo-md.png" alt="apidoc-demo-md" class="img-view" style="width:100%;"></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/thinkphp-apidoc/v2/config/" class="prev router-link-active">
+        配置参数
+      </a></span> <!----></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/thinkphp-apidoc/assets/js/app.432094e3.js" defer></script><script src="/thinkphp-apidoc/assets/js/2.4da65e27.js" defer></script><script src="/thinkphp-apidoc/assets/js/19.8d9f406d.js" defer></script>
+  </body>
+</html>

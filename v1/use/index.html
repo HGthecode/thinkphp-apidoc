@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="V1">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>编写注释 | ThinkPHP-ApiDoc</title>
+    <meta name="generator" content="VuePress 1.7.1">
+    
+    <meta name="description" content="基于ThinkPHP根据注释自动生成API文档的插件">
+    
+    <link rel="preload" href="/thinkphp-apidoc/assets/css/0.styles.2b9ceb77.css" as="style"><link rel="preload" href="/thinkphp-apidoc/assets/js/app.432094e3.js" as="script"><link rel="preload" href="/thinkphp-apidoc/assets/js/2.4da65e27.js" as="script"><link rel="preload" href="/thinkphp-apidoc/assets/js/14.12b96ef7.js" as="script"><link rel="prefetch" href="/thinkphp-apidoc/assets/js/10.618d1926.js"><link rel="prefetch" href="/thinkphp-apidoc/assets/js/11.42502c16.js"><link rel="prefetch" href="/thinkphp-apidoc/assets/js/12.b7b3a7b5.js"><link rel="prefetch" href="/thinkphp-apidoc/assets/js/13.a09b5fbf.js"><link rel="prefetch" href="/thinkphp-apidoc/assets/js/15.ebda5299.js"><link rel="prefetch" href="/thinkphp-apidoc/assets/js/16.a796db6c.js"><link rel="prefetch" href="/thinkphp-apidoc/assets/js/17.dfdd7f96.js"><link rel="prefetch" href="/thinkphp-apidoc/assets/js/18.ef1f9b9f.js"><link rel="prefetch" href="/thinkphp-apidoc/assets/js/19.8d9f406d.js"><link rel="prefetch" href="/thinkphp-apidoc/assets/js/20.2f9b4c4f.js"><link rel="prefetch" href="/thinkphp-apidoc/assets/js/21.4c62a489.js"><link rel="prefetch" href="/thinkphp-apidoc/assets/js/22.84c53d35.js"><link rel="prefetch" href="/thinkphp-apidoc/assets/js/23.07c679f1.js"><link rel="prefetch" href="/thinkphp-apidoc/assets/js/24.906108ea.js"><link rel="prefetch" href="/thinkphp-apidoc/assets/js/3.1b5889d7.js"><link rel="prefetch" href="/thinkphp-apidoc/assets/js/4.d37862ef.js"><link rel="prefetch" href="/thinkphp-apidoc/assets/js/5.9fe721ce.js"><link rel="prefetch" href="/thinkphp-apidoc/assets/js/6.73c063ed.js"><link rel="prefetch" href="/thinkphp-apidoc/assets/js/7.b4e343ac.js"><link rel="prefetch" href="/thinkphp-apidoc/assets/js/8.17abbe56.js"><link rel="prefetch" href="/thinkphp-apidoc/assets/js/9.2725535f.js">
+    <link rel="stylesheet" href="/thinkphp-apidoc/assets/css/0.styles.2b9ceb77.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/thinkphp-apidoc/v1/" class="home-link router-link-active"><img src="/thinkphp-apidoc/images/logo.png" alt="ThinkPHP-ApiDoc" class="logo"> <span class="site-name can-hide">ThinkPHP-ApiDoc</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/thinkphp-apidoc/v1/" class="nav-link">
+  指南
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="安装" class="dropdown-title"><span class="title">安装</span> <span class="arrow down"></span></button> <button type="button" aria-label="安装" class="mobile-dropdown-title"><span class="title">安装</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/thinkphp-apidoc/v1/install/" class="nav-link">
+  安装
+</a></li><li class="dropdown-item"><!----> <a href="/thinkphp-apidoc/v1/changelog/" class="nav-link">
+  更新日志
+</a></li></ul></div></div><div class="nav-item"><a href="/thinkphp-apidoc/v1/config/" class="nav-link">
+  配置
+</a></div><div class="nav-item"><a href="/thinkphp-apidoc/v1/use/" aria-current="page" class="nav-link router-link-exact-active router-link-active">
+  使用
+</a></div><div class="nav-item"><a href="/thinkphp-apidoc/v1/sponsor/" class="nav-link">
+  支持
+</a></div><div class="nav-item"><a href="https://apidoc.demo.hg-code.com/apidoc/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  演示
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Select language" class="dropdown-title"><span class="title">版本</span> <span class="arrow down"></span></button> <button type="button" aria-label="Select language" class="mobile-dropdown-title"><span class="title">版本</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/thinkphp-apidoc/" class="nav-link">
+  V2
+</a></li><li class="dropdown-item"><!----> <a href="/thinkphp-apidoc/v1/use/" aria-current="page" class="nav-link router-link-exact-active router-link-active">
+  V1
+</a></li></ul></div></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/thinkphp-apidoc/v1/" class="nav-link">
+  指南
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="安装" class="dropdown-title"><span class="title">安装</span> <span class="arrow down"></span></button> <button type="button" aria-label="安装" class="mobile-dropdown-title"><span class="title">安装</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/thinkphp-apidoc/v1/install/" class="nav-link">
+  安装
+</a></li><li class="dropdown-item"><!----> <a href="/thinkphp-apidoc/v1/changelog/" class="nav-link">
+  更新日志
+</a></li></ul></div></div><div class="nav-item"><a href="/thinkphp-apidoc/v1/config/" class="nav-link">
+  配置
+</a></div><div class="nav-item"><a href="/thinkphp-apidoc/v1/use/" aria-current="page" class="nav-link router-link-exact-active router-link-active">
+  使用
+</a></div><div class="nav-item"><a href="/thinkphp-apidoc/v1/sponsor/" class="nav-link">
+  支持
+</a></div><div class="nav-item"><a href="https://apidoc.demo.hg-code.com/apidoc/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  演示
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Select language" class="dropdown-title"><span class="title">版本</span> <span class="arrow down"></span></button> <button type="button" aria-label="Select language" class="mobile-dropdown-title"><span class="title">版本</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/thinkphp-apidoc/" class="nav-link">
+  V2
+</a></li><li class="dropdown-item"><!----> <a href="/thinkphp-apidoc/v1/use/" aria-current="page" class="nav-link router-link-exact-active router-link-active">
+  V1
+</a></li></ul></div></div> <!----></nav>  <ul class="sidebar-links"><li><a href="/thinkphp-apidoc/v1/use/" aria-current="page" class="active sidebar-link">编写注释</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/thinkphp-apidoc/v1/use/#书写规范" class="sidebar-link">书写规范</a></li><li class="sidebar-sub-header"><a href="/thinkphp-apidoc/v1/use/#参数说明" class="sidebar-link">参数说明</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/thinkphp-apidoc/v1/use/#header-的参数" class="sidebar-link">header 的参数</a></li><li class="sidebar-sub-header"><a href="/thinkphp-apidoc/v1/use/#param、return-的参数" class="sidebar-link">param、return 的参数</a></li></ul></li><li class="sidebar-sub-header"><a href="/thinkphp-apidoc/v1/use/#控制器注释" class="sidebar-link">控制器注释</a></li><li class="sidebar-sub-header"><a href="/thinkphp-apidoc/v1/use/#接口注释" class="sidebar-link">接口注释</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/thinkphp-apidoc/v1/use/#基础注释" class="sidebar-link">基础注释</a></li><li class="sidebar-sub-header"><a href="/thinkphp-apidoc/v1/use/#通用注释" class="sidebar-link">通用注释</a></li><li class="sidebar-sub-header"><a href="/thinkphp-apidoc/v1/use/#逻辑层注释" class="sidebar-link">逻辑层注释</a></li><li class="sidebar-sub-header"><a href="/thinkphp-apidoc/v1/use/#模型注释" class="sidebar-link">模型注释</a></li></ul></li></ul></li><li><a href="/thinkphp-apidoc/v1/use/actions.html" class="sidebar-link">文档试用</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/thinkphp-apidoc/v1/use/actions.html#页面布局" class="sidebar-link">页面布局</a></li><li class="sidebar-sub-header"><a href="/thinkphp-apidoc/v1/use/actions.html#接口调试" class="sidebar-link">接口调试</a></li></ul></li><li><a href="/thinkphp-apidoc/v1/use/help.html" class="sidebar-link">常见问题</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/thinkphp-apidoc/v1/use/help.html#tp5-x版本文档接口404" class="sidebar-link">TP5.x版本文档接口404</a></li><li class="sidebar-sub-header"><a href="/thinkphp-apidoc/v1/use/help.html#使用了tp6注解扩展报错" class="sidebar-link">使用了TP6注解扩展报错</a></li></ul></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="编写注释"><a href="#编写注释" class="header-anchor">#</a> 编写注释</h1> <div class="custom-block tip"><p class="custom-block-title">TIP</p> <p>由于API接口文档根据解析代码中的注释生成，需按照一定的书写规则来生成</p></div> <h2 id="书写规范"><a href="#书写规范" class="header-anchor">#</a> 书写规范</h2> <div class="custom-block warning"><p class="custom-block-title">书写参数时有如下几个规范</p> <ul><li>每个参数书写在一行</li> <li>每个参数以 @+参数名，用空格 与参数值隔开 如  * @参数名 参数值</li> <li>参数值与数据表字段注释的内容，避免出现 空格 或 : (冒号)</li></ul></div> <h2 id="参数说明"><a href="#参数说明" class="header-anchor">#</a> 参数说明</h2> <table><thead><tr><th>参数名</th> <th>参数值</th> <th>说明</th> <th>书写规范</th></tr></thead> <tbody><tr><td>title</td> <td></td> <td>接口名称</td> <td>任意字符</td></tr> <tr><td>desc</td> <td></td> <td>接口说明</td> <td>任意字符</td></tr> <tr><td>author</td> <td></td> <td>作者</td> <td>任意字符</td></tr> <tr><td>url</td> <td></td> <td>真实的接口URL</td> <td>任意字符</td></tr> <tr><td>method</td> <td><code>GET</code> <code>POST</code> <code>PUT</code> <code>DELETE</code></td> <td>请求类型</td> <td></td></tr> <tr><td>tag</td> <td></td> <td>接口Tag标签</td> <td>多个标签用 空格隔开</td></tr> <tr><td>header</td> <td>具体查看 <a href="/thinkphp-apidoc/use/#header-的参数">header的参数</a></td> <td>请求头Headers参数</td> <td>可定义多个，每个一行，每个属性用空格隔开</td></tr> <tr><td>param</td> <td>具体查看 <a href="/thinkphp-apidoc/use/#param、return-的参数">param、return的参数</a></td> <td>请求参数</td> <td>可定义多个，每个一行，每个属性用空格隔开</td></tr> <tr><td>return</td> <td>具体查看 <a href="/thinkphp-apidoc/use/#param、return-的参数">param、return的参数</a></td> <td>响应结果</td> <td>可定义多个，每个一行，每个属性用空格隔开</td></tr></tbody></table> <h3 id="header-的参数"><a href="#header-的参数" class="header-anchor">#</a> header 的参数</h3> <table><thead><tr><th>参数名</th> <th>说明</th> <th>书写规范</th></tr></thead> <tbody><tr><td>name</td> <td>参数的字段名</td> <td>如：name:Authorization</td></tr> <tr><td>require</td> <td>是否必填</td> <td>如：require:1 为必填</td></tr> <tr><td>default</td> <td>默认值</td> <td>如：default:123</td></tr> <tr><td>desc</td> <td>字段说明</td> <td></td></tr></tbody></table> <h3 id="param、return-的参数"><a href="#param、return-的参数" class="header-anchor">#</a> param、return 的参数</h3> <table><thead><tr><th>参数名</th> <th>说明</th> <th>书写规范</th></tr></thead> <tbody><tr><td>name</td> <td>参数的字段名</td> <td>如：name:username，如直接使用ref引入某个定义，可不配置name</td></tr> <tr><td>type</td> <td>字段类型</td> <td><code>int</code> <code>string</code> <code>boolean</code> <code>object</code> <code>array</code> <code>tree</code></td></tr> <tr><td>require</td> <td>是否必填</td> <td>如：require:1 为必填</td></tr> <tr><td>default</td> <td>默认值</td> <td>如：default:123</td></tr> <tr><td>desc</td> <td>字段说明</td> <td></td></tr> <tr><td>ref</td> <td>引入定义的路径，可引入全局定义、服务层方法类、模型方法</td> <td><div>如：ref:definitions\pagingParam</div><div>或：ref:app\services\ApiDocTest\get</div><div>或：ref:app\model\Apps\getList</div></td></tr> <tr><td>field</td> <td>当ref配置为引入模型字段时，用field来指定引入的字段</td> <td>如：field:id,username,nickname ；则只会引入模型的 id,username,nickname字段</td></tr> <tr><td>withoutField</td> <td>当ref配置为引入模型字段时，用withoutField来指定过滤掉的字段</td> <td>如：withoutField:id,username,nickname；则引入模型除 id,username,nickname字段外的所有字段</td></tr> <tr><td>params</td> <td>字段类型为<code>object</code>或<code>array</code>，给其定义子节点参数</td> <td>如：params:id int 1 唯一id,name:string 0 姓名</td></tr> <tr><td>childrenField</td> <td>字段类型为<code>tree</code>时，给其定义子节点字段名</td> <td>默认为 children</td></tr> <tr><td>childrenDesc</td> <td>字段类型为<code>tree</code>时，给其定义子节点字段名的备注</td> <td></td></tr></tbody></table> <h2 id="控制器注释"><a href="#控制器注释" class="header-anchor">#</a> 控制器注释</h2> <p>1、接口文档将按照在配置文件<code>/config/apidoc.php</code>中配置的 controllers 控制器列表，来生成.</p> <p>若你希望 某个控制器被解析，那么首先在配置项中加入该控制器，如下：</p> <div class="language-php extra-class"><pre class="language-php"><code><span class="token comment">// config/apidoc.php</span>
+<span class="token comment">// 将 app\controller\ApiDocTest.php 控制器加入配置</span>
+<span class="token single-quoted-string string">'controllers'</span> <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token punctuation">[</span>
+    <span class="token single-quoted-string string">'controller\\ApiDocTest'</span><span class="token punctuation">,</span>
+<span class="token punctuation">]</span><span class="token punctuation">,</span>
+</code></pre></div><p>2、为控制器加上一些注释，以让文档可读性更高（当然这不是必须的）</p> <div class="language-php extra-class"><pre class="language-php"><code><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+<span class="token keyword">namespace</span> <span class="token package">app<span class="token punctuation">\</span>controller</span><span class="token punctuation">;</span>
+<span class="token comment">/**
+ * @title Api接口文档测试
+ * @controller ApiDocTest
+ */</span>
+<span class="token keyword">class</span> <span class="token class-name">ApiDocTest</span>
+<span class="token punctuation">{</span>
+  <span class="token comment">//...    </span>
+<span class="token punctuation">}</span>
+</span></code></pre></div><h4 id="控制器注释参数"><a href="#控制器注释参数" class="header-anchor">#</a> 控制器注释参数</h4> <table><thead><tr><th>参数名</th> <th>参数值</th> <th>说明</th></tr></thead> <tbody><tr><td>title</td> <td></td> <td>控制器名称</td></tr> <tr><td>controller</td> <td></td> <td>控制器</td></tr> <tr><td>group</td> <td>定义在配置文件 groups 中分组的name</td> <td>所属分组</td></tr></tbody></table> <p>此时刷新文档页面，得到一个控制器被解析</p> <img src="/thinkphp-apidoc/images/v1/apidoc-controller-demo.png" alt="apidoc-controller-demo" class="img-view" style="width:100%;"> <h2 id="接口注释"><a href="#接口注释" class="header-anchor">#</a> 接口注释</h2> <p>控制器中的每一个符合注释规则的方法都会被解析成一个API接口</p> <h3 id="基础注释"><a href="#基础注释" class="header-anchor">#</a> 基础注释</h3> <p>先来体验一个最基本的注释，所得到的结果</p> <p>我们在控制器中加入如下方法，如下</p> <div class="language-php extra-class"><pre class="language-php"><code><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+<span class="token keyword">namespace</span> <span class="token package">app<span class="token punctuation">\</span>controller</span><span class="token punctuation">;</span>
+<span class="token comment">/**
+ * @title Api接口文档测试
+ * @controller ApiDocTest
+ */</span>
+<span class="token keyword">class</span> <span class="token class-name">ApiDocTest</span>
+<span class="token punctuation">{</span> 
+    <span class="token comment">/**
+     * @title 基础的注释方法
+     * @desc 最基础的接口注释写法
+     * @author HG
+     * @url /apidocTest/base
+     * @method GET
+     * @tag 测试 基础
+     * @header name:Authorization require:1 desc:Token
+     * @param name:username type:string require:1 desc:用户名
+     * @param name:password type:string require:1 desc:登录密码MD5
+     * @param name:phone type:string require:1 desc:手机号
+     * @param name:sex type:int require:0 default:0 desc:性别
+     * @return name:id type:int desc:新增用户的id
+     */</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">test</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token function">json</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token double-quoted-string string">&quot;id&quot;</span><span class="token operator">=</span><span class="token operator">&gt;</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+  
+<span class="token punctuation">}</span>
+</span></code></pre></div><p>以上注释，我们得到的效果如下
+<img src="/thinkphp-apidoc/images/v1/apidoc-api-base-demo.png" alt="apidoc-api-base-demo" class="img-view" style="width:100%;"></p> <h3 id="通用注释"><a href="#通用注释" class="header-anchor">#</a> 通用注释</h3> <p>通过定义通用的公共注释参数来实现 可复用性，避免每个接口都定义一大堆同样的参数</p> <h4 id="_1、增加配置"><a href="#_1、增加配置" class="header-anchor">#</a> 1、增加配置</h4> <p>首先，在配置文件 config/apidoc.php 配置文件中，指定一个控制器为定义公共注释的控制器</p> <div class="language-php extra-class"><pre class="language-php"><code><span class="token comment">// config/apidoc.php</span>
+<span class="token comment">// 指定公共注释定义的文件地址</span>
+<span class="token single-quoted-string string">'definitions'</span><span class="token operator">=</span><span class="token operator">&gt;</span><span class="token double-quoted-string string">&quot;app\controller\Definitions&quot;</span><span class="token punctuation">,</span>
+</code></pre></div><h4 id="_2、定义通用注释"><a href="#_2、定义通用注释" class="header-anchor">#</a> 2、定义通用注释</h4> <p>添加一些通用的方法及注释，（定义param 与return 参数与定义接口书写规则一致）</p> <div class="language-php extra-class"><pre class="language-php"><code><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+<span class="token keyword">namespace</span> <span class="token package">app<span class="token punctuation">\</span>controller</span><span class="token punctuation">;</span>
+<span class="token keyword">class</span> <span class="token class-name">Definitions</span>
+<span class="token punctuation">{</span>
+    <span class="token comment">/**
+     * @title 获取分页数据列表的参数
+     * @param name:pageIndex type:int require:0 default:0 desc:查询页数
+     * @param name:pageSize type:int require:0 default:20 desc:查询条数
+     */</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">pagingParam</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+  
+    <span class="token comment">/**
+     * @title 返回字典数据
+     * @return name:id type:int desc:唯一id
+     * @return name:name type:string desc:字典名
+     * @return name:value type:string desc:字典值
+     */</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">dictionary</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+    
+<span class="token punctuation">}</span>
+</span></code></pre></div><h4 id="_3、使用定义"><a href="#_3、使用定义" class="header-anchor">#</a> 3、使用定义</h4> <p>在接口注释中的 param 与 retrun 可通过 ref:definitions\XXX 来指定引入的 通用注释</p> <div class="language-php extra-class"><pre class="language-php"><code><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+<span class="token keyword">namespace</span> <span class="token package">app<span class="token punctuation">\</span>controller</span><span class="token punctuation">;</span>
+
+<span class="token keyword">class</span> <span class="token class-name">ApiDocTest</span>
+<span class="token punctuation">{</span> 
+    <span class="token comment">/**
+     * @title 引入定义注释
+     * @desc 引入通用注释所定义的通用参数
+     * @author HG
+     * @url /apidocTest/definitions
+     * @method POST
+     * @param name:page type:object ref:definitions\pagingParam desc:分页参数
+     * @param ref:definitions\pagingParam
+     * @return name:list type:array ref:definitions\dictionary
+     */</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">definitions</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token comment">//...</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</span></code></pre></div><div class="custom-block tip"><p class="custom-block-title">以上param用了两种方式引入，分别是参数指定 字段名 name与 type ，与不指定字段名</p> <ul><li>指定字段名：会将引入的参数在该字段属性下，如下效果</li> <li>不指定字段名：直接引入所有参数</li></ul></div> <p>效果如下
+<img src="/thinkphp-apidoc/images/v1/apidoc-api-dictionary-demo.png" alt="apidoc-api-dictionary-demo" class="img-view" style="width:100%;"></p> <h3 id="逻辑层注释"><a href="#逻辑层注释" class="header-anchor">#</a> 逻辑层注释</h3> <p>在实际开发中，控制器只对参数做基础校验等处理，实际的业务逻辑处理通常会分层给逻辑层来处理（我这里把业务逻辑层叫service，您也可以根据自己开发来定义 业务逻辑层），我们可直接引入业务逻辑层的注释来实现接口参数的定义</p> <h4 id="增加业务逻辑层"><a href="#增加业务逻辑层" class="header-anchor">#</a> 增加业务逻辑层</h4> <p>1、在项目 app 目录下新建 service 文件夹（您也可以叫别的）</p> <p>2、在此文件夹下新建一个ApiDoc.php文件，内容如下：</p> <div class="language-php extra-class"><pre class="language-php"><code><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+<span class="token keyword">namespace</span> <span class="token package">app<span class="token punctuation">\</span>services</span><span class="token punctuation">;</span>
+<span class="token keyword">class</span> <span class="token class-name">ApiDoc</span>
+<span class="token punctuation">{</span>
+    <span class="token comment">/**
+     * @title 返回会员信息
+     * @param name:id type:int require:1 desc:唯一id
+     * @return name:id type:int desc:唯一id
+     * @return name:name type:string desc:姓名
+     * @return name:phone type:string desc:电话
+     */</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">getUserInfo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+    
+<span class="token punctuation">}</span>
+</span></code></pre></div><h4 id="引用逻辑层注释"><a href="#引用逻辑层注释" class="header-anchor">#</a> 引用逻辑层注释</h4> <p>在控制器的接口注释中的 param 与 retrun 可通过 ref:app\services\ApiDoc\getUserInfo来指定引入逻辑层的注释</p> <div class="language-php extra-class"><pre class="language-php"><code><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+<span class="token keyword">namespace</span> <span class="token package">app<span class="token punctuation">\</span>controller</span><span class="token punctuation">;</span>
+
+<span class="token keyword">class</span> <span class="token class-name">ApiDocTest</span>
+<span class="token punctuation">{</span> 
+    <span class="token comment">/**
+     * @title 引入逻辑层注释
+     * @desc 引入业务逻辑层的注释参数
+     * @author HG
+     * @url /apidocTest/service
+     * @method GET
+     * @param ref:app\services\ApiDoc\getUserInfo
+     * @return name:userInfo type:object ref:app\services\ApiDoc\getUserInfo
+     */</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">service</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+       <span class="token comment">//...</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</span></code></pre></div><p>效果如下
+<img src="/thinkphp-apidoc/images/v1/apidoc-api-server-demo.png" alt="apidoc-api-server-demo" class="img-view" style="width:100%;"></p> <h3 id="模型注释"><a href="#模型注释" class="header-anchor">#</a> 模型注释</h3> <p>接口参数都与数据表息息相关，很多接口参数均由数据表字段而来。我们可以直接引入指定模型的数据表字段来生成参数说明，省去了一大堆接口注释与维护工作。</p> <h4 id="给数据表字段添加注释"><a href="#给数据表字段添加注释" class="header-anchor">#</a> 给数据表字段添加注释</h4> <p>建议为数据表字段添加注释，即让数据表字段可读性更高，也让文档可读性更高。
+我们直接在数据表给相应字段添加注释，如下SQL供参考</p> <div class="language-php extra-class"><pre class="language-php"><code><span class="token constant">CREATE</span> <span class="token constant">TABLE</span> `user` <span class="token punctuation">(</span>↵  
+  `id` <span class="token function">int</span><span class="token punctuation">(</span><span class="token number">11</span><span class="token punctuation">)</span> <span class="token constant">NOT</span> <span class="token constant">NULL</span> <span class="token constant">AUTO_INCREMENT</span> <span class="token constant">COMMENT</span> <span class="token single-quoted-string string">'用户id'</span><span class="token punctuation">,</span>
+  `username` <span class="token function">varchar</span><span class="token punctuation">(</span><span class="token number">64</span><span class="token punctuation">)</span> <span class="token constant">NOT</span> <span class="token constant">NULL</span> <span class="token constant">COMMENT</span> <span class="token single-quoted-string string">'用户名'</span><span class="token punctuation">,</span>
+  `nickname` <span class="token function">varchar</span><span class="token punctuation">(</span><span class="token number">64</span><span class="token punctuation">)</span> <span class="token keyword">DEFAULT</span> <span class="token constant">NULL</span> <span class="token constant">COMMENT</span> <span class="token single-quoted-string string">'昵称'</span><span class="token punctuation">,</span>
+  `password` <span class="token function">char</span><span class="token punctuation">(</span><span class="token number">64</span><span class="token punctuation">)</span> <span class="token constant">NOT</span> <span class="token constant">NULL</span> <span class="token constant">COMMENT</span> <span class="token single-quoted-string string">'登录密码'</span><span class="token punctuation">,</span>
+  `avatar` <span class="token function">varchar</span><span class="token punctuation">(</span><span class="token number">255</span><span class="token punctuation">)</span> <span class="token keyword">DEFAULT</span> <span class="token constant">NULL</span> <span class="token constant">COMMENT</span> <span class="token single-quoted-string string">'头像'</span><span class="token punctuation">,</span>
+  `regip` <span class="token function">bigint</span><span class="token punctuation">(</span><span class="token number">11</span><span class="token punctuation">)</span> <span class="token keyword">DEFAULT</span> <span class="token constant">NULL</span> <span class="token constant">COMMENT</span> <span class="token single-quoted-string string">'注册IP'</span><span class="token punctuation">,</span>
+  `update_time` <span class="token function">int</span><span class="token punctuation">(</span><span class="token number">11</span><span class="token punctuation">)</span> unsigned <span class="token keyword">DEFAULT</span> <span class="token constant">NULL</span> <span class="token constant">COMMENT</span> <span class="token single-quoted-string string">'更新时间'</span><span class="token punctuation">,</span>
+  `state` <span class="token function">tinyint</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token keyword">DEFAULT</span> <span class="token single-quoted-string string">'1'</span> <span class="token constant">COMMENT</span> <span class="token single-quoted-string string">'状态'</span><span class="token punctuation">,</span>
+  `phone` <span class="token function">char</span><span class="token punctuation">(</span><span class="token number">32</span><span class="token punctuation">)</span> <span class="token keyword">DEFAULT</span> <span class="token constant">NULL</span> <span class="token constant">COMMENT</span> <span class="token single-quoted-string string">'联系电话'</span><span class="token punctuation">,</span>
+  `create_time` <span class="token function">int</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span> <span class="token keyword">DEFAULT</span> <span class="token constant">NULL</span> <span class="token constant">COMMENT</span> <span class="token single-quoted-string string">'创建时间'</span><span class="token punctuation">,</span>
+  `sex` <span class="token function">tinyint</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> unsigned <span class="token keyword">DEFAULT</span> <span class="token single-quoted-string string">'1'</span> <span class="token constant">COMMENT</span> <span class="token single-quoted-string string">'性别'</span><span class="token punctuation">,</span>
+  `delete_time` <span class="token function">int</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span> <span class="token keyword">DEFAULT</span> <span class="token constant">NULL</span> <span class="token constant">COMMENT</span> <span class="token single-quoted-string string">'删除时间'</span><span class="token punctuation">,</span>
+  `role` <span class="token function">varchar</span><span class="token punctuation">(</span><span class="token number">64</span><span class="token punctuation">)</span> <span class="token keyword">DEFAULT</span> <span class="token constant">NULL</span> <span class="token constant">COMMENT</span> <span class="token single-quoted-string string">'角色'</span><span class="token punctuation">,</span>
+  `name` <span class="token function">varchar</span><span class="token punctuation">(</span><span class="token number">64</span><span class="token punctuation">)</span> <span class="token keyword">DEFAULT</span> <span class="token constant">NULL</span> <span class="token constant">COMMENT</span> <span class="token single-quoted-string string">'姓名'</span><span class="token punctuation">,</span>
+<span class="token constant">PRIMARY</span> <span class="token constant">KEY</span> <span class="token punctuation">(</span>`id`<span class="token punctuation">)</span>↵<span class="token punctuation">)</span> <span class="token constant">ENGINE</span><span class="token operator">=</span>MyISAM <span class="token constant">AUTO_INCREMENT</span><span class="token operator">=</span><span class="token number">23</span> <span class="token keyword">DEFAULT</span> <span class="token constant">CHARSET</span><span class="token operator">=</span>utf8&quot;
+</code></pre></div><h4 id="模型方法的注释"><a href="#模型方法的注释" class="header-anchor">#</a> 模型方法的注释</h4> <p>可为引入的数据模型方法添加相应注释来实现 field（返回指定字段）、withoutField（排除指定字段）、addField（添加指定字段）</p> <table><thead><tr><th>参数</th> <th>说明</th> <th>书写规范</th></tr></thead> <tbody><tr><td>field</td> <td>返回指定字段</td> <td>英文格式逗号 , 分开指定的字段</td></tr> <tr><td>withoutField</td> <td>排除指定字段</td> <td>英文格式逗号 , 分开指定的字段</td></tr> <tr><td>addField</td> <td>添加指定字段</td> <td>可定义多个，每行为一个参数</td></tr> <tr><td>|— name</td> <td>参数的字段名</td> <td>如：name:group_name</td></tr> <tr><td>|— type</td> <td>字段类型</td> <td>int | string | ... 等</td></tr> <tr><td>|— default</td> <td>默认值</td> <td>如：default:1</td></tr> <tr><td>|— desc</td> <td>字段说明文字</td> <td></td></tr></tbody></table> <div class="language-php extra-class"><pre class="language-php"><code><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+<span class="token keyword">namespace</span> <span class="token package">app<span class="token punctuation">\</span>model</span><span class="token punctuation">;</span>
+
+<span class="token keyword">class</span> <span class="token class-name">User</span> <span class="token keyword">extends</span> <span class="token class-name">BaseModel</span>
+<span class="token punctuation">{</span>
+    <span class="token comment">/**
+     * @title 根据id获取明细
+     * @field id,username,nickname,state,sex
+     * @addField name:group_name type:string desc:会员组名称
+     * @addField name:role_name type:string desc:角色名称
+     */</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">getInfo</span><span class="token punctuation">(</span><span class="token variable">$id</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token variable">$res</span> <span class="token operator">=</span> <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">&gt;</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token variable">$id</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token variable">$res</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</span></code></pre></div><h4 id="控制器引用模型注释"><a href="#控制器引用模型注释" class="header-anchor">#</a> 控制器引用模型注释</h4> <div class="language-php extra-class"><pre class="language-php"><code><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+<span class="token keyword">namespace</span> <span class="token package">app<span class="token punctuation">\</span>controller</span><span class="token punctuation">;</span>
+
+<span class="token keyword">class</span> <span class="token class-name">ApiDocTest</span>
+<span class="token punctuation">{</span> 
+    <span class="token comment">/**
+     * @title 引用模型注释
+     * @desc param参数为直接引用模型参数，return则是引用逻辑层，通过逻辑层引用模型参数
+     * @author HG
+     * @url /apidocTest/model
+     * @method GET
+     * @param ref:app\model\User\getInfo
+     * @return name:users type:array ref:app\services\ApiDoc\getUserList
+     */</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">model</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+       <span class="token comment">//...</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</span></code></pre></div><img src="/thinkphp-apidoc/images/v1/apidoc-api-model-demo.png" alt="apidoc-api-model-demo" class="img-view" style="width:100%;"></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><!----> <span class="next"><a href="/thinkphp-apidoc/v1/use/actions.html">
+        文档试用
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/thinkphp-apidoc/assets/js/app.432094e3.js" defer></script><script src="/thinkphp-apidoc/assets/js/2.4da65e27.js" defer></script><script src="/thinkphp-apidoc/assets/js/14.12b96ef7.js" defer></script>
+  </body>
+</html>
