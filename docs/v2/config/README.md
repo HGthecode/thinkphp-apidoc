@@ -78,8 +78,8 @@ return [
 return [
     //生成文档的控制器
     'controllers' => [
-        'api\\controller\\ApiTest',
-        'api\\controller\\User',
+        'app\\api\\controller\\ApiTest',
+        'app\\api\\controller\\User',
         ...
     ],
 ]
@@ -96,8 +96,8 @@ return [
 return [
     //生成文档的控制器
     'controllers' => [
-        'api\\controller\\ApiTest',
-        'api\\controller\\User',
+        'app\\api\\controller\\ApiTest',
+        'app\\api\\controller\\User',
         ...
     ],
 ]
