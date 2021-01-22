@@ -4,7 +4,7 @@
 TP5.x版本或本插件小于v1.1.1版本的在安装后 访问文档页面出现如下接口404的情况。
 > 因为TP5.x版本没有自动注册服务来注册文档所需的接口路由导致的
 
-<img class="img-view" :src="$withBase('/images/apidoc-help-route404.png')" style="width:100%;" alt="apidoc-help-route404">
+<img class="img-view" :src="$withBase('/images/v1/apidoc-help-route404.png')" style="width:100%;" alt="apidoc-help-route404">
 
 
 将以下路由加入到 `route/app.php`
