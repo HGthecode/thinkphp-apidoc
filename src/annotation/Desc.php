@@ -1,13 +1,13 @@
 <?php
 
-namespace hg\apidoc\annotation\explain;
+namespace hg\apidoc\annotation;
 
 use Doctrine\Common\Annotations\Annotation;
 
 /**
- * 说明
+ * 描述
  *
- * @package hg\apidoc\annotation\explain
+ * @package hg\apidoc\annotation
  * @Annotation
  * @Target({"METHOD","CLASS"})
  */

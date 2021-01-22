@@ -3,45 +3,33 @@
 
 namespace hg\apidoc;
 
-use hg\apidoc\Parser;
 use think\facade\Request;
+use think\App;
+use Doctrine\Common\Annotations\Reader;
+use Symfony\Component\ClassLoader\ClassMapGenerator;
+use think\facade\Cache;
+
+
 
 class Controller
 {
-    protected  $config = [
-        'title'=>'APi接口文档',
-        'copyright'=>'Powered By HG',
-        'controllers' => [
-        ],
-        'versions'=>[
-        ],
-        'groups'=>[],
-        'with_cache'=>false,
-        'responses'=>'{
-            "code":"状态码",
-            "message":"操作描述",
-            "data":"业务数据",
-            "timestamp":"响应时间戳"
-        }',
-        'global_auth_key'=>"Authorization",
-        'auth'=>[
-            'with_auth'=>false,
-            'auth_password'=>"123456",
-            'headers_key'=>"apidocToken",
-        ],
-        'definitions'=>"hg\apidoc\Definitions",
-        'filter_method'=>[
-            '_empty'
-        ],
-    ];
+    use ParseAnnotation,ParseMarkdown;
 
     /**
-     * 架构方法 设置参数
-     * @param  array $config 配置参数
+     * @var App 
      */
-    public function __construct($config = [])
+    protected $app;
+
+    /**
+     * @var Reader
+     */
+    protected $reader;
+
+    
+    public function __construct(App $app,Reader $reader)
     {
-        $this->config = array_merge($this->config, $config);
+        $this->app = $app;
+        $this->reader = $reader;
     }
 
     /**
@@ -49,69 +37,80 @@ class Controller
      * @return array
      */
     public function getConfig(){
-        $config = config('apidoc')?config('apidoc'):config('apidoc.');
-        $this->config = array_merge($this->config, $config);
-        if (!empty($this->config['auth'])){
-            $this->config['auth'] = [
-                'with_auth'=>$this->config['auth']['with_auth'],
-                // 验证类型，password=密码验证，只在进入时做密码验证
-                'headers_key'=>$this->config['auth']['headers_key'],
-            ];
-        }
+        $config = $this->app->config->get('apidoc');
+        unset($config['auth']['auth_password']);
+        unset($config['auth']['password']);
+        unset($config['auth']['key']);
 
-        return json($this->config);
+        return $this->showJson(0,"",$config);
+    }
+
+
+
+    /**
+     * 验证Token
+     */
+    public function checkAuth(){
+        $config = $this->app->config->get('apidoc');
+        if (!(!empty($config['auth']) && $config['auth']['enable'])) {
+            return true;
+        }
+        $request = Request::instance();
+        $headers_key = !empty($config['auth']) && !empty($config['auth']['headers_key'])?$config['auth']['headers_key']:"apidocToken";
+        $token = $request->header($headers_key);
+        if (empty($token)){
+            throw new \think\exception\HttpException(401, "无token");
+        }
+        $hasAuth = (new Auth($config))->checkToken($token);
+        return $hasAuth;
     }
 
     /**
-     * 验证身份
+     * 登录，密码验证
      */
     public function verifyAuth(){
-        $config = config('apidoc')?config('apidoc'):config('apidoc.');
-        $this->config = array_merge($this->config, $config);
+        $config = $this->app->config->get('apidoc');
+        if (!(!empty($config['auth']) && $config['auth']['enable'])) {
+            return false;
+        }
         $request = Request::instance();
         $params = $request->param();
-        if ($this->config['auth']['with_auth'] === true){
-            // 密码验证
-            if (md5($this->config['auth']['auth_password']) === $params['password']){
-                $token = md5($params['password'].strtotime(date('Y-m-d',time())));
-                return json(array("token"=>$token));
-            }else{
-                throw new \think\Exception("密码不正确，请重新输入");
-            }
+        $password = $params['password'];
+        if (empty($password)){
+            throw new \think\exception\HttpException(415, "请输入密码");
         }
-        return json($params);
+        $hasAuth = (new Auth($config))->verifyAuth($password);
+        return $this->showJson(0,"",$hasAuth);
     }
-
-    public function verifyToken(){
-        $request = Request::instance();
-        if (!empty($this->config['auth'])) {
-            if ($this->config['auth']['with_auth'] === true){
-                $token = $request->header($this->config['auth']['headers_key']);
-
-                if ($token === md5(md5($this->config['auth']['auth_password']).strtotime(date('Y-m-d',time())))){
-                    return true;
-                }else{
-                    throw new \think\exception\HttpException(401, "身份令牌已过期，请重新登录");
-                }
-            }
-        }
-        return true;
-    }
-
-
-
 
     /**
-     * 获取接口列表
-     * @return array
+     * 统一返回json
+     * @param int $code
+     * @param string $msg
+     * @param string $data
+     * @return \think\response\Json
      */
-    public function getList()
-    {
-        $config = config('apidoc')?config('apidoc'):config('apidoc.');
-        $this->config = array_merge($this->config, $config);
+    private function showJson($code=0,$msg="",$data=""){
+        $res=[
+            'code'=>$code,
+            'msg'=>$msg,
+            'data'=>$data,
+        ];
+        return json($res);
+    }
+
+    /**
+     * 获取文档数据
+     * @return \think\response\Json
+     */
+    public function getData(){
+        $config = $this->app->config->get('apidoc');
         // 验证token身份
-        if ($this->config['auth']['with_auth'] === true){
-            $tokenRes = $this->verifyToken();
+        if ($config['auth']['enable']){
+            $tokenRes = $this->checkAuth();
+            if (!$tokenRes){
+                throw new \think\exception\HttpException(401, "token失效");
+            }
         }
 
         $request = Request::instance();
@@ -120,14 +119,15 @@ class Controller
         if (!empty($params) && !empty($params['version'])){
             $version = $params['version'];
         }
-        $cacheFiles= [];
-        $cacheName="";
-        if ($this->config['with_cache']){
+        if ($config['cache']['enable']){
             // 获取缓存数据
-            $cachePath = "../runtime/apidoc/".$version;
+            $path = !empty($config['cache']) && !empty($config['cache']['path'])?$config['cache']['path']:'../runtime/apidoc/';
+            $cachePath = $path.$version;
+            $cacheFiles= [];
+            $cacheName="";
+            $filePaths=glob($cachePath.'/*.json');
             if (file_exists($cachePath) && $params['reload']=='false' ){
                 $cacheFilePath = "";
-                $filePaths=glob($cachePath.'/*.json');
                 if (count($filePaths)>0){
                     $cacheFilePath =  $filePaths[count($filePaths)-1];
                 }
@@ -136,30 +136,33 @@ class Controller
                     $cacheFileName = $params['cacheFileName'];
                     $cacheFilePath = $cachePath."/".$cacheFileName.'.json';
                 }
-
                 if ($cacheFilePath && file_exists($cacheFilePath)){
                     $fileContent= file_get_contents($cacheFilePath);
-
                     if (!empty($fileContent)){
                         $fileJson = json_decode($fileContent);
-                        $list = $fileJson;
+                        $json = $fileJson;
                         $cacheName=str_replace(".json","",basename($cacheFilePath));
-
                     }else{
-                        $list = $this->getApiList($version);
+                        $json = $this->reloadData($version,$params);
                     }
                 }else{
                     // 不存在缓存文件，生成数据并存缓存
-                    $list = $this->getApiList($version);
-                    // 生成缓存数据
-                    $cacheName=$this->createJsonFile($list,$version);
+                    $json = $this->reloadData($version,$params);
+                    $cacheName=$this->createCacheFile($json,$version);
+                    if ($config['cache']['max'] && count($filePaths)>=$config['cache']['max']){
+                        //达到最大数量，删除第一个
+                        $this->delCacheFile($filePaths[0]);
+                    }
                 }
 
             }else{
                 // 不存在缓存文件，生成数据并存缓存
-                $list = $this->getApiList($version);
-                // 生成缓存数据
-                $cacheName=$this->createJsonFile($list,$version);
+                $json = $this->reloadData($version,$params);
+                $cacheName=$this->createCacheFile($json,$version);
+                if ($config['cache']['max'] && count($filePaths)>=$config['cache']['max']){
+                    //达到最大数量，删除第一个
+                    $this->delCacheFile($filePaths[0]);
+                }
             }
             $filePaths=glob($cachePath.'/*.json');
             if (count($filePaths)>0){
@@ -168,126 +171,156 @@ class Controller
                     $cacheFiles[]=str_replace(".json","",basename($item));
                 }
             }
+            if (is_array($json)){
+                $json['cacheFiles']=$cacheFiles;
+                $json['cacheName']=$cacheName;
+            }else{
+                $json->cacheFiles=$cacheFiles;
+                $json->cacheName=$cacheName;
+            }
+
+
         }else{
-            $list = $this->getApiList($version);
+            $json = $this->reloadData($version,$params);
         }
 
+        return $this->showJson(0,"",$json);
 
-        $data=array(
-            "title"=>$this->config['title'],
-            "version"=>$version,
-            "copyright"=>$this->config['copyright'],
-            "responses"=>$this->config['responses'],
-            "list"=>$list,
-            "cacheFiles"=>$cacheFiles,
-            "cacheName"=>$cacheName,
-            "groups"=>$this->config['groups']
-        );
 
-        $res=[
-            'code'=>0,
-            'data'=>$data,
+
+
+    }
+
+
+    /**
+     * 生成文档数据
+     * @param $version
+     * @param $params
+     * @return array
+     */
+    public function reloadData($version,$params)
+    {
+        $config = $this->app->config->get('apidoc');
+        $apiData = $this->renderApiData($version);
+
+        $groups=[];
+        // 获取md
+        $docs=[];
+        if (!empty($config['docs']) && !empty($config['docs']['menus']) && count($config['docs']['menus'])>0){
+            $docs = $this->renderDocs($config['docs']['menus'],$version);
+            $menu_title = !empty($config['docs']) && !empty($config['docs']['menu_title'])?$config['docs']['menu_title']:'文档';
+            $groups[]=['title'=>$menu_title,'name'=>'markdown_doc'];
+        }
+        if (!empty($config['groups']) && count($config['groups'])>0){
+            array_unshift($groups, ['title'=>'全部','name'=>0]);
+            $groups = array_merge($groups,$config['groups']);
+        }
+
+        $json=[
+            'groups'=>$groups,
+            'list'=>$apiData,
+            'docs'=>$docs
         ];
-        return json($res);
+
+        return $json;
 
     }
 
     /**
-     * 获取api接口文档
+     * 获取生成文档的控制器
+     * @param $versionPath
+     * @return array
      */
-    public function getApiList($version){
-        $config = config('apidoc')?config('apidoc'):config('apidoc.');
-        $this->config = array_merge($this->config, $config);
-        $list=[];
-        $controllers = $this->config['controllers'];
-        $versionPath = "";
-        if (!empty($version)){
-            foreach ($this->config['versions'] as $item){
-                if ($item['title'] == $version && !empty($item['folder'])){
-                    $versionPath = $item['folder']."\\";
+    protected function getConfigControllers($versionPath){
+        $config = $this->app->config->get('apidoc');
+        $controllers=[];
+
+        $configControllers = $config['controllers'];
+        if (!empty($configControllers) && count($configControllers)>0){
+            foreach ($configControllers as $item){
+                $class = $versionPath. $item;
+                if (class_exists($class)) {
+                    $controllers[]=$class;
                 }
             }
         }
-        foreach ($controllers as $k => $class) {
-            $class = "app\\" .$versionPath. $class;
-            if (class_exists($class)) {
-                $reflection = new \ReflectionClass($class);
-                $doc_str = $reflection->getDocComment();
-                $doc = new Parser($this->config);
-                // 解析控制器类的注释
-                $class_doc = $doc->parseClass($doc_str);
+        return $controllers;
+    }
 
-                // 获取当前控制器Class的所有方法
-                $method = $reflection->getMethods(\ReflectionMethod::IS_PUBLIC);
-                $filter_method = array_merge(['__construct'], $this->config['filter_method']);
-                $actions=[];
-                foreach ($method as $j=>$action){
-                    // 过滤不解析的方法
-                    if(!in_array($action->name, $filter_method))
-                    {
-                        // 获取当前方法的注释
-                        $actionDoc = new Parser($this->config);
-                        $actionDocStr = $action->getDocComment();
-                        if($actionDocStr)
-                        {
-                            // 解析当前方法的注释
-                            $action_doc = $actionDoc->parseAction($actionDocStr);
-//                                $action_doc['name'] = $class."::".$action->name;
-                            $action_doc['id'] = $k."-".$j;
-//                                // 解析方法
-                            $actions[] = $action_doc;
-                        }
-                    }
-                }
-                $class_doc['children'] = $actions;
-                $class_doc['id'] = $k."";
-                if (empty($class_doc['title']) && empty($class_doc['controller'])){
-                    $class_doc['title']=$controllers[$k];
-                }
-                $list[]  = $class_doc;
+    /**
+     * 获取目录下的控制器
+     * @param $versionPath
+     * @return array
+     */
+    protected function getDirControllers($versionPath){
+        $dir = $this->app->getAppPath() . $this->app->config->get('route.controller_layer');
+        $controllers=[];
+        if (is_dir($dir)) {
+            $controllers =$this->scanDir($dir,$versionPath);
+        }
+        return $controllers;
+    }
+
+    /**
+     * 处理目录下的控制器
+     * @param $dir
+     * @param $versionPath
+     * @return array
+     */
+    protected function scanDir($dir,$versionPath)
+    {
+        $list=[];
+        $config = $this->app->config->get('apidoc');
+        foreach (ClassMapGenerator::createMap($dir) as $class => $path) {
+            if (
+                (
+                    empty($versionPath) ||
+                    (!empty($versionPath) && strpos($class,$versionPath) !== false)
+                ) &&
+                !(in_array($class,$config['filter_controllers']))
+            ) {
+                $list[] = $class;
             }
         }
         return $list;
     }
 
-
-
-    /**
-     * 获取文件夹内的所有文件
-     * @param string $class
-     * @param string $action
-     *
-     * @return array|bool
-     */
-    protected function listDirFiles($app,$isapp=true)
-    {
-        $arr = [];
-        $base = base_path();
-        if($isapp){
-            $dir = $base.$app;
-        }else{
-            $dir = $app;
-        }
-
-        if (is_dir($dir)) {//如果是目录，则进行下一步操作
-            $d = opendir($dir);//打开目录
-            if ($d) {//目录打开正常
-                while (($file = readdir($d)) !== false) {//循环读出目录下的文件，直到读不到为止
-                    if  ($file != '.' && $file != '..') {//排除一个点和两个点
-                        if (is_dir($dir.'/'.$file)) {//如果当前是目录
-                            $arr = array_merge($arr,self::listDirFiles($dir.'/'.$file,false));//进一步获取该目录里的文件
-                        } else {
-                            if(pathinfo($dir.'/'.$file)['extension'] == 'php'){
-                                $arr[] = str_replace([$base,'/','.php'],['','\\',''],$dir.'/'.$file);//进一步获取该目录里的文件
-                            }
-                        }
-                    }
+    protected function getPathByVersion($version){
+        $config = $this->app->config->get('apidoc');
+        $versionPath = "";
+        if (!empty($version)){
+            foreach ($config['versions'] as $item){
+                if ($item['title'] == $version){
+                    $versionPath = $item['folder']."\\";
+                    break;
                 }
             }
-            closedir($d);//关闭句柄
         }
-        asort($arr);
-        return $arr;
+        return $versionPath;
+    }
+
+    /**
+     * 生成api接口数据
+     * @param $version
+     * @return array
+     */
+    public function renderApiData($version){
+        $config = $this->app->config->get('apidoc');
+        $apiData=[];
+        $versionPath = $this->getPathByVersion($version);
+        if (!empty($config['controllers']) && count($config['controllers'])>0){
+            // 配置的控制器列表
+            $controllers = $this->getConfigControllers($versionPath);
+        }else{
+            // 默认读取所有的
+            $controllers = $this->getDirControllers($versionPath);
+        }
+
+        foreach ($controllers as $class){
+            $apiData[]=$this->parseController($class);
+        }
+
+        return $apiData;
     }
 
     /**
@@ -296,14 +329,16 @@ class Controller
      * @param $version
      * @return bool|false|string
      */
-    protected function createJsonFile($json,$version){
+    protected function createCacheFile($json,$version){
         if (empty($json)){
             return false;
         }
+        $config = $this->app->config->get('apidoc');
+        $path = !empty($config['cache']) && !empty($config['cache']['path'])?$config['cache']['path']:'../runtime/apidoc/';
         $fileName =date("Y-m-d H_i_s");
         $fileJson = $json;
         $fileContent = json_encode($fileJson);
-        $dir = "../runtime/apidoc/".$version;
+        $dir = $path.$version;
         $path = $dir."/".$fileName.".json";
         //判断文件夹是否存在
         if (!file_exists($dir)) {
@@ -314,5 +349,19 @@ class Controller
         fclose($myfile);
         return $fileName;
     }
+
+    /**
+     * 删除缓存文件
+     * @param $path
+     */
+    protected function delCacheFile($path){
+        $url=iconv('utf-8','gbk',$path);
+        if(PATH_SEPARATOR == ':'){ //linux
+            unlink($path);
+        }else{  //Windows
+            unlink($url);
+        }
+    }
+
 
 }
