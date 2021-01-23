@@ -23,30 +23,38 @@ trait ParseAnnotation
 
     protected function parseController($class)
     {
+        $config = $this->app->config->get('apidoc');
         $data=[];
         $refClass = new ReflectionClass($class);
         $title = $this->reader->getClassAnnotation($refClass,Title::class);
         $group = $this->reader->getClassAnnotation($refClass,Group::class);
+
         $routeGroup = $this->reader->getClassAnnotation($refClass,RouteGroup::class);
         $controllersNameArr = explode("\\", $class);
         $controllersName = $controllersNameArr[count($controllersNameArr)-1];
         $data['controller']=$controllersName;
         $data['title'] = !empty($title) && !empty($title->value) ? $title->value : $controllersName;
-        $data['group'] = $group->value;
+        $data['group'] = !empty($group->value)?$group->value:null;
         $methodList = [];
+        $filter_method = !empty($config['filter_method'])?$config['filter_method']:[];
 
         foreach ($refClass->getMethods(\ReflectionMethod::IS_PUBLIC) as $refMethod) {
-            $methodItem= $this->parseAnnotation($refMethod,true);
-            if (!empty($methodItem) && !empty($methodItem['url'])){
-                // 路由分组，url加上分组
-                if (!empty($routeGroup->value)){
-                    $methodItem['url'] = $routeGroup->value.'/'.$methodItem['url'];
+            if (!empty($refMethod->name) && !in_array($refMethod->name, $filter_method)){
+                $methodItem= $this->parseAnnotation($refMethod,true);
+                if (empty($methodItem['method'])){
+                    $methodItem['method']='GET';
                 }
-                $methodList[]=$methodItem;
-            }else if(empty($methodItem['url'])){
-                // 无url,自动生成
-                $methodItem['url'] = $this->autoCreateUrl($refMethod);
-                $methodList[]=$methodItem;
+                if (!empty($methodItem) && !empty($methodItem['url'])){
+                    // 路由分组，url加上分组
+                    if (!empty($routeGroup->value)){
+                        $methodItem['url'] = $routeGroup->value.'/'.$methodItem['url'];
+                    }
+                    $methodList[]=$methodItem;
+                }else if(empty($methodItem['url'])){
+                    // 无url,自动生成
+                    $methodItem['url'] = $this->autoCreateUrl($refMethod);
+                    $methodList[]=$methodItem;
+                }
             }
 
         }
