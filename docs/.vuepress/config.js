@@ -37,6 +37,7 @@ module.exports = {
                 text: '安装', 
                 items: [
                   { text: '安装', link: '/v2/install/' },
+                  { text: '快速上手', link: '/v2/course/' },
                   { text: '更新日志', link: '/v2/changelog/' }
                 ]
               },

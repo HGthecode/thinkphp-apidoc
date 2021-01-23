@@ -4,7 +4,7 @@ heroImage: images/logo.png
 heroText: ThinkPHP-ApiDoc
 tagline: 根据注释自动生成API文档 V2
 actionText: 快速上手 →
-actionLink: /v2/use/
+actionLink: /v2/course/
 features:
 - title: 开箱即用
   details: 无繁杂的配置、安装后按文档编写注释即可自动生成API文档。
