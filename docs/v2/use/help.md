@@ -66,9 +66,9 @@ class Abc extends Annotation
 - 未定义数组索引auth
 - 方法不存在 hg\apidoc\Controller::getList()
 
-### 解决方案
-#### 1、升级前端文件
+#### 解决方案
+##### 1、升级前端文件
  [安装说明-添加前端页面](/v2/install/#添加前端页面) 下载最新的文件覆盖原来的public/apidoc目录
 
-#### 2、确认config/apidoc.php配置文件为V2.x版本的配置文件
+##### 2、确认config/apidoc.php配置文件为V2.x版本的配置文件
 参考 [config/apidoc.php](https://github.com/HGthecode/thinkphp-apidoc/blob/master/src/config.php)
