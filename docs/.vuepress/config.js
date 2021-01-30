@@ -89,30 +89,6 @@ module.exports = {
             
           }
         },
-        // nav: [
-        //     { text: '指南', link: '/' },
-        //     { 
-        //       text: '安装', 
-        //       items: [
-        //         { text: '安装', link: '/install/' },
-        //         { text: '更新日志', link: '/changelog/' }
-        //       ]
-        //     },
-        //     { text: '配置', link: '/config/' },
-        //     { text: '使用', link: '/use/' },
-        //     { text: '支持', link: '/sponsor/' },
-        //     { text: '演示', link: 'https://apidoc.demo.hg-code.com/apidoc/', target:'_blank'},
-        // ],
-        // sidebar: {
-        //     '/config/': [
-        //         '',  
-        //         'function', 
-        //     ],
-        //     '/use/': [
-        //         '', 
-        //         'actions',
-        //         'help',
-        //     ],
-        // }
+        
       }
   }

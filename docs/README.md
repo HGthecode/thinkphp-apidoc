@@ -21,6 +21,10 @@ features:
 footer: MIT Licensed | Copyright © 2020-present HG-CODE
 ---
 
+::: warning 说明
+本项目是采用 MIT 许可的开源项目，完全免费使用；作者也绝不会通过邮件等方式给大家发广告，如有收到以本项目为标题或内容的广告，请勿相信，所有信息请以本官网为准。
+:::
+
 
 
 

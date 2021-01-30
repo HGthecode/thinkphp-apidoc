@@ -51,6 +51,11 @@ composer require hg/apidoc
 
 <img class="img-view" :src="$withBase('/images/v2/course/install-apidoc-4.png')" style="width:100%;" alt="install-apidoc-4">
 
+::: warning 建议
+使用`php think run`启动项目，可能会出现如下问题，推荐使用环境集成工具配置站点访问。
+:::
+<img class="img-view" :src="$withBase('/images/v2/course/install-apidoc-6.png')" style="width:100%;" alt="install-apidoc-6">
+
 
 ## 注解体验
 
