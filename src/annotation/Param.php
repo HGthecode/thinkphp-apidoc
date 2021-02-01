@@ -2,7 +2,6 @@
 
 namespace hg\apidoc\annotation;
 
-use Doctrine\Common\Annotations\Annotation;
 
 /**
  * 参数

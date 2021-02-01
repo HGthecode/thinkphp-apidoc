@@ -2,7 +2,6 @@
 
 namespace hg\apidoc\annotation;
 
-use Doctrine\Common\Annotations\Annotation;
 
 /**
  * 请求头
@@ -11,13 +10,25 @@ use Doctrine\Common\Annotations\Annotation;
  * @Annotation
  * @Target({"METHOD"})
  */
-class Header extends Annotation
+class Header extends ParamBase
 {
     /**
      * 必须
      * @var bool
      */
     public $require = false;
+
+    /**
+     * 类型
+     * @var string
+     */
+    public $type;
+
+    /**
+     * 引入
+     * @var string
+     */
+    public $ref;
 
 
     /**

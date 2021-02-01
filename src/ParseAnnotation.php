@@ -112,20 +112,19 @@ trait ParseAnnotation
     protected function renderService($refPath){
         $pathArr = explode("\\", $refPath);
         $methodName = $pathArr[count($pathArr)-1];
-        $className = $pathArr[count($pathArr)-2];
         unset($pathArr[count($pathArr)-1]);
         $classPath = implode("\\", $pathArr);
         $classReflect = new \ReflectionClass($classPath);
         $methodName = trim ( $methodName );
         $refMethod = $classReflect->getMethod($methodName);
-        $res = $this->parseAnnotation($refMethod,false);
+        $res = $this->parseAnnotation($refMethod,true);
         return $res;
     }
 
     /**
      * 解析方法注释
      * @param $refMethod
-     * @param bool $enableRefService
+     * @param bool $enableRefService 是否终止service的引入
      * @return array
      */
     protected function parseAnnotation($refMethod,$enableRefService = true){
@@ -168,6 +167,19 @@ trait ParseAnnotation
                             $returns[] = $param;
                         }
                         break;
+                    case $annotation instanceof Header:
+                        if (!empty($annotation->ref)){
+                            $refRes = $this->renderRef($annotation->ref,$enableRefService);
+                            $headers = $this->handleRefData($returns,$refRes,$annotation,'header');
+                        }else {
+                            $param = [
+                                "name" => $annotation->value,
+                                "desc" => $annotation->desc,
+                                "require" => $annotation->require,
+                            ];
+                            $headers[] = $param;
+                        }
+                        break;
                     case $annotation instanceof Route:
                         if (empty($data['method'])){
                             $data['method'] = $annotation->method;
@@ -179,14 +191,7 @@ trait ParseAnnotation
                     case $annotation instanceof Author:
                         $data['author']=$annotation->value;
                         break;
-                    case $annotation instanceof Header:
-                        $param=[
-                            "name"=>$annotation->value,
-                            "desc"=>$annotation->desc,
-                            "require"=>$annotation->require,
-                        ];
-                        $headers[] = $param;
-                        break;
+
                     case $annotation instanceof Title:
                         $data['title']=$annotation->value;
                         break;

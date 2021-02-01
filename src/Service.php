@@ -25,17 +25,16 @@ class Service extends \think\Service
 
             $this->app->bind(Reader::class, function (App $app, Config $config, Cache $cache) {
                 $store = $config->get('apidoc.cache.store',null);
-                return new CachedReader(new AnnotationReader(), $cache->store($store), $app->isDebug());
+                $debug = $config->get('apidoc.cache.enable')==true?false:true;
+                return new CachedReader(new AnnotationReader(), $cache->store($store), $debug);
             });
 
             $route_prefix = 'apidoc';
             Route::group($route_prefix, function () {
                 $controller_namespace = '\hg\apidoc\Controller@';
-                Route::get('config'     , $controller_namespace . 'getConfig')->allowCrossDomain();
-                Route::get('data' , $controller_namespace . 'getData')->allowCrossDomain([
-                    'Access-Control-Allow-Headers'=>'Authorization,apidocToken, Content-Type, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, X-Requested-With'
-                ]);
-                Route::post('auth'  , $controller_namespace . 'verifyAuth')->allowCrossDomain();
+                Route::get('config'     , $controller_namespace . 'getConfig');
+                Route::get('data' , $controller_namespace . 'getData');
+                Route::post('auth'  , $controller_namespace . 'verifyAuth');
             });
         });
 

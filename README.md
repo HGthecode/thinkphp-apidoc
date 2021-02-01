@@ -16,9 +16,10 @@
 
 
 ### 文档
-<a href="https://hgthecode.github.io/thinkphp-apidoc/">ThinkPHP ApiDoc V2.x文档</a>
 
-<a href="https://hgthecode.github.io/thinkphp-apidoc/v1/">ThinkPHP ApiDoc V1.x文档</a>
+[ThinkPHP ApiDoc V2.x文档](https://hg-code.gitee.io/thinkphp-apidoc/)
+
+[ThinkPHP ApiDoc V1.x文档](https://hg-code.gitee.io/thinkphp-apidoc/v1/)
 
 ### 特性
 
