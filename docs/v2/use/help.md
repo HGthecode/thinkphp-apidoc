@@ -28,12 +28,12 @@ use hg\apidoc\annotation as Apidoc;
 // use app\utils\Abc;
 
 /**
- * @Apidoc\title("基础示例")
+ * @Apidoc\Title("基础示例")
  */
 class BaseDemo
 {
     /**
-     * @Apidoc\title("引入通用注释")
+     * @Apidoc\Title("引入通用注释")
      * @abc 错误示例，这样不存在解释文件的注释会报错；可增加use解释文件，或去除@
      */
     public function test(){

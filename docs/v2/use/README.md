@@ -25,13 +25,13 @@ namespace app\controller;
 use hg\apidoc\annotation as Apidoc;
 
 /**
- * @Apidoc\title("基础示例")
+ * @Apidoc\Title("基础示例")
  * @Apidoc\group("base")
  */
 class ApiDocTest
 {
    /**
-    * @Apidoc\title("测试接口")
+    * @Apidoc\Title("测试接口")
     * ...
     */ 
     public function index(){
@@ -56,13 +56,13 @@ use hg\apidoc\annotation\Returned;
 // ...
 
 /**
- * @title("基础示例")
- * @group("base")
+ * @Title("基础示例")
+ * @Group("base")
  */
 class ApiDocTest
 {
    /**
-    * @title("测试接口")
+    * @Title("测试接口")
     * ...
     */ 
     public function index(){
@@ -80,8 +80,8 @@ namespace app\controller;
 use hg\apidoc\annotation as Apidoc;
 
 /**
- * @Apidoc\title("基础示例")
- * @Apidoc\group("base")
+ * @Apidoc\Title("基础示例")
+ * @Apidoc\Group("base")
  */
 class ApiDocTest
 {
@@ -114,21 +114,21 @@ namespace app\controller;
 use hg\apidoc\annotation as Apidoc;
 
 /**
- * @Apidoc\title("基础示例")
+ * @Apidoc\Title("基础示例")
  */
 class ApiDocTest
 { 
     /**
-     * @Apidoc\title("基础的注释方法")
+     * @Apidoc\Title("基础的注释方法")
      * @Apidoc\Desc("最基础的接口注释写法")
-     * @Apidoc\url("/v1/baseDemo/base")
-     * @Apidoc\method("GET")
-     * @Apidoc\tag("测试 基础")
-     * @Apidoc\header("Authorization", require=true, desc="Token")
-     * @Apidoc\param("username", type="string",require=true, desc="用户名" )
-     * @Apidoc\param("password", type="string",require=true, desc="密码" )
-     * @Apidoc\param("phone", type="string",require=true, desc="手机号" )
-     * @Apidoc\param("sex", type="int",default="1",desc="性别" )
+     * @Apidoc\Url("/v1/baseDemo/base")
+     * @Apidoc\Method("GET")
+     * @Apidoc\Tag("测试 基础")
+     * @Apidoc\Header("Authorization", require=true, desc="Token")
+     * @Apidoc\Param("username", type="string",require=true, desc="用户名" )
+     * @Apidoc\Param("password", type="string",require=true, desc="密码" )
+     * @Apidoc\Param("phone", type="string",require=true, desc="手机号" )
+     * @Apidoc\Param("sex", type="int",default="1",desc="性别" )
      * @Apidoc\Returned("id", type="int", desc="新增用户的id")
      */
     public function base(){
@@ -168,23 +168,23 @@ class Definitions
 {
     /**
      * 获取分页数据列表的参数
-     * @param("pageIndex",type="int",require=true,default="0",desc="查询页数")
-     * @param("pageSize",type="int",require=true,default="20",desc="查询条数")
+     * @Param("pageIndex",type="int",require=true,default="0",desc="查询页数")
+     * @Param("pageSize",type="int",require=true,default="20",desc="查询条数")
      * @Returned("total", type="int", desc="总条数")
      */
     public function pagingParam(){}
   
     /**
      * 返回字典数据
-     * @returned("id",type="int",desc="唯一id")
-     * @returned("name",type="string",desc="字典名")
-     * @returned("value",type="string",desc="字典值")
+     * @Returned("id",type="int",desc="唯一id")
+     * @Returned("name",type="string",desc="字典名")
+     * @Returned("value",type="string",desc="字典值")
      */
     public function dictionary(){}
 
     /**
-     * @header("token",type="string",require=true,desc="身份票据")
-     * @header("shopid",type="string",require=true,desc="店铺id")
+     * @Header("token",type="string",require=true,desc="身份票据")
+     * @Header("shopid",type="string",require=true,desc="店铺id")
      */
     public function auth(){}
     
@@ -203,14 +203,14 @@ use hg\apidoc\annotation as Apidoc;
 class ApiDocTest
 { 
     /**
-     * @Apidoc\title("引入通用注释")
+     * @Apidoc\Title("引入通用注释")
      * @Apidoc\Desc("引入通用注释所定义的通用参数")
      * @Apidoc\Author("HG")
-     * @Apidoc\url("/v1/baseDemo/definitions")
-     * @Apidoc\method("GET")
-     * @Apidoc\header( ref="auth")
-     * @Apidoc\param( ref="pagingParam")
-     * @Apidoc\param("page",type="object", ref="pagingParam",desc="分页参数")
+     * @Apidoc\Url("/v1/baseDemo/definitions")
+     * @Apidoc\Method("GET")
+     * @Apidoc\Header( ref="auth")
+     * @Apidoc\Param( ref="pagingParam")
+     * @Apidoc\Param("page",type="object", ref="pagingParam",desc="分页参数")
      * @Apidoc\Returned("list", type="array",ref="dictionary", desc="字典列表")
      */
     public function definitions(){
@@ -245,9 +245,9 @@ class ApiDoc
 {
 
      /**
-     * @Apidoc\param("sex", type="int",require=true,desc="性别")
-     * @Apidoc\param("age", type="int",require=true,desc="年龄")
-     * @Apidoc\param("id", type="int",require=true,desc="唯一id")
+     * @Apidoc\Param("sex", type="int",require=true,desc="性别")
+     * @Apidoc\Param("age", type="int",require=true,desc="年龄")
+     * @Apidoc\Param("id", type="int",require=true,desc="唯一id")
      * @Apidoc\Returned("id", type="int",desc="唯一id")
      * @Apidoc\Returned("name", type="string",desc="姓名")
      * @Apidoc\Returned("phone", type="string",desc="电话")
@@ -271,12 +271,12 @@ use hg\apidoc\annotation as Apidoc;
 class ApiDocTest
 { 
     /**
-     * @Apidoc\title("引入逻辑层注释")
+     * @Apidoc\Title("引入逻辑层注释")
      * @Apidoc\Desc("引入业务逻辑层的注释参数")
      * @Apidoc\Author("HG")
-     * @Apidoc\url("/v1/baseDemo/service")
-     * @Apidoc\method("GET")
-     * @Apidoc\param(ref="app\services\ApiDoc\getUserInfo")
+     * @Apidoc\Url("/v1/baseDemo/service")
+     * @Apidoc\Method("GET")
+     * @Apidoc\Param(ref="app\services\ApiDoc\getUserInfo")
      * @Apidoc\Returned("userInfo",type="object",ref="app\services\ApiDoc\getUserList")
      */
     public function service(){
@@ -344,9 +344,9 @@ class User extends BaseModel
 {
 
      /**
-     * @field("id,username,nickname")
-     * @addField("openid",type="string",default="abc",desc="微信openid")
-     * @addField("senkey",type="string",default="key",desc="微信key")
+     * @Field("id,username,nickname")
+     * @AddField("openid",type="string",default="abc",desc="微信openid")
+     * @AddField("senkey",type="string",default="key",desc="微信key")
      */
     public function getInfo($id){
         $res = $this->get($id);
@@ -365,12 +365,12 @@ use hg\apidoc\annotation as Apidoc;
 class ApiDocTest
 { 
     /**
-     * @Apidoc\title("引入模型注释")
+     * @Apidoc\Title("引入模型注释")
      * @Apidoc\Desc("param参数为直接引用模型参数；return则是引用逻辑层，通过逻辑层引用模型参数")
      * @Apidoc\Author("HG")
-     * @Apidoc\url("/v1/baseDemo/model")
-     * @Apidoc\method("GET")
-     * @Apidoc\param(ref="app\model\User\getInfo")
+     * @Apidoc\Url("/v1/baseDemo/model")
+     * @Apidoc\Method("GET")
+     * @Apidoc\Param(ref="app\model\User\getInfo")
      * @Apidoc\Returned("userList",type="array",ref="app\model\User\getInfo")
      */
     public function model(){
