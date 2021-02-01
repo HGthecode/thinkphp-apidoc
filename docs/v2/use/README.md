@@ -161,6 +161,8 @@ namespace app\controller;
 
 use hg\apidoc\annotation\Param;
 use hg\apidoc\annotation\Returned;
+use hg\apidoc\annotation\Header;
+
 
 class Definitions
 {
@@ -179,6 +181,12 @@ class Definitions
      * @returned("value",type="string",desc="字典值")
      */
     public function dictionary(){}
+
+    /**
+     * @header("token",type="string",require=true,desc="身份票据")
+     * @header("shopid",type="string",require=true,desc="店铺id")
+     */
+    public function auth(){}
     
 }
 ```
@@ -200,6 +208,7 @@ class ApiDocTest
      * @Apidoc\Author("HG")
      * @Apidoc\url("/v1/baseDemo/definitions")
      * @Apidoc\method("GET")
+     * @Apidoc\header( ref="auth")
      * @Apidoc\param( ref="pagingParam")
      * @Apidoc\param("page",type="object", ref="pagingParam",desc="分页参数")
      * @Apidoc\Returned("list", type="array",ref="dictionary", desc="字典列表")
@@ -385,23 +394,15 @@ class ApiDocTest
 |Url|	|真实的接口URL，不配置时会根据控制器目录自动生成 |	任意字符 |	
 |Method|	`GET` `POST` `PUT` `DELETE` |请求类型,默认`GET` |	 |	
 |Tag|	|接口Tag标签 |	多个标签用 空格隔开 |	
-|Header| 具体查看 [Header的参数](/use/#header-的参数)	|请求头Headers参数 |	可定义多个|	
-|Param | 具体查看 [Param、Returned的参数](/use/#param、return-的参数)	|请求参数 |	可定义多个 |	
+|Header| 具体查看 [Header、Param、Returned的参数](/use/#header、param、return-的参数)	|请求头Headers参数 |	可定义多个|	
+|Param | 具体查看 [Header、Param、Returned的参数](/use/#header、param、return-的参数)	|请求参数 |	可定义多个 |	
 |ParamType| `json` `formdata`	|请求参数类型，默认json | |
-|Returned| 具体查看 [param、Returned的参数](/use/#param、return-的参数)	|响应结果 |	可定义多个 |	
+|Returned| 具体查看 [Header、Param、Returned的参数](/use/#header、param、return-的参数)	|响应结果 |	可定义多个 |	
 
 > 如使用了官方的注解路如`@Route("hello/index", method="GET")`, `Url` `Method`可不配置
 
-### Header 的参数
 
-|参数名|说明|书写规范|
-|-|-|-|
-| |	参数的字段名 |	如：@Apidoc\Header("Authorization") |	
-| require|	是否必填 |	如：@Apidoc\Header("Authorization", require=true) 为必填 |	
-| desc|字段描述 |	 |	
-
-
-### Param、Returned 的参数
+### Header、Param、Returned 的参数
 
 |参数名|说明|书写规范|
 |-|-|-|
