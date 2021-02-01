@@ -25,8 +25,7 @@ class Service extends \think\Service
 
             $this->app->bind(Reader::class, function (App $app, Config $config, Cache $cache) {
                 $store = $config->get('apidoc.cache.store',null);
-                $debug = $config->get('apidoc.cache.enable')==true?false:true;
-                return new CachedReader(new AnnotationReader(), $cache->store($store), $debug);
+                return new CachedReader(new AnnotationReader(), $cache->store($store), true);
             });
 
             $route_prefix = 'apidoc';
