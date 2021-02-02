@@ -176,6 +176,8 @@ trait ParseAnnotation
                                 "name" => $annotation->value,
                                 "desc" => $annotation->desc,
                                 "require" => $annotation->require,
+                                "type"=>$annotation->type,
+                                "default"=>$annotation->default,
                             ];
                             $headers[] = $param;
                         }
