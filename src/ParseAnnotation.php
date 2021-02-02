@@ -170,7 +170,7 @@ trait ParseAnnotation
                     case $annotation instanceof Header:
                         if (!empty($annotation->ref)){
                             $refRes = $this->renderRef($annotation->ref,$enableRefService);
-                            $headers = $this->handleRefData($returns,$refRes,$annotation,'header');
+                            $headers = $this->handleRefData($headers,$refRes,$annotation,'header');
                         }else {
                             $param = [
                                 "name" => $annotation->value,
@@ -214,9 +214,7 @@ trait ParseAnnotation
                         break;
                 }
             }
-            if ($headers && count($headers)>0){
-                $data['header']=$headers;
-            }
+            $data['header']=$headers;
             $data['param']=$params;
             $data['return']=$returns;
         }
