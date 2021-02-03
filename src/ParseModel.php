@@ -91,19 +91,13 @@ class ParseModel
 
     protected function getIncludeClassName($mainClass, $class)
     {
-        $classFile = $this->getClassFileContent($mainClass);
-        $pattern = "/use\s*(app.*?\\\\$class)/";
 
-        if (preg_match($pattern, $classFile, $matches)) {
-            return $matches[1];
+        $classReflect = new \ReflectionClass($mainClass);
+        $possibleClass = $classReflect->getNamespaceName() . "\\" . $class;
+        if (class_exists($possibleClass)) {
+            return $possibleClass;
         } else {
-            $classReflect = new \ReflectionClass($mainClass);
-            $possibleClass = $classReflect->getNamespaceName() . "\\" . $class;
-            if (class_exists($possibleClass)) {
-                return $possibleClass;
-            } else {
-                return "";
-            }
+            return "";
         }
     }
 
