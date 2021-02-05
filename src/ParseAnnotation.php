@@ -41,6 +41,9 @@ trait ParseAnnotation
         foreach ($refClass->getMethods(\ReflectionMethod::IS_PUBLIC) as $refMethod) {
             if (!empty($refMethod->name) && !in_array($refMethod->name, $filter_method)){
                 $methodItem= $this->parseAnnotation($refMethod,true);
+                if (!count((array)$methodItem)) {
+                    continue;
+                }
                 if (empty($methodItem['method'])){
                     $methodItem['method']='GET';
                 }
@@ -53,8 +56,9 @@ trait ParseAnnotation
                 }else if(empty($methodItem['url'])){
                     // 无url,自动生成
                     $methodItem['url'] = $this->autoCreateUrl($refMethod);
-                    $methodList[]=$methodItem;
+                    $methodList[] = $methodItem;
                 }
+
             }
 
         }

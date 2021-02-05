@@ -38,10 +38,11 @@ class Controller
      */
     public function getConfig(){
         $config = $this->app->config->get('apidoc');
-        unset($config['auth']['auth_password']);
-        unset($config['auth']['password']);
-        unset($config['auth']['key']);
-
+        if (!empty($config['auth'])) {
+            unset($config['auth']['auth_password']);
+            unset($config['auth']['password']);
+            unset($config['auth']['key']);
+        }
         return $this->showJson(0,"",$config);
     }
 
