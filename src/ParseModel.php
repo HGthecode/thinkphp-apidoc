@@ -6,6 +6,7 @@ use think\facade\Db;
 use hg\apidoc\annotation\Field;
 use hg\apidoc\annotation\WithoutField;
 use hg\apidoc\annotation\AddField;
+use think\helper\Str;
 
 class ParseModel
 {
@@ -26,13 +27,15 @@ class ParseModel
         $classReflect = new \ReflectionClass($modelClassPath);
         $modelActionName = trim ( $modelActionName );
         $methodAction = $classReflect->getMethod($modelActionName);
-        
+        // 获取所有模型属性
+        $propertys = $classReflect->getDefaultProperties();
+
         // 获取表字段
         $model = $this->getModel($methodAction,$modelClassName);
         if (!is_callable(array($model,'getTable'))){
             return false;
         }
-        $table = $this->getTableDocument($model);
+        $table = $this->getTableDocument($model,$propertys);
 
         // 模型注释-field
         if ($fieldAnnotations = $this->reader->getMethodAnnotation($methodAction,Field::class)) {
@@ -92,17 +95,18 @@ class ParseModel
     protected function getIncludeClassName($mainClass, $class)
     {
 
-        $classReflect = new \ReflectionClass($mainClass);
-        $possibleClass = $classReflect->getNamespaceName() . "\\" . $class;
-        if (class_exists($possibleClass)) {
-            return $possibleClass;
-        } else {
-            return "";
-        }
+            $classReflect = new \ReflectionClass($mainClass);
+            $possibleClass = $classReflect->getNamespaceName() . "\\" . $class;
+            if (class_exists($possibleClass)) {
+                return $possibleClass;
+            } else {
+                return "";
+            }
     }
 
-    public function getTableDocument($model)
+    public function getTableDocument($model,$propertys)
     {
+
         $createSQL = Db::query("show create table " . $model->getTable())[0]['Create Table'];
         preg_match_all("#`(.*?)`(.*?),#", $createSQL, $matches);
         $fields = $matches[1];
@@ -137,8 +141,13 @@ class ParseModel
                 $require="1";
             }
 
+            $name = $key;
+            // 转换字段名为驼峰命名（用于输出）
+            if (isset($propertys['convertNameToCamel']) && $propertys['convertNameToCamel'] === true) {
+                $name = Str::camel($key);
+            }
             $fieldComment[] = [
-                "name"=>$key,
+                "name"=>$name,
                 "type"=>$type,
                 "desc"=>$desc,
                 "default"=>$default,

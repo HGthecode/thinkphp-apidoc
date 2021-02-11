@@ -44,19 +44,32 @@ trait ParseAnnotation
                 if (!count((array)$methodItem)) {
                     continue;
                 }
+                // 添加responses统一响应体
+                if (!empty($config['responses']) && !empty($config['responses']['show_responses']) && !empty($config['responses']['data']) && !empty($methodItem['return'])){
+                    // 显示在响应体中
+                    $returned = [];
+                    foreach ($config['responses']['data'] as $resItem){
+                        if (!empty($resItem['main']) && $resItem['main']===true){
+                            $resItem['params'] = $methodItem['return'];
+                        }
+                        $returned[]=$resItem;
+                    }
+                    $methodItem['return']=$returned;
+                }
+
                 if (empty($methodItem['method'])){
                     $methodItem['method']='GET';
                 }
                 if (!empty($methodItem) && !empty($methodItem['url'])){
                     // 路由分组，url加上分组
                     if (!empty($routeGroup->value)){
-                        $methodItem['url'] = $routeGroup->value.'/'.$methodItem['url'];
+                        $methodItem['url'] = '/'.$routeGroup->value.'/'.$methodItem['url'];
                     }
                     $methodList[]=$methodItem;
                 }else if(empty($methodItem['url'])){
                     // 无url,自动生成
                     $methodItem['url'] = $this->autoCreateUrl($refMethod);
-                    $methodList[] = $methodItem;
+                    $methodList[]=$methodItem;
                 }
 
             }
@@ -218,7 +231,9 @@ trait ParseAnnotation
                         break;
                 }
             }
-            $data['header']=$headers;
+            if ($headers && count($headers)>0){
+                $data['header']=$headers;
+            }
             $data['param']=$params;
             $data['return']=$returns;
         }

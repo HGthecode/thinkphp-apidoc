@@ -34,6 +34,7 @@ class Service extends \think\Service
                 Route::get('config'     , $controller_namespace . 'getConfig');
                 Route::get('data' , $controller_namespace . 'getData');
                 Route::post('auth'  , $controller_namespace . 'verifyAuth');
+                Route::post('crud'  , $controller_namespace . 'createCrud');
             });
         });
 

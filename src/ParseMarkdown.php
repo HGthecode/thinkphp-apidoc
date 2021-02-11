@@ -7,7 +7,7 @@ namespace hg\apidoc;
 trait ParseMarkdown
 {
 
-    protected function renderDocs($docs,$version){
+    protected function renderDocs($docs){
         $docData = [];
         if (!empty($docs) && count($docs)>0){
             foreach ($docs as $item){
@@ -17,7 +17,7 @@ trait ParseMarkdown
                     $docList = [];
                     foreach ($item['items'] as $doc){
                         if (!empty($doc['path'])){
-                            $doc['content'] = $this->renderContent($doc['path'],$version);
+                            $doc['content'] = $this->renderContent($doc['path']);
                             $doc['type']='md';
                             if (!empty($doc['content'])){
                                 $docList[]=$doc;
@@ -30,7 +30,7 @@ trait ParseMarkdown
                         'group'=>'markdown_doc'
                     ];
                 }else if(!empty($item['path'])){
-                    $item['content'] =  $this->renderContent($item['path'],$version);
+                    $item['content'] =  $this->renderContent($item['path']);
                     $item['type']='md';
                     if (!empty($item['content'])){
                         $docData[]=$item;
@@ -41,21 +41,10 @@ trait ParseMarkdown
         return $docData;
     }
 
-    protected function renderContent($path,$version){
-        $mdPath = $path;
-        if (!empty($path) && strpos($path,'{:version}') !== false){
-            $mdPath = str_replace("{:version}",$version,$path);
-        }
+    protected function renderContent($path){
+        $mdPath = (new Utils())->replaceCurrentAppTemplate($path,$this->currentApps);
         $filePath = $this->app->getRootPath().$mdPath.'.md';
-        if (file_exists($filePath)){
-            $handle = fopen($filePath, "r");
-            $contents = fread($handle, filesize ($filePath));
-            fclose($handle);
-        }else if (empty($path) || strpos($path,'{:version}') === false){
-            $contents="[file 404]".$mdPath;
-        }else{
-            $contents = '';
-        }
+        $contents = Utils::getFileContent($filePath);
         return $contents;
     }
 }
