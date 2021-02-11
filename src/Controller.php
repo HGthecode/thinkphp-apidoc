@@ -375,7 +375,8 @@ class Controller
      */
     protected function getDirControllers($path){
         if ($path){
-            $dir = $this->app->getRootPath() . $path;
+            $pathStr = str_replace("\\","/",$path);
+            $dir = $this->app->getRootPath() . $pathStr;
         }else{
             $dir = $this->app->getRootPath() . $this->app->config->get('route.controller_layer');
         }

@@ -37,10 +37,11 @@ class CreateCrud
         // 创建数据表
         if (!empty($params['model']['table'])){
             $sqlRes = $this->createModelTable($params['model'],$params['title']);
-            if ($sqlRes){
+            if ($sqlRes == true){
                 $res[]="创建数据表成功";
             }else{
-                throw new \think\exception\HttpException(500, "数据表创建失败，请检查配置");
+                $msg= $sqlRes?$sqlRes:"数据表创建失败，请检查配置";
+                throw new \think\exception\HttpException(500, $msg);
             }
         }
         // 生成文件
@@ -116,9 +117,10 @@ class CreateCrud
                 continue;
             }
             $currentParam = $params[$key];
+            $currentParamPath = str_replace("\\","/",$currentParam['path']);
             // 验证目录是否存在
-            if(!is_dir('../'.$currentParam['path'])){
-                throw new \think\exception\HttpException(404, $currentParam['path']."目录不存在");
+            if(!is_dir('../'.$currentParamPath)){
+                throw new \think\exception\HttpException(404, $currentParamPath."目录不存在");
             }
 
 
@@ -304,12 +306,9 @@ class CreateCrud
         } catch (\Exception $e) {
             // 回滚事务
             Db::rollback();
-            return false;
+            return $e->getMessage();
         }
 
-//        $res = Db::query($sql);
-
-//        return true;
     }
 
 
