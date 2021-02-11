@@ -41,15 +41,19 @@ module.exports = {
                   { text: '更新日志', link: '/v2/changelog/' }
                 ]
               },
+              { text: '功能', link: '/v2/function/' },
               { text: '配置', link: '/v2/config/' },
               { text: '使用', link: '/v2/use/' },
               { text: '支持', link: '/v2/sponsor/' },
               { text: '演示', link: 'https://apidoc.demo.hg-code.com/apidoc/', target:'_blank'},
             ],
             sidebar: {
+              '/v2/function/': [
+                '',  
+              ],
               '/v2/config/': [
                   '',  
-                  'function', 
+                  // 'function', 
               ],
               '/v2/use/': [
                   '', 

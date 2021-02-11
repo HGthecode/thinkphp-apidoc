@@ -1,4 +1,4 @@
-# 功能配置
+# 功能使用
 
 ## 多版本
 ::: warning 警告
@@ -215,7 +215,12 @@ return [
 <img class="img-view" :src="$withBase('/images/v2/apidoc-demo-md.png')" style="width:100%;" alt="apidoc-demo-md">
 
 
-## 一键生成CRUD
+## 快速生成CRUD
+
+::: warning 注意
+在`DEBUG`模式下可用，确保站点目录有777权限
+:::
+
 快速生成CRUD功能由 系统配置+模板+可视化页面配置来实现。为了灵活适应各种项目结构与实现方式，需做好系统配置与模板编写。
 
 下面将举例一个多应用多版本的实现：
