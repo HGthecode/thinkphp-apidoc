@@ -74,7 +74,6 @@ class CreateCrud
                 $tmp_path = (new Utils())->replaceCurrentAppTemplate($currentParam['template'],$this->currentApps);
                 $tempPath = $tmp_path.".txt";
                 $str_tmp = Utils::getFileContent($tempPath);
-
                 $file_content = Utils::replaceTemplate($str_tmp,$data);
                 $file_content = (new Utils())->replaceCurrentAppTemplate($file_content,$this->currentApps);
                 $namespacePath = str_replace("\\","/",$currentParam['path']);
@@ -117,12 +116,14 @@ class CreateCrud
                 continue;
             }
             $currentParam = $params[$key];
+            if(!preg_match("/^[A-Z]{1}[A-Za-z0-9]{1,32}$/",$currentParam['class_name'])){
+                throw new \think\exception\HttpException(500, $currentParam['class_name'].'文件名不合法');
+            }
             $currentParamPath = str_replace("\\","/",$currentParam['path']);
             // 验证目录是否存在
             if(!is_dir('../'.$currentParamPath)){
                 throw new \think\exception\HttpException(404, $currentParamPath."目录不存在");
             }
-
 
             if ($key==="controller"){
                 $pathArr = explode("\\", $currentParam['path']);
