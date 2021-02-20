@@ -1,6 +1,6 @@
 <?php
 
-namespace hg\apidoc\annotation;
+namespace hg\apidoc\annotation\explain;
 
 use Doctrine\Common\Annotations\Annotation;
 

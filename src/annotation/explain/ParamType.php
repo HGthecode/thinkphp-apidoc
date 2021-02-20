@@ -1,15 +1,15 @@
 <?php
 
-namespace hg\apidoc\annotation;
+namespace hg\apidoc\annotation\explain;
 
 use Doctrine\Common\Annotations\Annotation;
 
 /**
  * 参数类型
  *
- * @package hg\apidoc\annotation
+ * @package hg\apidoc\annotation\explain
  * @Annotation
- * @Target({"METHOD"})
+ * @Target({"METHOD","CLASS"})
  */
 class ParamType extends Annotation
 {}

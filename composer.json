@@ -4,7 +4,7 @@
     "type": "think-extend",
     "keywords": [
         "thinkphp",
-        "swagger",
+        "thinkphp6",
         "apidoc",
         "api文档",
         "接口文档",
@@ -13,8 +13,7 @@
         "php接口文档"
       ],
     "require": {
-        "doctrine/annotations": "^1.6",
-        "symfony/class-loader": "~3.2.0"
+        "php": ">=5.6"
     },
     "license": "MIT",
     "authors": [
@@ -38,5 +37,5 @@
             }
         }
     },
-    "minimum-stability": "beta"
+    "minimum-stability": "dev"
 }
