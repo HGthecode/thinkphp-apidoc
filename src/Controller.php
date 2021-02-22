@@ -397,7 +397,9 @@ class Controller
     {
         $list=[];
         foreach (ClassMapGenerator::createMap($dir) as $class => $path) {
+            if (!isset($this->config['filter_controllers'])||(isset($this->config['filter_controllers']) && !in_array($class,$this->config['filter_controllers']))){
                 $list[] = $class;
+            }
         }
         return $list;
     }
