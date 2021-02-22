@@ -1,4 +1,9 @@
-sync:
+name: 'GitHub Actions Mirror'
+
+on: [push]
+
+jobs:
+  sync:
     needs: build-and-deploy
     runs-on: ubuntu-latest
     steps:
@@ -9,4 +14,3 @@ sync:
       with:
         source-repo: 'git@github.com:HGthecode/thinkphp-apidoc.git'
         destination-repo: "git@gitee.com:hg-code/thinkphp-apidoc.git"
-
