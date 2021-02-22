@@ -5,7 +5,7 @@ title: 指南
 sidebar: false
 heroImage: /logo.png
 heroText: ThinkPHP-ApiDoc
-tagline: 通过注解自动生成Api文档的便捷开发工具
+tagline: 一个自动生成Api文档的便捷开发工具
 action:
   - text: 快速上手 💡
     link: /guide/
