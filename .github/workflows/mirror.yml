@@ -54,24 +54,3 @@ jobs:
           BRANCH: docs-pages
           CLEAN: true
           FOLDER: dist
-  sync:
-    needs: build-and-deploy
-    runs-on: ubuntu-latest
-    steps:
-    - name: Sync to Gitee
-      uses: wearerequired/git-mirror-action@master
-      env:
-        SSH_PRIVATE_KEY: ${{ secrets.GITEE_KEY }}
-      with:
-        source-repo: "git@github.com:HGthecode/thinkphp-apidoc.git" 
-        destination-repo: "git@gitee.com:hg-code/thinkphp-apidoc.git"
-  reload-pages:
-    needs: sync
-    runs-on: ubuntu-latest
-    steps:
-      - name: reload
-        uses: mizuka-wu/gitee-pages-action@v1.0.0
-        with:
-          repository: hg-code/thinkphp-apidoc
-          cookie: ${{ secrets.GITEE_KEY }}
-          branch: docs_pages
