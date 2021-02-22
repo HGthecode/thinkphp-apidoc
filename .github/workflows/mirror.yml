@@ -7,8 +7,6 @@ sync:
       env:
         SSH_PRIVATE_KEY: ${{ secrets.GITEE_KEY }}
       with:
-      	# 来源仓库
         source-repo: 'git@github.com:HGthecode/thinkphp-apidoc.git'
-        # 目标仓库
         destination-repo: "git@gitee.com:hg-code/thinkphp-apidoc.git"
 
