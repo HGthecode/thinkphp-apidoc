@@ -84,8 +84,8 @@ namespace app\controller;
 use hg\apidoc\annotation as Apidoc;
 
 /**
- * @Apidoc\title("基础示例")
- * @Apidoc\group("base")
+ * @Apidoc\Title("基础示例")
+ * @Apidoc\Group("base")
  */
 class ApiDocTest
 { 
