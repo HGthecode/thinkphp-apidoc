@@ -23,9 +23,7 @@ git commit -m 'deploy'
 # git push -f git@github.com:7revor/7revor.github.io.git master
 
 # 如果发布到 https://<USERNAME>.github.io/<REPO>
-# git push -f git@github.com:HGthecode/thinkphp-apidoc.git master:docs-pages
+git push -f git@github.com:HGthecode/thinkphp-apidoc.git master:docs-pages
 
-# 如果使用 travis 持续集成
-git push -f https://${access_token}@github.com/HGthecode/thinkphp-apidoc.git master:docs-pages
 
 cd -
