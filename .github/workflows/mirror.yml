@@ -3,14 +3,15 @@ name: 'GitHub Actions Mirror'
 on: [push]
 
 jobs:
-  sync:
-    needs: build-and-deploy
+  git-mirror:
     runs-on: ubuntu-latest
     steps:
-    - name: Sync to Gitee
-      uses: wearerequired/git-mirror-action@master
-      env:
-        SSH_PRIVATE_KEY: ${{ secrets.GITEE_KEY }}
-      with:
-        source-repo: 'git@github.com:HGthecode/thinkphp-apidoc.git'
-        destination-repo: "git@gitee.com:hg-code/thinkphp-apidoc.git"
+      - name: 'Checkout'
+        uses: actions/checkout@v1
+      - name: 'Mirror to gitee'
+        uses: wearerequired/git-mirror-action@v1
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.GITEE_KEY }}
+        with:
+          source-repo: 'git@github.com:HGthecode/thinkphp-apidoc.git'
+          destination-repo: "git@gitee.com:hg-code/thinkphp-apidoc.git"
