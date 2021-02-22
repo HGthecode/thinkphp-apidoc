@@ -1,16 +1,18 @@
 {
-  "name": "thinkphp-apidoc",
-  "version": "1.0.0",
-  "description": "thinkphp-apidoc documents",
-  "main": "index.js",
+  "name": "root",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
-    "docs:dev": "vuepress dev docs",
-    "docs:build": "vuepress build docs"
+    "v1:serve": "yarn workspace thinkphp-apidoc-v1 serve",
+    "v2:serve": "yarn workspace thinkphp-apidoc-v2 serve",
+    "build": "lerna run build --parallel"
   },
-  "author": "hg-code",
-  "license": "ISC",
   "devDependencies": {
-    "@vuepress/plugin-medium-zoom": "^1.7.1",
-    "vuepress": "^1.7.1"
+    "lerna": "^3.22.1"
+  },
+  "dependencies": {
+    "cpx": "^1.5.0"
   }
 }

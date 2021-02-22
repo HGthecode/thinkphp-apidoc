@@ -1,4 +1,7 @@
-node_modules/
-docs/.vuepress/dist
-docs/.vuepress/.cache
-docs/.vuepress/.temp
+node_modules
+/dist
+/packages/*/dist
+
+
+# Editor directories and files
+.vscode
