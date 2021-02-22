@@ -1,0 +1,5 @@
+
+User-agent:*
+Disallow:
+
+Sitemap: https://apidoc.demo.hg-code.com/apidoc/thinkphp-apidoc/v1/sitemap.xml
