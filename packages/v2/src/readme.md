@@ -19,7 +19,7 @@ features:
     details: 无繁杂的配置、安装后按文档编写注释即可自动生成API文档
 
   - title: 在线调试
-    details: 在线文档可直接调试，支持设置全局请求头参数Authorize，接口调试省时省力
+    details: 在线文档可直接调试，并支持设置全局请求头参数Authorize，接口调试省时省力
 
   - title: 轻松编写
     details: 支持公共注释定义、业务逻辑层、数据表字段注释的引用，几句注释即可完成
@@ -31,7 +31,7 @@ features:
     details: 可适应各种单应用、多应用、多版本的项目的Api管理
 
   - title: Markdown文档
-    details: 支持.md文件的文档展示。
+    details: 支持.md文件的文档展示
 
   - title: 快速生成Crud
     details: 配置+模板即可快速生成Crud接口代码及数据表的创建，大大提高工作效率
