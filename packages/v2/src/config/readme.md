@@ -249,6 +249,30 @@ return [
 
 
 
+## filter_method
+- 类型: array
+- 默认值: 如下示例
+
+指定公共注释定义的控制器地址
+
+```php
+// config/apidoc.php
+<?php
+return [
+    // 过滤、不解析的方法名称
+    'filter_method'=>[
+        '_empty',
+        '_initialize',
+        '__construct',
+        '__destruct',
+        '__get',
+        '__set',
+        '__isset',
+        '__unset',
+        '__cal',
+    ]
+]
+```
 
 ## docs
 - 类型: array
