@@ -50,7 +50,6 @@ module.exports = config({
       { text: '配置', link: '/config/' },
       { text: '使用', link: '/use/' },
       { text: '支持', link: '/sponsor/' },
-      { text: '演示', link: 'https://apidoc.demo.hg-code.com/apidoc/', target:'_blank'},
       {
         text: "版本",
         icon: "version",
@@ -65,6 +64,7 @@ module.exports = config({
           }
         ]
       },
+      { text: '演示', link: 'https://apidoc.demo.hg-code.com/apidoc/', target:'_blank'},
     ],
     sidebar: {
       '/config/': [

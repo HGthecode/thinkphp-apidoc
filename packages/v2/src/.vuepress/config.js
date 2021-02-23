@@ -57,11 +57,7 @@ module.exports = config({
         icon: "book",
         link: "/course/",
       },
-      {
-        text: "演示",
-        link: "https://apidoc.demo.hg-code.com/apidoc/",
-        icon: "demo",
-      },
+      
       {
         text: "版本",
         icon: "version",
@@ -75,6 +71,11 @@ module.exports = config({
             link:"https://hgthecode.github.io/thinkphp-apidoc/v1/"
           }
         ]
+      },
+      {
+        text: "演示",
+        link: "https://apidoc.demo.hg-code.com/apidoc/",
+        icon: "demo",
       },
     ],
     sidebar: {

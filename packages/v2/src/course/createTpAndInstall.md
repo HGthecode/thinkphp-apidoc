@@ -12,11 +12,11 @@ sidebar: false
 ```sh
 composer create-project topthink/think tp6-test
 ```
-![install-1](/images/course/install-1.png "install-1")
+![install-1](/thinkphp-apidoc/images/course/install-1.png "install-1")
 
 ### 2、等待一会儿出现如下显示，表示安装成功了
 
-![install-2](/images/course/install-2.png "install-2")
+![install-2](/thinkphp-apidoc/images/course/install-2.png "install-2")
 
 ### 3、进入项目目录，测试运行
 
@@ -27,11 +27,11 @@ cd tp6-test
 # 启动项目
 php think run
 ```
-![install-3](/images/course/install-3.png "install-3")
+![install-3](/thinkphp-apidoc/images/course/install-3.png "install-3")
 
 浏览器访问 http://localhost:8000/，出现如下显示，表示TP6安装成功
 
-![install-4](/images/course/install-4.png "install-4")
+![install-4](/thinkphp-apidoc/images/course/install-4.png "install-4")
 
 
 ## 安装Apidoc 插件
@@ -41,27 +41,27 @@ php think run
 composer require hg/apidoc
 ```
 
-![install-apidoc-1](/images/course/install-apidoc-1.png "install-apidoc-1")
+![install-apidoc-1](/thinkphp-apidoc/images/course/install-apidoc-1.png "install-apidoc-1")
 
 ### 2、下载前端文件
 
 进入[官网文档安装页面](/install)，如下图点击下载前端文件
 
-![install-apidoc-2](/images/course/install-apidoc-2.png "install-apidoc-2")
+![install-apidoc-2](/thinkphp-apidoc/images/course/install-apidoc-2.png "install-apidoc-2")
 
 下载完成后，将文件解压，将apidoc文件夹拷贝到TP6的 `public`目录下
 
-![install-apidoc-3](/images/course/install-apidoc-3.png "install-apidoc-3")
+![install-apidoc-3](/thinkphp-apidoc/images/course/install-apidoc-3.png "install-apidoc-3")
 
 浏览器访问 `http://localhost:8000/apidoc/`，出现以下页面表示安装成功
 
-![install-apidoc-4](/images/course/install-apidoc-4.png "install-apidoc-4")
+![install-apidoc-4](/thinkphp-apidoc/images/course/install-apidoc-4.png "install-apidoc-4")
 
 ::: warning 建议
 使用`php think run`启动项目，可能会出现如下问题，推荐使用环境集成工具配置站点访问。
 :::
 
-![install-apidoc-6](/images/course/install-apidoc-6.png "install-apidoc-6")
+![install-apidoc-6](/thinkphp-apidoc/images/course/install-apidoc-6.png "install-apidoc-6")
 
 ## 注解体验
 
@@ -106,7 +106,7 @@ class Index extends BaseController
 
 刷新文档页面，得到如下效果
 
-![install-apidoc-5](/images/course/install-apidoc-5.png "install-apidoc-5")
+![install-apidoc-5](/thinkphp-apidoc/images/course/install-apidoc-5.png "install-apidoc-5")
 
 
 

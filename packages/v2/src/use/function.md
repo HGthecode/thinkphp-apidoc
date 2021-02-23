@@ -55,7 +55,7 @@ app
 
 得到如下效果
 
-![apidoc-demo-apps](/images/apidoc-demo-apps.png "apidoc-demo-apps")
+![apidoc-demo-apps](/thinkphp-apidoc/images/apidoc-demo-apps.png "apidoc-demo-apps")
 
 
 
@@ -181,7 +181,7 @@ return [
 ]
 ```
 
-![apidoc-demo-md](/images/apidoc-demo-md.png "apidoc-demo-md")
+![apidoc-demo-md](/thinkphp-apidoc/images/apidoc-demo-md.png "apidoc-demo-md")
 
 ## 快速生成CRUD
 
@@ -292,7 +292,7 @@ app
 
 通过如上配置，我们就可以看到页面上（搜索框后面）有一个 + 号按钮，点击弹出可视化配置窗口，如下
 
-![apidoc-config_crud](/images/apidoc-config_crud.png "apidoc-config_crud")
+![apidoc-config_crud](/thinkphp-apidoc/images/apidoc-config_crud.png "apidoc-config_crud")
 
 ### 2、编写模板
 在项目跟目录创建 `template`文件夹，并创建配置中的模板文件 `controller.txt`、`service.txt`、`model.txt`、`validate.txt`、`route_admn.txt`、`route_demo.txt`。

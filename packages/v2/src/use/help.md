@@ -20,7 +20,7 @@ category: 使用
 ## 500注解报错
 所有文件注释中存在 @XXX 的，都需`use`引入注释解释文件，如出现以下错误
 
-![apidoc-help-use_error](/images/apidoc-help-use_error.png "apidoc-help-use_error")
+![apidoc-help-use_error](/thinkphp-apidoc/images/apidoc-help-use_error.png "apidoc-help-use_error")
 
 可根据提示在相应的文件里，加上use解释文件
 

@@ -142,7 +142,7 @@ class ApiDocTest
 
 以上注释，我们得到的效果如下
 
-![apidoc-api-base-demo](/images/apidoc-api-base-demo.png "apidoc-api-base-demo")
+![apidoc-api-base-demo](/thinkphp-apidoc/images/apidoc-api-base-demo.png "apidoc-api-base-demo")
 
 ### 通用注释
 
@@ -233,7 +233,7 @@ class ApiDocTest
 
 效果如下
 
-![apidoc-api-dictionary-demo](/images/apidoc-api-dictionary-demo.png "apidoc-api-dictionary-demo")
+![apidoc-api-dictionary-demo](/thinkphp-apidoc/images/apidoc-api-dictionary-demo.png "apidoc-api-dictionary-demo")
 
 ### 逻辑层注释
 
@@ -298,7 +298,7 @@ class ApiDocTest
 
 效果如下
 
-![apidoc-api-server-demo](/images/apidoc-api-server-demo.png "apidoc-api-server-demo")
+![apidoc-api-server-demo](/thinkphp-apidoc/images/apidoc-api-server-demo.png "apidoc-api-server-demo")
 
 
 
@@ -393,7 +393,7 @@ class ApiDocTest
 ```
 
 
-![apidoc-api-model-demo](/images/apidoc-api-model-demo.png "apidoc-api-model-demo")
+![apidoc-api-model-demo](/thinkphp-apidoc/images/apidoc-api-model-demo.png "apidoc-api-model-demo")
 
 
 ## 参数说明
