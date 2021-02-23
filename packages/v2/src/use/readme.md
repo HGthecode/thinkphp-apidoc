@@ -4,8 +4,8 @@ sidebarDepth: 2
 category: 使用
 ---
 # 编写注释
-::: tip
-由于API接口文档根据解析代码中的注释生成，需按照一定的书写规则来生成
+::: tip 建议
+如果你使用PHPStorm的话，建议安装PHP [Annotations插件](https://plugins.jetbrains.com/plugin/7320-php-annotations)，可以支持注解的语法提示及自动完成
 :::
 
 ## 书写规范
