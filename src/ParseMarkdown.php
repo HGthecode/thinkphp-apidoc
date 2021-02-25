@@ -20,6 +20,7 @@ trait ParseMarkdown
                             $doc['content'] = $this->renderContent($doc['path']);
                             $doc['type']='md';
                             if (!empty($doc['content'])){
+                                $doc['menu_key']="md_".mt_rand(10000,99999);
                                 $docList[]=$doc;
                             }
                         }
@@ -27,12 +28,14 @@ trait ParseMarkdown
                     $docData[]=[
                         'title'=>$item['title'],
                         'children'=>$docList,
-                        'group'=>'markdown_doc'
+                        'group'=>'markdown_doc',
+                        'menu_key'=>"md_group_".mt_rand(10000,99999)
                     ];
                 }else if(!empty($item['path'])){
                     $item['content'] =  $this->renderContent($item['path']);
                     $item['type']='md';
                     if (!empty($item['content'])){
+                        $item['menu_key']="md_".mt_rand(10000,99999);
                         $docData[]=$item;
                     }
                 }

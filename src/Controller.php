@@ -30,6 +30,9 @@ class Controller
     // 当前应用
     protected $currentApp;
 
+    //tags
+    protected $tags=array();
+
     protected $defaultConfig=[
         'crud'=>[
             'model'=>[
@@ -341,7 +344,8 @@ class Controller
         $json=[
             'groups'=>$groups,
             'list'=>$apiData,
-            'docs'=>$docs
+            'docs'=>$docs,
+            'tags'=>$this->tags
         ];
         return $json;
     }

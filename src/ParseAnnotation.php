@@ -23,7 +23,7 @@ trait ParseAnnotation
 
     protected function parseController($class)
     {
-        $config = $this->app->config->get('apidoc');
+        $config = $this->config;
         $data=[];
         $refClass = new ReflectionClass($class);
         $title = $this->reader->getClassAnnotation($refClass,Title::class);
@@ -37,6 +37,7 @@ trait ParseAnnotation
         $data['group'] = !empty($group->value)?$group->value:null;
         $methodList = [];
         $filter_method = !empty($config['filter_method'])?$config['filter_method']:[];
+        $data['menu_key']=$data['controller']."_".mt_rand(10000,99999);
 
         foreach ($refClass->getMethods(\ReflectionMethod::IS_PUBLIC) as $refMethod) {
             if (!empty($refMethod->name) && !in_array($refMethod->name, $filter_method)){
@@ -56,21 +57,40 @@ trait ParseAnnotation
                     }
                     $methodItem['return']=$returned;
                 }
-
+                // 默认method
                 if (empty($methodItem['method'])){
-                    $methodItem['method']='GET';
+                    $methodItem['method']=!empty($config['default_method'])?$config['default_method']:'GET';
                 }
-                if (!empty($methodItem) && !empty($methodItem['url'])){
-                    // 路由分组，url加上分组
-                    if (!empty($routeGroup->value)){
-                        $methodItem['url'] = '/'.$routeGroup->value.'/'.$methodItem['url'];
+                // 默认default_author
+                if (empty($methodItem['author']) && !empty($config['default_author'])){
+                    $methodItem['author']=$config['default_author'];
+                }
+
+                // Tags
+                if (!empty($methodItem['tag'])){
+                    if (strpos($methodItem['tag'],' ')!==false){
+                        $tagArr = explode(" ", $methodItem['tag']);
+                        foreach ($tagArr as $tag){
+                            if (!in_array($tag,$this->tags)){
+                                $this->tags[]=$tag;
+                            }
+                        }
+                    }else if (!in_array($methodItem['tag'],$this->tags)){
+                        $this->tags[]=$methodItem['tag'];
                     }
-                    $methodList[]=$methodItem;
-                }else if(empty($methodItem['url'])){
-                    // 无url,自动生成
-                    $methodItem['url'] = $this->autoCreateUrl($refMethod);
-                    $methodList[]=$methodItem;
                 }
+
+                // 无url,自动生成
+                if(empty($methodItem['url'])){
+                    $methodItem['url'] = $this->autoCreateUrl($refMethod);
+                }else if (!empty($routeGroup->value)){
+                    // 路由分组，url加上分组
+                    $methodItem['url'] = '/'.$routeGroup->value.'/'.$methodItem['url'];
+                }
+                $methodItem['name']=$refMethod->name;
+                $methodItem['menu_key']=$methodItem['method']."_".$refMethod->name."_".mt_rand(10000,99999);
+
+                $methodList[]=$methodItem;
 
             }
 
@@ -86,17 +106,15 @@ trait ParseAnnotation
      */
     protected function autoCreateUrl($method){
         // 控制器地址
-        $class = $method->class;
-        $controller_layer = $this->app->config->get('route.controller_layer');
-        if(strpos($class,$controller_layer)!==false) {
-            $pathArr = explode($controller_layer, $class);
-            $classPath = $pathArr[1];
-            $classPath = str_replace("\\","/",$classPath);
-        }else{
-            $pathArr = explode("\\", $class);
-            $classPath = $pathArr[count($pathArr)-1];
-
+        $pathArr = explode("\\", $method->class);
+        $filterPathNames = array("app", "controller");
+        $classPathArr=[];
+        foreach ($pathArr as $item){
+            if (!in_array($item,$filterPathNames)){
+                $classPathArr[]=$item;
+            }
         }
+        $classPath = implode('/',$classPathArr);
         return $classPath.'/'.$method->name;
     }
 

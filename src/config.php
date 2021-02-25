@@ -6,9 +6,13 @@ return [
     'desc'               => '',
     // 版权申明
     'copyright'          => 'Powered By hg-code',
-    // 设置可选版本
-    'versions'           => [
-        ['title'=>'V1.0','folder'=>''],
+    // 默认作者
+    'default_author'=>'',
+    // 默认请求类型
+    'default_method'=>'GET',
+    // 设置应用/版本（必须设置）
+    'apps'           => [
+        ['title'=>'v1.0','path'=>'app\controller','folder'=>'v1'],
     ],
     // 控制器分组
     'groups'             => [],
@@ -40,28 +44,21 @@ return [
     ],
     // 设置全局Authorize时请求头headers携带的key，对应token的key
     'global_auth_key'    => "Authorization",
-    // 过滤、不解析的方法名称
-    'filter_method'     => [
-        '_empty',
-        '_initialize',
-        '__construct',
-        '__destruct',
-        '__get',
-        '__set',
-        '__isset',
-        '__unset',
-        '__cal',
-    ],
     // 统一的请求响应体，仅显示在文档提示中
-    'responses'          => '{
-    "code":"状态码",
-    "message":"操作描述",
-    "data":"业务数据",
-}',
+    'responses'=>[
+        // 是否显示在响应体中
+        'show_responses'=>true,
+        'data'=>[
+            ['name'=>'code','desc'=>'状态码','type'=>'int'],
+            ['name'=>'message','desc'=>'操作描述','type'=>'string'],
+            ['name'=>'data','desc'=>'业务数据','main'=>true,'type'=>'object'],
+        ]
+    ],
     // md文档
     'docs'              => [
         'menu_title' => '开发文档',
         'menus'      => []
-    ]
+    ],
+    'crud'=>[]
 
 ];
