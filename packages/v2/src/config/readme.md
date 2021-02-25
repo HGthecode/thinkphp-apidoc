@@ -28,6 +28,17 @@ sidebar: auto
 
 页面的版权申明，显示在封面页
 
+## default_method
+- 类型: string
+- 默认值: GET
+
+默认的请求类型，编写接口注解时，不配置Method参数时，为该配置的默认类型
+
+## default_author
+- 类型: string
+- 默认值: GET
+
+默认的作者名称，编写接口注解时，不配置Author时，为该配置的默认作者
 
 ## versions <MyBadge text="已弃用" type="error"/>
 - 类型: Array

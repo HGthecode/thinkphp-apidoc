@@ -23,7 +23,7 @@ composer require hg/apidoc
 
 #### 方式一 (推荐)
 
-[点击下载](https://apidoc.demo.hg-code.com/download/apidoc.zip) ，下载完成后解压，将apidoc文件夹拷贝到你的项目 public 目录下
+[点击下载](https://github.com/HGthecode/apidoc-ui/releases/download/v1.0.0/apidoc.zip) ，下载完成后解压，将apidoc文件夹拷贝到你的项目 public 目录下
 
 #### 方式二 GitHub 下载
  1、执行以下命令下载UI
