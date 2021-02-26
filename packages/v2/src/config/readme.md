@@ -209,7 +209,7 @@ return [
 密码加密的盐，请务必更改
 
 
-## global_auth_key
+## global\_auth\_key
 - 类型: string
 - 默认值: Authorization
 
