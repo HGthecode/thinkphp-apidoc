@@ -1,5 +1,5 @@
 ---
-sidebar: false
+sidebar: auto
 ---
 
 # TP6新项目的创建与Apidoc的安装
@@ -58,7 +58,7 @@ composer require hg/apidoc
 ![install-apidoc-4](/thinkphp-apidoc/images/course/install-apidoc-4.png "install-apidoc-4")
 
 ::: warning 建议
-使用`php think run`启动项目，可能会出现如下问题，推荐使用环境集成工具配置站点访问。
+使用`php think run`启动项目，可能会出现如下问题，推荐使用环境集成工具配置站点访问，可参考[使用phpstudy搭建TP6运行环境](./phpStudyInstall.md)。
 :::
 
 ![install-apidoc-6](/thinkphp-apidoc/images/course/install-apidoc-6.png "install-apidoc-6")

@@ -413,10 +413,10 @@ class ApiDocTest
 |Tag|	|接口Tag标签 |	多个标签用 空格隔开 |	
 |Header| 具体查看 [Header、Param、Returned的参数](/use/#header、param、return-的参数)	|请求头Headers参数 |	可定义多个|	
 |Param | 具体查看 [Header、Param、Returned的参数](/use/#header、param、return-的参数)	|请求参数 |	可定义多个 |	
-|ParamType| `json` `formdata`	|请求参数类型，默认json | |
+|ParamType| `json` `formdata` `route`	|请求参数类型，默认json。为route时，接口调试参数将替换路由表达式中的变量传递 | |
 |Returned| 具体查看 [Header、Param、Returned的参数](/use/#header、param、return-的参数)	|响应结果 |	可定义多个 |	
 
-> 如使用了官方的注解路如`@Route("hello/index", method="GET")`, `Url` `Method`可不配置
+> 如使用了官方的注解路由，如`@Route("hello/index", method="GET")`, 可不写 `Url` `Method`注解
 
 
 ### Header|Param|Returned参数

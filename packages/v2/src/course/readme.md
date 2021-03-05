@@ -2,17 +2,26 @@
 icon: book
 category: 教程
 sidebar: false
+pageClass: page-bg
 ---
 
 # 教程
 
-- [TP6新项目的创建与Apidoc的安装](./createTpAndInstall.md)
+<ClientOnly>
+<News-List>
+<News-Item url="./createTpAndInstall" image="/thinkphp-apidoc/images/course/titlepic.png" desc="适合新手快速上手">从0创建TP6新项目与Apidoc的安装</News-Item>
+<News-Item url="./phpStudyInstall" image="/thinkphp-apidoc/images/course/php-study-install/titlepic.png" desc="可以很方便的部署本地开发集成环境">使用phpstudy搭建TP6运行环境</News-Item>
+<News-Item url="./githubActionsDeploy" image="/thinkphp-apidoc/images/course/githubActions/titlepic.png" desc="可以很方便的部署本地开发集成环境">使用Github Actions 实现TP6自动部署</News-Item>
+</News-List>
+</ClientOnly>
 
-<!--
 
-- [php study 搭建TP6运行环境 ](markdown.md)
+<!-- - [从0创建TP6新项目与Apidoc的安装](./createTpAndInstall.md)
 
- - [TP6前后端分离的全局异常处理](markdown.md)
+- [使用phpstudy搭建TP6运行环境](./phpStudyInstall.md) 
 
-- [TP6多应用多版本Api开发](disable.md) -->
+- [TP6前后端分离Api的全局异常处理](markdown.md)
 
+- [TP6多应用多版本Api开发](disable.md) 
+
+- [使用Github Actions 实现TP6自动部署](githubActionsDeploy.md)  -->
