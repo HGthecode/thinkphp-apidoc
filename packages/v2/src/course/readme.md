@@ -9,9 +9,9 @@ pageClass: page-bg
 
 <ClientOnly>
 <News-List>
-<News-Item url="./createTpAndInstall" image="/thinkphp-apidoc/images/course/titlepic.png" desc="适合新手快速上手">从0创建TP6新项目与Apidoc的安装</News-Item>
-<News-Item url="./phpStudyInstall" image="/thinkphp-apidoc/images/course/php-study-install/titlepic.png" desc="可以很方便的部署本地开发集成环境">使用phpstudy搭建TP6运行环境</News-Item>
-<News-Item url="./githubActionsDeploy" image="/thinkphp-apidoc/images/course/githubActions/titlepic.png" desc="可以很方便的部署本地开发集成环境">使用Github Actions 实现TP6自动部署</News-Item>
+<News-Item url="./createTpAndInstall/" image="/thinkphp-apidoc/images/course/titlepic.png" desc="适合新手快速上手">从0创建TP6新项目与Apidoc的安装</News-Item>
+<News-Item url="./phpStudyInstall/" image="/thinkphp-apidoc/images/course/php-study-install/titlepic.png" desc="可以很方便的部署本地开发集成环境">使用phpstudy搭建TP6运行环境</News-Item>
+<News-Item url="./githubActionsDeploy/" image="/thinkphp-apidoc/images/course/githubActions/titlepic.png" desc="可以很方便的部署本地开发集成环境">使用Github Actions 实现TP6自动部署</News-Item>
 </News-List>
 </ClientOnly>
 
