@@ -30,7 +30,7 @@ git clone https://github.com/HGthecode/apidoc-ui.git
 
 安装插件完成后 打开浏览器访问   http://你的域名/apidoc/ ，出现接口文档页面，表示安装成功。
 
->TP5.x版本用户出现访问页面接口404的情况，请查看 [TP5.x版本文档接口404](/v1/use/help/#TP5.x版本文档接口404)
+>TP5.x版本用户出现访问页面接口404的情况，请查看 [TP5.x版本文档接口404](/use/help/#TP5.x版本文档接口404)
 
 接下来，了解一下  [基本配置](/config/) 和 [如何使用](/use/) 吧。
 

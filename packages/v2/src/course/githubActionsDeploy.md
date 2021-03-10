@@ -15,7 +15,7 @@ sidebar: auto
 - Azure Pipeline
 ...
 
-其中 GitHub Actions 是 GitHub 自家的持续集成及自动化工作流服务，简单易用，开源/私有项目都可免费试用（私有项目有限额）。
+其中 GitHub Actions 是 GitHub 自家的持续集成及自动化工作流服务，简单易用，开源/私有项目都可免费使用（私有项目有限额）。
 它使用起来非常简单，只要在你的仓库根目录建立.github/workflows文件夹，将你的工作流配置(YAML 文件)放到这个目录下，就能启用 GitHub Actions 服务。
 
 
