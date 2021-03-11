@@ -82,6 +82,7 @@ namespace app\controller;
 use hg\apidoc\annotation as Apidoc;
 
 /**
+ * 标题也可以这样直接写
  * @Apidoc\Title("基础示例")
  * @Apidoc\Group("base")
  */
@@ -95,7 +96,7 @@ class ApiDocTest
 
 |参数名|参数值|说明|
 |-|-|-|
-|Title| |	控制器名称 |	
+|Title| |	控制器标题，也可以直接写在注释最前面一行 |	
 |Group| 定义在配置文件 groups 中分组的name	|所属分组 |	
 
 
@@ -399,17 +400,18 @@ class ApiDocTest
 ## 参数说明
 
 ::: warning 注意
+- 每个参数以 @+参数名("参数值",子参数名="子参数值",...)
 - 参数名首字母大写，避免有些环境不能正确解析小写首字母
 - 子参数的值需用"双引号"包起来 
 :::
 
 |参数名|参数值|说明|书写规范|
 |-|-|-|-|
-|Title| |	接口名称 |	任意字符 |	
+|Title| |	接口名称 |	任意字符，也可如以下[特殊参数](#特殊参数)直接写在注释前面 |	
 |Desc|	|接口描述 |	任意字符 |	
-|Author|	|作者 |	任意字符 |	
+|Author|	|作者 |	任意字符,默认配置文件的`apidoc.default_author` |	
 |Url|	|真实的接口URL，不配置时会根据控制器目录自动生成 |	任意字符 |	
-|Method|	`GET` `POST` `PUT` `DELETE` |请求类型,默认`GET` |	 |	
+|Method|	`GET` `POST` `PUT` `DELETE` |请求类型,默认配置文件的`apidoc.default_method` |	 |	
 |Tag|	|接口Tag标签 |	多个标签用 空格隔开 |	
 |Header| 具体查看 [Header、Param、Returned的参数](/use/#header、param、return-的参数)	|请求头Headers参数 |	可定义多个|	
 |Param | 具体查看 [Header、Param、Returned的参数](/use/#header、param、return-的参数)	|请求参数 |	可定义多个 |	
@@ -417,7 +419,6 @@ class ApiDocTest
 |Returned| 具体查看 [Header、Param、Returned的参数](/use/#header、param、return-的参数)	|响应结果 |	可定义多个 |	
 
 > 如使用了官方的注解路由，如`@Route("hello/index", method="GET")`, 可不写 `Url` `Method`注解
-
 
 ### Header|Param|Returned参数
 
@@ -433,3 +434,35 @@ class ApiDocTest
 | withoutField|	配置了ref引入时有效，用来指定过滤掉的字段 | 如：withoutField:id,username；则引入模型除 id,username字段外的所有字段	 |	
 | childrenField|	字段类型为`tree`时，给其定义子节点字段名 |	默认为 children |	
 | childrenDesc|	字段类型为`tree`时，给其定义子节点字段名的备注 |	 |
+
+
+## 特殊参数
+::: tip 说明
+特殊参数以字符方式直接写到注释中，如下
+:::
+
+|参数名|说明|
+|-|-|
+|Title| 接口名称，写在注释最前面一行 |		
+|NotParse| 不需要解析的控制器/方法 |		
+
+```php
+<?php
+namespace app\controller;
+use hg\apidoc\annotation as Apidoc;
+
+/**
+ * 控制器标题也可以这样直接写
+ * NotParse
+ */
+class ApiDocTest
+{ 
+   /**
+     * 接口标题也可以这样直接写
+     * NotParse
+     */
+    public function model(){
+       //...
+    }
+}
+```
