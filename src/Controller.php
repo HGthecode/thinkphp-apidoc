@@ -425,7 +425,10 @@ class Controller
         }
 
         foreach ($controllers as $class){
-            $apiData[]=$this->parseController($class);
+            $classData=$this->parseController($class);
+            if ($classData!==false){
+                $apiData[] = $classData;
+            }
         }
         return $apiData;
     }

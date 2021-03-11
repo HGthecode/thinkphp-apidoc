@@ -26,6 +26,10 @@ trait ParseAnnotation
         $config = $this->config;
         $data=[];
         $refClass = new ReflectionClass($class);
+        $classTextAnnotations = $this->parseTextAnnotation($refClass);
+        if (in_array("NotParse",$classTextAnnotations)){
+            return false;
+        }
         $title = $this->reader->getClassAnnotation($refClass,Title::class);
         $group = $this->reader->getClassAnnotation($refClass,Group::class);
 
@@ -33,8 +37,16 @@ trait ParseAnnotation
         $controllersNameArr = explode("\\", $class);
         $controllersName = $controllersNameArr[count($controllersNameArr)-1];
         $data['controller']=$controllersName;
-        $data['title'] = !empty($title) && !empty($title->value) ? $title->value : $controllersName;
         $data['group'] = !empty($group->value)?$group->value:null;
+        $data['title'] = !empty($title) && !empty($title->value) ? $title->value : "";
+
+        if (empty($title)){
+            if (!empty($classTextAnnotations) && count($classTextAnnotations)>0){
+                $data['title'] = $classTextAnnotations[0];
+            }else{
+                $data['title'] = $controllersName;
+            }
+        }
         $methodList = [];
         $filter_method = !empty($config['filter_method'])?$config['filter_method']:[];
         $data['menu_key']=$data['controller']."_".mt_rand(10000,99999);
@@ -44,6 +56,15 @@ trait ParseAnnotation
                 $methodItem= $this->parseAnnotation($refMethod,true);
                 if (!count((array)$methodItem)) {
                     continue;
+                }
+                $textAnnotations=$this->parseTextAnnotation($refMethod);
+                // 标注不解析的方法
+                if (in_array("NotParse",$textAnnotations)){
+                    continue;
+                }
+                // 无标题，且有文本注释
+                if (empty($methodItem['title']) && !empty($textAnnotations) && count($textAnnotations)>0){
+                    $methodItem['title'] = $textAnnotations[0];
                 }
                 // 添加responses统一响应体
                 if (!empty($config['responses']) && !empty($config['responses']['show_responses']) && !empty($config['responses']['data']) && !empty($methodItem['return'])){
@@ -115,9 +136,15 @@ trait ParseAnnotation
             }
         }
         $classPath = implode('/',$classPathArr);
-        return $classPath.'/'.$method->name;
+        return '/'.$classPath.'/'.$method->name;
     }
 
+    /**
+     * ref引用
+     * @param $refPath
+     * @param bool $enableRefService
+     * @return false|string[]
+     */
     protected function renderRef($refPath,$enableRefService=true){
         $res = ['type'=>'model'];
         // 通用定义引入
@@ -143,7 +170,13 @@ trait ParseAnnotation
         $res['data']=$data;
         return $res;
     }
-    
+
+    /**
+     * 解析注释引用
+     * @param $refPath
+     * @return array
+     * @throws \ReflectionException
+     */
     protected function renderService($refPath){
         $pathArr = explode("\\", $refPath);
         $methodName = $pathArr[count($pathArr)-1];
@@ -254,6 +287,31 @@ trait ParseAnnotation
             }
             $data['param']=$params;
             $data['return']=$returns;
+        }
+        return $data;
+    }
+
+    /**
+     * 解析非注解文本注释
+     * @param $refMethod
+     * @return array|false
+     */
+    protected function parseTextAnnotation($refMethod){
+        $annotation=$refMethod->getDocComment();
+        if (empty($annotation)){
+            return false;
+        }
+        if (preg_match ( '#^/\*\*(.*)\*/#s', $annotation, $comment ) === false)
+            return false;
+        $comment = trim ( $comment [1] );
+        if (preg_match_all ( '#^\s*\*(.*)#m', $comment, $lines ) === false)
+            return false;
+        $data=[];
+        foreach ( $lines[1] as $line ) {
+            $line = trim($line);
+            if (!empty ($line) && strpos ( $line, '@' ) !== 0) {
+                $data[]=$line;
+            }
         }
         return $data;
     }
