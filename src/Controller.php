@@ -30,8 +30,11 @@ class Controller
     // 当前应用
     protected $currentApp;
 
-    //tags
+    //tags，当前应用/版本所有的tag
     protected $tags=array();
+
+    //groups,当前应用/版本的分组name
+    protected $groups=array();
 
     protected $defaultConfig=[
         'crud'=>[
@@ -337,8 +340,14 @@ class Controller
             $menu_title = !empty($config['docs']) && !empty($config['docs']['menu_title'])?$config['docs']['menu_title']:'文档';
             $groups[]=['title'=>$menu_title,'name'=>'markdown_doc'];
         }
-        if (!empty($config['groups']) && count($config['groups'])>0){
-            $groups = array_merge($groups,$config['groups']);
+        if (!empty($config['groups']) && count($config['groups'])>0 && !empty($this->groups) && count($this->groups)>0){
+            $configGroups=[];
+            foreach ($config['groups'] as $group) {
+                if (in_array($group['name'],$this->groups)){
+                    $configGroups[]=$group;
+                }
+            }
+            $groups = array_merge($groups,$configGroups);
         }
 
         $json=[

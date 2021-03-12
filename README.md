@@ -1,15 +1,22 @@
 <p align="center">
-  <a href="#">
     <img width="120" src="https://apidoc.demo.hg-code.com/images/logo.png">
-  </a>
 </p>
 
 <h1 align="center">
-  <a target="_blank">ThinkPHP ApiDoc</a>
+  ThinkPHP ApiDoc
 </h1>
 
 <div align="center">
 基于ThinkPHP 根据注释自动生成API接口文档
+</div>
+
+<div align="center" style="margin-top:10px;margin-bottom:50px;">
+<a href="https://packagist.org/packages/hg/apidoc"><img src="https://img.shields.io/packagist/v/hg/apidoc"></a>
+<a href="https://packagist.org/packages/hg/apidoc"><img src="https://img.shields.io/packagist/dt/hg/apidoc"></a>
+<a href="https://packagist.org/packages/hg/apidoc"><img src="https://img.shields.io/packagist/l/hg/apidoc"></a>
+<a href="https://github.com/HGthecode/thinkphp-apidoc"><img src="https://img.shields.io/github/issues/HGthecode/thinkphp-apidoc"></a>
+<a href="https://github.com/HGthecode/thinkphp-apidoc"><img src="https://img.shields.io/github/forks/HGthecode/thinkphp-apidoc"></a>
+
 </div>
 
 

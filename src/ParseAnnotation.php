@@ -38,6 +38,9 @@ trait ParseAnnotation
         $controllersName = $controllersNameArr[count($controllersNameArr)-1];
         $data['controller']=$controllersName;
         $data['group'] = !empty($group->value)?$group->value:null;
+        if (!empty($data['group']) && !in_array($data['group'],$this->groups)){
+            $this->groups[]=$data['group'];
+        }
         $data['title'] = !empty($title) && !empty($title->value) ? $title->value : "";
 
         if (empty($title)){
@@ -67,7 +70,7 @@ trait ParseAnnotation
                     $methodItem['title'] = $textAnnotations[0];
                 }
                 // 添加responses统一响应体
-                if (!empty($config['responses']) && !empty($config['responses']['show_responses']) && !empty($config['responses']['data']) && !empty($methodItem['return'])){
+                if (!empty($config['responses']) && !empty($config['responses']['show_responses']) && !empty($config['responses']['data']) && !empty($methodItem['return']) && !in_array("NotResponses",$textAnnotations)){
                     // 显示在响应体中
                     $returned = [];
                     foreach ($config['responses']['data'] as $resItem){
@@ -83,7 +86,7 @@ trait ParseAnnotation
                     $methodItem['method']=!empty($config['default_method'])?$config['default_method']:'GET';
                 }
                 // 默认default_author
-                if (empty($methodItem['author']) && !empty($config['default_author'])){
+                if (empty($methodItem['author']) && !empty($config['default_author']) && !in_array("NotDefaultAuthor",$textAnnotations)){
                     $methodItem['author']=$config['default_author'];
                 }
 
