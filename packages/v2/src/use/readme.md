@@ -444,7 +444,10 @@ class ApiDocTest
 |参数名|说明|
 |-|-|
 |Title| 接口名称，写在注释最前面一行 |		
-|NotParse| 不需要解析的控制器/方法 |		
+|NotParse| 不需要解析的控制器/方法 |	
+|NotResponses| 不使用统一响应体返回数据 |	
+|NotDefaultAuthor| 不使用默认作者 |	
+
 
 ```php
 <?php
