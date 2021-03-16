@@ -193,6 +193,45 @@ trait ParseAnnotation
     }
 
     /**
+     * 处理Param/Returned的字段名name、params子级参数
+     * @param $values
+     * @return array
+     */
+    protected function handleParamValue($values,$field='param'){
+        $name="";
+        $params=[];
+        if (!empty($values) && is_array($values) && count($values)>0){
+            foreach ($values as $item){
+                if (is_string($item)){
+                    $name=$item;
+                }else if(is_object($item)){
+                    if (!empty($item->ref)){
+                        $refRes = $this->renderRef($item->ref,true);
+                        $params = $this->handleRefData($params,$refRes,$item,$field);
+                    }else{
+                        $param=[
+                            "name"=>"",
+                            "type"=>$item->type,
+                            "desc"=>$item->desc,
+                            "default"=>$item->default,
+                            "require"=>$item->require,
+                        ];
+                        $children = $this->handleParamValue($item->value);
+                        $param['name'] = $children['name'];
+                        if (count($children['params'])>0){
+                            $param['params'] = $children['params'];
+                        }
+                        $params[]=$param;
+                    }
+                }
+            }
+        }else{
+            $name=$values;
+        }
+        return ['name'=>$name,'params'=>$params];
+    }
+
+    /**
      * 解析方法注释
      * @param $refMethod
      * @param bool $enableRefService 是否终止service的引入
@@ -213,12 +252,17 @@ trait ParseAnnotation
                             $params = $this->handleRefData($params,$refRes,$annotation,'param');
                         }else{
                             $param=[
-                                "name"=>$annotation->value,
+                                "name"=>"",
                                 "type"=>$annotation->type,
                                 "desc"=>$annotation->desc,
                                 "default"=>$annotation->default,
                                 "require"=>$annotation->require,
                             ];
+                            $children=$this->handleParamValue($annotation->value,'param');
+                            $param['name']=$children['name'];
+                            if (count($children['params'])>0){
+                                $param['params']=$children['params'];
+                            }
                             $params[] = $param;
                             
                         }
@@ -229,12 +273,17 @@ trait ParseAnnotation
                             $returns = $this->handleRefData($returns,$refRes,$annotation,'return');
                         }else{
                             $param=[
-                                "name"=>$annotation->value,
+                                "name"=>"",
                                 "type"=>$annotation->type,
                                 "desc"=>$annotation->desc,
                                 "default"=>$annotation->default,
                                 "require"=>$annotation->require,
                             ];
+                            $children=$this->handleParamValue($annotation->value,'return');
+                            $param['name']=$children['name'];
+                            if (count($children['params'])>0){
+                                $param['params']=$children['params'];
+                            }
                             $returns[] = $param;
                         }
                         break;

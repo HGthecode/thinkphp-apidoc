@@ -8,7 +8,7 @@ namespace hg\apidoc\annotation;
  *
  * @package hg\apidoc\annotation
  * @Annotation
- * @Target({"METHOD"})
+ * @Target({"METHOD","ANNOTATION"})
  */
 final class Param extends ParamBase
 {

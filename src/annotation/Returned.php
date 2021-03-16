@@ -9,7 +9,7 @@ use Doctrine\Common\Annotations\Annotation;
  *
  * @package hg\apidoc\annotation
  * @Annotation
- * @Target({"METHOD"})
+ * @Target({"METHOD","ANNOTATION"})
  */
 final class Returned extends ParamBase
 {
