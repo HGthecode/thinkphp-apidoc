@@ -145,6 +145,7 @@ class ApiDocTest
 
 ![apidoc-api-base-demo](/thinkphp-apidoc/images/apidoc-api-base-demo.png "apidoc-api-base-demo")
 
+
 ### 通用注释
 
 通过定义通用的公共注释参数来实现 可复用性，避免每个接口都定义一大堆同样的参数
@@ -395,6 +396,52 @@ class ApiDocTest
 
 
 ![apidoc-api-model-demo](/thinkphp-apidoc/images/apidoc-api-model-demo.png "apidoc-api-model-demo")
+
+
+### 复杂注释
+
+> \>=2.3.0 版本
+
+虽然apidoc拥有强大的ref引用能力，但某些场景我们需要在一个方法内完成多层数据结构的注解，此时我们可以将`Param`,`Returned`做嵌套使用即可
+
+```php
+<?php
+namespace app\controller;
+
+use hg\apidoc\annotation as Apidoc;
+
+class ApiDocTest
+{ 
+    /**
+     * 直接定义多层结构的参数
+     * @Apidoc\Desc("仅在一个方法注释中定义多层数据结构的参数")
+     * @Apidoc\Url("/admin/baseDemo/completeParams")
+     * @Apidoc\Param("info",type="object",desc="信息",
+     *     @Apidoc\Param ("name",type="string",desc="姓名"),
+     *     @Apidoc\Param ("sex",type="string",desc="性别"),
+     *     @Apidoc\Param ("group",type="object",desc="所属组",
+     *          @Apidoc\Param ("group_name",type="string",desc="组名"),
+     *          @Apidoc\Param ("group_id",type="int",desc="组id"),
+     *          @Apidoc\Param ("data",type="object",ref="app\admin\services\ApiDoc\getUserList",desc="这里也可以用ref")
+     *     )
+     * )
+     * @Apidoc\Returned("info",type="object",desc="信息",
+     *     @Apidoc\Returned ("name",type="string",desc="姓名"),
+     *     @Apidoc\Returned ("sex",type="string",desc="性别"),
+     *     @Apidoc\Returned ("group",type="object",desc="所属组",
+     *          @Apidoc\Returned ("group_name",type="string",desc="组名"),
+     *          @Apidoc\Returned ("group_id",type="int",desc="组id"),
+     *     )
+     * )
+     */
+    public function test(){
+       //...
+    }
+}
+```
+
+![apidoc-api-complete-demo.png](/thinkphp-apidoc/images/apidoc-api-complete-demo.png "apidoc-api-complete-demo.png")
+
 
 
 ## 参数说明
