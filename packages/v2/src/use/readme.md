@@ -472,7 +472,7 @@ class ApiDocTest
 |参数名|说明|书写规范|
 |-|-|-|
 | |	参数的字段名 |	如：@Apidoc\Param("name")，如使用ref引入某个定义，可不配置参数值 |	
-| type| 	字段类型 | `int` `string` `boolean` `object` `array` `tree`	 |	
+| type| 	字段类型 | `string` `int` `boolean` `array` `object` `tree` `file` `float` `date` `time` `datetime`	 |	
 | require|	是否必填，`param`有效 |	 |	
 | default|默认值 |  |	
 | desc|	字段描述 |	 |	
@@ -492,6 +492,8 @@ class ApiDocTest
 |-|-|
 |Title| 接口名称，写在注释最前面一行 |		
 |NotParse| 不需要解析的控制器/方法 |	
+|NotHeaders| 不使用配置中的全局请求头参数 |	
+|NotParameters| 不使用配置中的全局请求参数 |	
 |NotResponses| 不使用统一响应体返回数据 |	
 |NotDefaultAuthor| 不使用默认作者 |	
 

@@ -41,7 +41,7 @@ sidebar: auto
 默认的作者名称，编写接口注解时，不配置Author时，为该配置的默认作者
 
 ## versions <MyBadge text="已弃用" type="error"/>
-- 类型: Array
+- 类型: array
 - 默认值: undefined
 
 设置API文档的版本
@@ -60,7 +60,7 @@ return [
 
 ## apps
 
-- 类型: Array
+- 类型: array
 - 默认值: undefined
 - 支持版本：>=2.1.0
 
@@ -91,7 +91,7 @@ apps配置数组的参数说明
 
 
 ## groups  
-- 类型: Array
+- 类型: array
 - 默认值: undefined
 
 设置控制器分组
@@ -116,7 +116,7 @@ return [
 
 
 ## controllers
-- 类型: Array
+- 类型: array
 - 默认值: undefined
 
 列出需要生成接口文档的控制器，如不配置则自动根据 `apps` 配置的path自动生成
@@ -134,7 +134,7 @@ return [
 ```
 
 ## filter_controllers
-- 类型: Array
+- 类型: array
 - 默认值: undefined
 
 如不配置`controllers`时有效，在自动生成控制器列表时配置不解析的控制器
@@ -153,7 +153,7 @@ return [
 
 
 ## cache
-- 类型: Array
+- 类型: array
 
 缓存配置，开启后需手动更新接口参数，关闭则每次刷新重新生成接口数据
 
@@ -186,7 +186,7 @@ return [
 
 
 ## auth
-- 类型: Array
+- 类型: array
 
 进入接口问页面的权限认证配置
 
@@ -209,15 +209,47 @@ return [
 密码加密的盐，请务必更改
 
 
-## global\_auth\_key
+## global\_auth\_key <MyBadge text="已弃用" type="error"/>
 - 类型: string
 - 默认值: Authorization
+
+> `v2.4.0`版本已弃用
 
 设置全局Authorize时请求头headers携带的key，对应token的key
 
 
+## headers
+- 类型: array
+- 默认值: undefined
+
+全局请求头参数，配置后，所有接口请求头参数都统一加上这些参数，如接口单独定义了将会覆盖配置中的全局参数
+```php
+// config/apidoc.php
+
+// 全局的请求头参数
+'headers'=>[
+    ['name'=>'token','type'=>'string','require'=>true,'desc'=>'登录票据'],
+    ['name'=>'shopid','type'=>'int','desc'=>'店铺id'],
+],
+```
+
+## parameters
+- 类型: array
+- 默认值: undefined
+
+全局请求参数，配置后，所有接口请求参数都统一加上这些参数，如接口单独定义了将会覆盖配置中的全局参数
+```php
+// config/apidoc.php
+
+// 全局的请求参数
+'parameters'=>[
+    ['name'=>'code','type'=>'string','desc'=>'全局code'],
+],
+```
+
+
 ## responses
-- 类型: string/object
+- 类型: string/object/array
 - 默认值: 如下示例
 
 统一的请求响应体，当配置为字符串时，只在接口详情页面`响应结果Responses`右侧的问号处做展示用
@@ -232,7 +264,7 @@ return [
     "timestamp":"响应时间戳"
 }',
 
-// 或
+//  >= v2.2.1版本
 'responses'=>[
     'show_responses'=>true,
     'data'=>[
@@ -240,6 +272,13 @@ return [
         ['name'=>'message','desc'=>'操作描述','type'=>'string'],
         ['name'=>'data','desc'=>'业务数据','main'=>true,'type'=>'object'],
     ]
+],
+
+//  >= v2.4.0版本（推荐）
+'responses'=>[
+    ['name'=>'code','desc'=>'状态码','type'=>'int'],
+    ['name'=>'message','desc'=>'操作描述','type'=>'string'],
+    ['name'=>'data','desc'=>'业务数据','main'=>true,'type'=>'object'],
 ],
 
 ```

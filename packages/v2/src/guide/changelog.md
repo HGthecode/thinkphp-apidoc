@@ -13,6 +13,24 @@ category: 指南
 :::
 
 
+## v2.4.0
+`2020-03-18`
+
+> 需升级前端文件 [v1.2.0](https://github.com/HGthecode/apidoc-ui/releases/download/v1.2.0/apidoc.zip)
+
+- 文档页面支持设置全局请求Header、Params参数
+- 新增配置`apidoc.headers`来设置全局请求头参数
+- 新增配置`apidoc.parameters`来设置全局请求参数
+- 增加自动将配置项`apidoc.definitions`通用注释文件排除在接口控制器外
+- 接口描述Desc及Param、Returned子参数desc支持换行显示
+- 调整统一响应体无配置mian字段时，合并返回Returned参数
+- 调整统一响应体配置方式，可去除`responses.show_responses` `responses.data` 直接用`responses`配置为参数数组
+- Param、Returned子参数`type`增加`float`、`date`、`time`、`datetime`类型
+- 修正统一响应体在无配置Returned时不返回的问题
+- 修正apps配置多个应用/版本存在相同`folder`时文档读取错误的问题
+- 去除无用的解析注解时的缓存机制
+
+
 ## v2.3.0
 `2020-03-16`
 
