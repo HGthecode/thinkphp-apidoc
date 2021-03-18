@@ -69,15 +69,48 @@ trait ParseAnnotation
                 if (empty($methodItem['title']) && !empty($textAnnotations) && count($textAnnotations)>0){
                     $methodItem['title'] = $textAnnotations[0];
                 }
+                // 添加统一headers请求头参数
+                if (!empty($config['headers']) && !in_array("NotHeaders",$textAnnotations)){
+                    if (!empty($methodItem['header'])) {
+                        $methodItem['header'] = Utils::arrayMergeAndUnique("name",$config['headers'], $methodItem['header']);
+                    }else{
+                        $methodItem['header'] = $config['headers'];
+                    }
+                }
+                // 添加统一params请求参数
+                if (!empty($config['parameters']) && !in_array("NotParameters",$textAnnotations)){
+                    if (!empty($methodItem['param'])) {
+                        $methodItem['param'] = Utils::arrayMergeAndUnique("name",$config['parameters'], $methodItem['param']);
+                    }else{
+                        $methodItem['param'] = $config['parameters'];
+                    }
+                }
                 // 添加responses统一响应体
-                if (!empty($config['responses']) && !empty($config['responses']['show_responses']) && !empty($config['responses']['data']) && !empty($methodItem['return']) && !in_array("NotResponses",$textAnnotations)){
+                if (
+                    !empty($config['responses']) &&
+                    !is_string($config['responses']) &&
+                    !in_array("NotResponses",$textAnnotations)
+                ){
                     // 显示在响应体中
                     $returned = [];
-                    foreach ($config['responses']['data'] as $resItem){
+                    $hasMian=false;
+                    if (isset($config['responses']['data']) && !$config['responses']['show_responses']){
+                        $responsesData = [];
+                    }else if (isset($config['responses']['data']) && $config['responses']['show_responses']===true){
+                        $responsesData = $config['responses']['data'];
+                    }else{
+                        $responsesData = $config['responses'];
+                    }
+                    foreach ($responsesData as $resItem){
                         if (!empty($resItem['main']) && $resItem['main']===true){
                             $resItem['params'] = $methodItem['return'];
+                            $hasMian=true;
                         }
                         $returned[]=$resItem;
+                    }
+                    if (!$hasMian){
+                        $returned = Utils::arrayMergeAndUnique("name",$returned, $methodItem['return']);
+//                        $returned = array_merge($returned,$methodItem['return']);
                     }
                     $methodItem['return']=$returned;
                 }

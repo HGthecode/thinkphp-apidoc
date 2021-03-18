@@ -9,7 +9,7 @@ abstract class ParamBase extends Annotation
 
     /**
      * 类型
-     * @Enum({"string", "integer", "int", "boolean", "array", "double", "object", "tree", "file"})
+     * @Enum({"string", "integer", "int", "boolean", "array", "double", "object", "tree", "file","float","date","time","datetime"})
      * @var string
      */
     public $type = 'string';

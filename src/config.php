@@ -42,17 +42,15 @@ return [
         // 密码加密盐
         'secret_key' => "apidoc#hg_code",
     ],
-    // 设置全局Authorize时请求头headers携带的key，对应token的key
-    'global_auth_key'    => "Authorization",
+    // 统一的请求Header
+    'headers'=>[],
+    // 统一的请求参数Parameters
+    'parameters'=>[],
     // 统一的请求响应体，仅显示在文档提示中
     'responses'=>[
-        // 是否显示在响应体中
-        'show_responses'=>true,
-        'data'=>[
-            ['name'=>'code','desc'=>'状态码','type'=>'int'],
-            ['name'=>'message','desc'=>'操作描述','type'=>'string'],
-            ['name'=>'data','desc'=>'业务数据','main'=>true,'type'=>'object'],
-        ]
+        ['name'=>'code','desc'=>'状态码','type'=>'int'],
+        ['name'=>'message','desc'=>'操作描述','type'=>'string'],
+        ['name'=>'data','desc'=>'业务数据','main'=>true,'type'=>'object'],
     ],
     // md文档
     'docs'              => [

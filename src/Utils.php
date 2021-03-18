@@ -80,7 +80,7 @@ class Utils
      * @param  string $childName  子节点名称
      * @return array  转换后的list数据
      */
-    public function treeToList($tree,  $childName = 'children')
+    public function treeToList($tree,  $childName = 'children',$key="id",$parentField="parent")
     {
         $array = array();
         foreach ($tree as $val) {
@@ -88,7 +88,12 @@ class Utils
             if (isset($val[$childName])) {
                 $children = $this->treeToList($val[$childName], $childName);
                 if ($children) {
-                    $array = array_merge($array, $children);
+                    $newChildren = [];
+                    foreach ($children as $item){
+                        $item[$parentField] = $val[$key];
+                        $newChildren[]=$item;
+                    }
+                    $array = array_merge($array, $newChildren);
                 }
             }
         }
@@ -101,11 +106,12 @@ class Utils
      * @param $keys
      */
     public function getTreeNodesByKeys($tree,$keys,$field="id",$childrenField="children"){
-        $list = $this->TreeToList($tree,$childrenField);
+        $list = $this->TreeToList($tree,$childrenField,"folder");
         $data = [];
-        foreach ($keys as $key){
+        foreach ($keys as $k=>$v){
+            $parent = !$k?"":$keys[$k-1];
             foreach ($list as $item){
-                if ($item[$field] == $key){
+                if (((!empty($item['parent']) && $item['parent'] === $parent) || empty($item['parent'])) && $item[$field] == $v){
                     $data[]=$item;
                     break;
                 }
@@ -160,6 +166,43 @@ class Utils
             $str = $this->replaceTemplate($str,$data);
         }
         return $str;
+    }
+
+    public static function getArrayFind($array,$query){
+        $res=null;
+        if (is_array($array)){
+            foreach ($array as $item){
+                if ($query($item)){
+                    $res= $item;
+                    break;
+                }
+            }
+        }
+        return $res;
+    }
+
+    /**
+     * 合并对象数组并根据key去重
+     * @param string $name
+     * @param mixed ...$array
+     * @return array
+     */
+    public static function arrayMergeAndUnique($key="name",...$array){
+        $mergeArr=[];
+        foreach ($array as $k => $v) {
+            $mergeArr=array_merge($mergeArr,$v);
+        }
+        $keys = [];
+        foreach ($mergeArr as $k => $v) {
+            $keys[]=$v[$key];
+        }
+        $uniqueKeys=array_flip(array_flip($keys));
+        $newArray=[];
+        foreach ($uniqueKeys as $k=>$v){
+            $newArray[]=$mergeArr[$k];
+        }
+        return $newArray;
+
     }
 
 

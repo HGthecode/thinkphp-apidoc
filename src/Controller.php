@@ -110,7 +110,7 @@ class Controller
             $config['responses'] = [
                 'jsonStr'=>$config['responses']
             ];
-        }else if (!empty($config['responses']) && !$config['responses']['show_responses'] && !empty($config['responses']['data'])){
+        }else if (!empty($config['responses']) && isset($config['responses']['show_responses']) && !$config['responses']['show_responses'] && !empty($config['responses']['data'])){
             // 显示在提示中
             $responsesStr = '{'."\r\n";
             $responsesMain = "";
@@ -245,7 +245,7 @@ class Controller
         $request = Request::instance();
         $params = $request->param();
         if (!empty($params) && !empty($params['appKey'])){
-            $this->initCurrentApps($params['appKey']);
+           $this->initCurrentApps($params['appKey']);
         }
         if ($config['cache']['enable']){
             // 获取缓存数据
@@ -410,7 +410,11 @@ class Controller
     {
         $list=[];
         foreach (ClassMapGenerator::createMap($dir) as $class => $path) {
-            if (!isset($this->config['filter_controllers'])||(isset($this->config['filter_controllers']) && !in_array($class,$this->config['filter_controllers']))){
+            if (
+                !isset($this->config['filter_controllers']) ||
+                (isset($this->config['filter_controllers']) &&  !in_array($class,$this->config['filter_controllers'])) &&
+                $this->config['definitions'] != $class
+            ){
                 $list[] = $class;
             }
         }
