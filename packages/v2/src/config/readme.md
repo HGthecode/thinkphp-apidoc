@@ -289,12 +289,16 @@ return [
 - 类型: boolean
 - 默认值: false
 
+> `v2.4.0`版本已弃用，改为以上示例 v2.4.0版本的使用方式
+
 是否将统一响应体数据显示在响应结果中
 
 
 ### responses.data
 - 类型: array
 - 默认值: undefined
+
+> `v2.4.0`版本已弃用，改为以上示例 v2.4.0版本的使用方式
 
 统一响应体的数据结构配置，如配置`responses.show_responses`为true时，响应体数据中必须有一个指定`main`为true，以将接口数据挂载到该字段下
 
@@ -348,7 +352,7 @@ menu数组参数
 |参数名|说明|
 |-|-|
 |title|文档标题|
-|path|md文件地址，可使用 `{:version}` 做多版本区分|
+|path|md文件地址，可使用 `${app[N].folder}` 做应用/版本区分，具体用法见[path可用变量说明](/config/#path可用变量说明)|
 
 ```php
 // config/apidoc.php
@@ -358,19 +362,47 @@ return [
     'docs' => [
         'menu_title' => '开发文档',
         'menus'      => [
-            ['title'=>'使用说明','path'=>'docs/Use'],
+            ['title'=>'md语法示例','path'=>'docs/Use'],
             [
-                'title'=>'HTTP响应码',
+                'title'=>'HTTP响应编码',
                 'items'=>[
-                    ['title'=>'status错误码说明','path'=>'docs/{:version}/HttpStatus'],
-                    ['title'=>'code错误码说明','path'=>'docs/{:version}/HttpCode'],
+                    ['title'=>'status错误码说明','path'=>'docs/${app[0].folder}/HttpStatus'],
+                    ['title'=>'code错误码说明','path'=>'docs/${app[0].folder}/HttpCode_${app[1].folder}'],
                 ],
             ]
         ]
-
     ]
 ]
 ```
+
+### path可用变量说明
+变量写法`${app[N].folder}`其中的`N`表示`apps`中配置的层级：
+
+比如配置为如下
+```php
+'apps' => [
+    ['title'=>'后台管理','path'=>'app\admin\controller','folder'=>'admin'],
+    [
+        'title'=>'演示示例',
+        'path'=>'app\demo\controller',
+        'folder'=>'demo',
+        'items'=>[
+            ['title'=>'V1.0','path'=>'app\demo\controller\v1','folder'=>'v1'],
+            ['title'=>'V2.0','path'=>'app\demo\controller\v2','folder'=>'v2']
+        ]
+    ],
+],
+'docs'=>[
+    'menu_title' => '开发文档',
+    'menus'      => [
+        ['title'=>'Http状态码','path'=>'docs/${app[0].folder}/HttpCode_${app[1].folder}'],
+    ]
+]
+```
+1、当引用/版本选为`后台管理`的应用时，此时`${app[0].folder}`就等于`admin` 由于该应用配置无子级`items`此时的`${app[1].folder}`也就为空。最终文件地址为`dosc/admin/HttpCode_.md`。
+
+2、当引用/版本选为`演示示例-V1.0`时，此时`${app[0].folder}`就等于`demo` 由于该应用配置存在子级（多个版本）`items`此时的`${app[1].folder}`也就为`v1`。最终文件地址为`dosc/admin/HttpCode_v1.txt`。
+
 
 ## crud
 - 类型: object
@@ -384,7 +416,7 @@ return [
 |参数名|类型|说明|
 |-|-|-|
 |path|string|生成控制器文件到此目录，可使用`${app[N].folder}`变量指定当前选中的`apps`配置中的参数，具体可查看说明 |
-|template|string|生成控制器的模板文件地址。`../`为项目根目录；模板文件必须为`.txt`；可使用`${app[N].folder}`变量指定当前选中的`apps`配置中的参数，具体可查看说明|
+|template|string|生成控制器的模板文件地址。`../`为项目根目录；模板文件必须为`.txt`；可使用`${app[N].folder}`变量指定当前选中的`apps`配置中的参数，具体可查看[path、template可用变量说明](/config/#path、template可用变量说明)|
 
 ### crud.route 的参数
 

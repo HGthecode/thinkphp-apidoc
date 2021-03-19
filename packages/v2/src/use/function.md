@@ -158,7 +158,7 @@ docs
 
 2、配置文档菜单
 
-> 可使用 `${app[N].folder}` 做多版本区分，变量参数用法见以下[说明](#可用变量说明)
+> 可使用 `${app[N].folder}` 做多版本区分，变量参数用法见[配置说明](/config/#docs)
 
 ```php
 // config/apidoc.php
@@ -184,33 +184,6 @@ return [
 
 ![apidoc-demo-md](/thinkphp-apidoc/images/apidoc-demo-md.png "apidoc-demo-md")
 
-### 可用变量说明
-变量写法`${app[N].folder}`其中的`N`表示`apps`中配置的层级：
-
-比如配置为如下
-```php
-'apps' => [
-    ['title'=>'后台管理','path'=>'app\admin\controller','folder'=>'admin'],
-    [
-        'title'=>'演示示例',
-        'path'=>'app\demo\controller',
-        'folder'=>'demo',
-        'items'=>[
-            ['title'=>'V1.0','path'=>'app\demo\controller\v1','folder'=>'v1'],
-            ['title'=>'V2.0','path'=>'app\demo\controller\v2','folder'=>'v2']
-        ]
-    ],
-],
-'docs'=>[
-    'menu_title' => '开发文档',
-    'menus'      => [
-        ['title'=>'Http状态码','path'=>'docs/${app[0].folder}/HttpCode_${app[1].folder}'],
-    ]
-]
-```
-1、当引用/版本选为`后台管理`的应用时，此时`${app[0].folder}`就等于`admin` 由于该应用配置无子级`items`此时的`${app[1].folder}`也就为空。最终文件地址为`dosc/admin/HttpCode_.md`。
-
-2、当引用/版本选为`演示示例-V1.0`时，此时`${app[0].folder}`就等于`demo` 由于该应用配置存在子级（多个版本）`items`此时的`${app[1].folder}`也就为`v1`。最终文件地址为`dosc/admin/HttpCode_v1.txt`。
 
 
 
