@@ -108,7 +108,7 @@ class ParseModel
     {
 
         $createSQL = Db::query("show create table " . $model->getTable())[0]['Create Table'];
-        preg_match_all("#`(.*?)`(.*?),#", $createSQL, $matches);
+        preg_match_all("#`(.*?)`(.*?),\n#", $createSQL, $matches);
         $fields = $matches[1];
         $types = $matches[2];
         $fieldComment = [];
