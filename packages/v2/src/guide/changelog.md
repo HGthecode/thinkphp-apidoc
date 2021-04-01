@@ -12,6 +12,16 @@ category: 指南
 - 修订版本号：日常 bugfix 更新
 :::
 
+## v2.4.2
+`2020-04-01`
+
+> 需升级前端文件 [v1.2.1](https://github.com/HGthecode/apidoc-ui/releases/download/v1.2.1/apidoc.zip)
+
+
+- 支持int|boolean|date|datetime|time类型的字段json展示时自动生成相应值
+- 增加url以/开头的容错处理
+- 修正控制器无任何注解时的报错问题
+- 修正json格式化对其问题
 
 ## v2.4.1
 `2020-03-22`

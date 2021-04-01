@@ -17,6 +17,73 @@ category: 使用
 
 
 
+## 404错误
+
+
+### 1、 tp版本为5.x安装apidoc的版本为2.x
+
+由于apidoc2.0以上版本仅支持tp6以上版本，tp5的用户请使用apidoc1.x版本[v1.x](https://hgthecode.github.io/thinkphp-apidoc/v1/install/)
+
+### 2、伪静态配置 
+
+通常该问题会报出 `Cannot read property 'config' of undefined` 的错误，这并不是config文件不存在，而是apidoc会自动注册`/apidoc/config`等一些路由，如果没有正确配置项目伪静态规则，会导致无法正常访问路由
+
+解决方案1：配置伪静态即可解决
+
+- Apache
+```
+<IfModule mod_rewrite.c>
+  Options +FollowSymlinks -Multiviews
+  RewriteEngine On
+
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteRule ^(.*)$ index.php?$1 [QSA,PT,L]
+
+  SetEnvIf Authorization .+ HTTP_AUTHORIZATION=$0
+</IfModule>
+```
+
+- Nginx
+```
+location / {
+    if (!-e $request_filename){
+    rewrite ^(.*)$ /index.php?s=$1 last; 
+    break;
+    }
+}
+```
+
+解决方案2：配置前端项目请求路由前缀参数：
+> 需升级前端文件到 [v1.2.1版本]()
+```js
+// public/apidoc/config.js
+
+var config = {
+  // 路由前缀，根据你的项目情况配置
+  routePrefix: "index.php"
+};
+```
+
+
+### 3、tp项目根目录配置问题
+
+有的用户配置站点目录为项目根目录或更上级目录，而tp的入口为public目录，就会导致无法正确的访问路由，也会报出404 `Cannot read property 'config' of undefined` 的错误
+
+解决方案1：将站点目录配置为public目录，并正确配置伪静态。
+
+解决方案2：配置前端项目请求路由前缀参数：
+> 需升级前端文件到 [v1.2.1版本]()
+```js
+// public/apidoc/config.js
+
+var config = {
+  // 路由前缀，根据你的项目情况配置
+  routePrefix: "public/index.php"
+};
+```
+
+
 ## 500注解报错
 所有文件注释中存在 @XXX 的，都需`use`引入注释解释文件，如出现以下错误
 
