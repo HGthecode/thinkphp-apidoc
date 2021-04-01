@@ -219,12 +219,18 @@ class Controller
      */
     protected function initCurrentApps($appKey){
         $config = $this->config;
+        if (!(!empty($config['apps']) && count($config['apps'])>0)){
+            throw new \think\exception\HttpException(410, "请配置apps");
+        }
         if (strpos($appKey,'_')!==false){
             $keyArr = explode("_", $appKey);
         }else{
             $keyArr =[$appKey];
         }
         $this->currentApps = (new Utils())->getTreeNodesByKeys($config['apps'],$keyArr,'folder','items');
+        if (!$this->currentApps){
+            throw new \think\exception\HttpException(410, "不存在 folder为".$appKey."的apps配置");
+        }
         $this->currentApp = $this->currentApps[count($this->currentApps)-1];
     }
 

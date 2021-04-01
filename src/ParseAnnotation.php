@@ -144,6 +144,9 @@ trait ParseAnnotation
                     // 路由分组，url加上分组
                     $methodItem['url'] = '/'.$routeGroup->value.'/'.$methodItem['url'];
                 }
+                if (!empty($methodItem['url']) && substr( $methodItem['url'], 0, 1 ) != "/"){
+                    $methodItem['url'] = "/".$methodItem['url'];
+                }
                 $methodItem['name']=$refMethod->name;
                 $methodItem['menu_key']=$methodItem['method']."_".$refMethod->name."_".mt_rand(10000,99999);
 
@@ -384,13 +387,13 @@ trait ParseAnnotation
     protected function parseTextAnnotation($refMethod){
         $annotation=$refMethod->getDocComment();
         if (empty($annotation)){
-            return false;
+            return [];
         }
         if (preg_match ( '#^/\*\*(.*)\*/#s', $annotation, $comment ) === false)
-            return false;
+            return [];
         $comment = trim ( $comment [1] );
         if (preg_match_all ( '#^\s*\*(.*)#m', $comment, $lines ) === false)
-            return false;
+            return [];
         $data=[];
         foreach ( $lines[1] as $line ) {
             $line = trim($line);
