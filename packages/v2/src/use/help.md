@@ -54,14 +54,14 @@ location / {
 }
 ```
 
-解决方案2：配置前端项目请求路由前缀参数：
+解决方案2：配置前端项目请求host参数：
 > 需升级前端文件到 [v1.2.1版本]()
 ```js
 // public/apidoc/config.js
 
 var config = {
-  // 路由前缀，根据你的项目情况配置
-  routePrefix: "index.php"
+  // 请求地址host
+  HOST: "index.php"
 };
 ```
 
@@ -72,14 +72,14 @@ var config = {
 
 解决方案1：将站点目录配置为public目录，并正确配置伪静态。
 
-解决方案2：配置前端项目请求路由前缀参数：
+解决方案2：配置前端项目请求host参数：
 > 需升级前端文件到 [v1.2.1版本]()
 ```js
 // public/apidoc/config.js
 
 var config = {
-  // 路由前缀，根据你的项目情况配置
-  routePrefix: "public/index.php"
+  // 请求地址host
+  HOST: "public/index.php"
 };
 ```
 
