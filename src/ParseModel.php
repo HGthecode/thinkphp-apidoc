@@ -108,35 +108,36 @@ class ParseModel
     {
 
         $createSQL = Db::query("show create table " . $model->getTable())[0]['Create Table'];
-        preg_match_all("#`(.*?)`(.*?),\n#", $createSQL, $matches);
+        preg_match_all("#[^KEY]`(.*?)` (.*?) (.*?),\n#", $createSQL, $matches);
         $fields = $matches[1];
         $types = $matches[2];
+        $contents = $matches[3];
         $fieldComment = [];
         //组织注释
         for ($i = 0; $i < count($matches[0]); $i++) {
             $key = $fields[$i];
-
-            $typeString = $types[$i];
-            $typeString = trim ( $typeString );
-            $typeArr = explode(' ' , $typeString);
-            $type = $typeArr[0];
+            $type = $types[$i];
             $default="";
             $require="0";
             $desc ="";
-            if (strpos($typeString,'COMMENT') !== false){
+            $content=$contents[$i];
+            if (strpos($type,'(`') !== false){
+                continue;
+            }
+            if (strpos($content,'COMMENT') !== false){
                 // 存在字段注释
-                preg_match_all("#COMMENT\s*'(.*?)'#", $typeString, $edscs);
+                preg_match_all("#COMMENT\s*'(.*?)'#", $content, $edscs);
                 if (!empty($edscs[1]) && !empty($edscs[1][0]))
                     $desc=$edscs[1][0];
             }
-            if (strpos($typeString,'DEFAULT') !== false){
+            if (strpos($content,'DEFAULT') !== false){
                 // 存在字段默认值
-                preg_match_all("#DEFAULT\s*'(.*?)'#", $typeString, $defaults);
+                preg_match_all("#DEFAULT\s*'(.*?)'#", $content, $defaults);
                 if (!empty($defaults[1]) && !empty($defaults[1][0]))
                     $default=$defaults[1][0];
             }
 
-            if (strpos($typeString,'NOT NULL') !== false){
+            if (strpos($content,'NOT NULL') !== false){
                 // 必填字段
                 $require="1";
             }
