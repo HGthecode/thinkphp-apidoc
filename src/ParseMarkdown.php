@@ -3,6 +3,7 @@
 
 namespace hg\apidoc;
 
+use think\facade\App;
 
 trait ParseMarkdown
 {
@@ -46,7 +47,7 @@ trait ParseMarkdown
 
     protected function renderContent($path){
         $mdPath = (new Utils())->replaceCurrentAppTemplate($path,$this->currentApps);
-        $filePath = $this->app->getRootPath().$mdPath.'.md';
+        $filePath =App::getRootPath().$mdPath.'.md';
         $contents = Utils::getFileContent($filePath);
         return $contents;
     }

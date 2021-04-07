@@ -51,18 +51,65 @@ class ParseModel
                 switch (true) {
                     case $annotation instanceof AddField:
                         $param=[
-                            "name"=>$annotation->value,
+                            "name"=>"",
                             "desc"=>$annotation->desc,
                             "require"=>$annotation->require,
                             "type"=>$annotation->type,
                             "default"=>$annotation->default
                         ];
-                        $table[]=$param;
+                        $children = $this->handleParamValue($annotation->value);
+                        $param['name'] = $children['name'];
+                        if (count($children['params'])>0){
+                            $param['params'] = $children['params'];
+                        }
+                        $isExists = false;
+                        $newTable = [];
+                        foreach ($table as $item){
+                            if ($param['name'] === $item['name']){
+                                $isExists = true;
+                                $newTable[] = $param;
+                            }else{
+                                $newTable[] = $item;
+                            }
+                        }
+                        $table = $newTable;
+                        if (!$isExists){
+                            $table[]=$param;
+                        }
                     break;
                 }
             }
         }
         return $table;
+    }
+
+    protected function handleParamValue($values){
+        $name="";
+        $params=[];
+        if (!empty($values) && is_array($values) && count($values)>0){
+            foreach ($values as $item){
+                if (is_string($item)){
+                    $name=$item;
+                }else if(is_object($item)){
+                    $param=[
+                        "name"=>"",
+                        "type"=>$item->type,
+                        "desc"=>$item->desc,
+                        "default"=>$item->default,
+                        "require"=>$item->require,
+                    ];
+                    $children = $this->handleParamValue($item->value);
+                    $param['name'] = $children['name'];
+                    if (count($children['params'])>0){
+                        $param['params'] = $children['params'];
+                    }
+                    $params[]=$param;
+                }
+            }
+        }else{
+            $name=$values;
+        }
+        return ['name'=>$name,'params'=>$params];
     }
 
     public function getModel($method,$modelClassName){

@@ -4,12 +4,12 @@
 namespace hg\apidoc;
 
 use think\facade\Request;
-use think\App;
 use Doctrine\Common\Annotations\Reader;
 use Symfony\Component\ClassLoader\ClassMapGenerator;
 use think\facade\Cache;
-
-
+use Doctrine\Common\Annotations\AnnotationReader;
+use think\facade\Config;
+use think\facade\App;
 
 class Controller
 {
@@ -86,11 +86,11 @@ class Controller
     protected $config;
 
     
-    public function __construct(App $app,Reader $reader)
+    public function __construct()
     {
-        $this->app = $app;
-        $this->reader = $reader;
-        $this->config = $app->config->get('apidoc');
+        $this->app = App::class;
+        $this->reader = new AnnotationReader();
+        $this->config = Config::get("apidoc");
     }
 
     /**
@@ -124,7 +124,7 @@ class Controller
             $config['responses']['jsonStr']=$responsesStr;
             $config['responses']['main']=$responsesMain;
         }
-        $config['debug']=$this->app->isDebug();
+        $config['debug']=App::isDebug();
 
 
         if (!empty($config['crud'])){
@@ -200,7 +200,7 @@ class Controller
      * @return \think\response\Json
      */
     public function createCrud(){
-        if (!$this->app->isDebug()){
+        if (!App::isDebug()){
             throw new \think\exception\HttpException(415, "请在debug模式下，使用该功能");
         }
 
@@ -208,7 +208,7 @@ class Controller
         $request = Request::instance();
         $params = $request->param();
         $this->initCurrentApps($params['appKey']);
-        $res = (new CreateCrud($config,$this->currentApps,$this->app))->create($params);
+        $res = (new CreateCrud($this->currentApps))->create($params);
         return $this->showJson(0,"",$res);
     }
 
@@ -335,6 +335,9 @@ class Controller
      */
     public function reloadData($params)
     {
+        if (!empty($params) && !empty($params['appKey'])){
+            $this->initCurrentApps($params['appKey']);
+        }
         $config = $this->config;
         $apiData = $this->renderApiData();
 
@@ -394,10 +397,14 @@ class Controller
      */
     protected function getDirControllers($path){
         if ($path){
-            $pathStr = str_replace("\\","/",$path);
-            $dir = $this->app->getRootPath() . $pathStr;
+            if ( strpos(App::getRootPath(),'/')!==false){
+                $pathStr = str_replace("\\","/",$path);
+            }else{
+                $pathStr = $path;
+            }
+            $dir = App::getRootPath(). $pathStr;
         }else{
-            $dir = $this->app->getRootPath() . $this->app->config->get('route.controller_layer');
+            $dir =App::getRootPath() . Config::get('route.controller_layer');
         }
         $controllers=[];
         if (is_dir($dir)) {
@@ -421,7 +428,11 @@ class Controller
                 (isset($this->config['filter_controllers']) &&  !in_array($class,$this->config['filter_controllers'])) &&
                 $this->config['definitions'] != $class
             ){
-                $list[] = $class;
+                if (strpos($class,'\\')===false){
+                    $list[] = $appPath."\\".$class;
+                }else{
+                    $list[] = $class;
+                }
             }
         }
         return $list;

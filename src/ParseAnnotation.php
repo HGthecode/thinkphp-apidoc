@@ -17,6 +17,7 @@ use hg\apidoc\annotation\ParamType;
 use hg\apidoc\annotation\Url;
 use hg\apidoc\annotation\Method;
 use think\annotation\route\Group as RouteGroup;
+use think\facade\Config;
 
 trait ParseAnnotation
 {
@@ -188,7 +189,7 @@ trait ParseAnnotation
         $res = ['type'=>'model'];
         // 通用定义引入
         if(strpos($refPath,'\\')===false){
-            $config = $this->app->config->get('apidoc');
+            $config = Config::get('apidoc');
             $refPath = $config['definitions'].'\\'.$refPath;
             $data = $this->renderService($refPath);
             $res['type']="service";

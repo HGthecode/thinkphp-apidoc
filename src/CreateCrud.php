@@ -6,23 +6,25 @@ namespace hg\apidoc;
 
 use think\facade\Config;
 use think\facade\Db;
-use think\App;
 use think\helper\Str;
+use think\facade\App;
 
 
 class CreateCrud
 {
-    protected $app;
-
     protected $config;
 
     protected $currentApps;
 
-    public function __construct($config,$currentApps,App $app)
+    public function __construct($currentApps)
     {
-        $this->config = $config['crud'];
+        $config = Config::get('apidoc');
+        if (!empty($config) && !empty($config['crud'])){
+            $this->config = $config['crud'];
+        }else{
+            throw new \think\exception\HttpException(500, "未配置crud");
+        }
         $this->currentApps = $currentApps;
-        $this->app = $app;
     }
 
     /**
@@ -62,7 +64,7 @@ class CreateCrud
                     $tmp_content = (new Utils())->replaceCurrentAppTemplate($tmp_content,$this->currentApps);
                     $routePathStr = (new Utils())->replaceCurrentAppTemplate($this->config['route']['path'],$this->currentApps);
                     $routePathStr = str_replace("\\","/",$routePathStr);
-                    $routePath = $this->app->getAppPath().$routePathStr;
+                    $routePath = App::getAppPath().$routePathStr;
                     $routeContent = Utils::getFileContent($routePath);
                     $routeContent.="\r\n".$tmp_content."\r\n";
                     Utils::createFile($routePath,$routeContent);
@@ -292,6 +294,7 @@ class CreateCrud
             $table_field.=" COMMENT '".$item['desc']."',";
             $table_data.=$table_field;
         }
+
 
         $sql = "CREATE TABLE IF NOT EXISTS `$table_name` (
         $table_data
