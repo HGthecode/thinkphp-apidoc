@@ -5,7 +5,8 @@ category: 使用
 ---
 # 编写注释
 ::: tip 建议
-如果你使用PHPStorm的话，建议安装PHP [Annotations插件](https://plugins.jetbrains.com/plugin/7320-php-annotations)，可以支持注解的语法提示及自动完成
+- 如果你使用PHPStorm的话，建议安装PHP [Annotations插件](https://plugins.jetbrains.com/plugin/7320-php-annotations)，可以支持注解的语法提示及自动完成
+- 配合查看[演示项目](https://apidoc.demo.hg-code.com/apidoc/?appKey=admin)与[演示源码](https://github.com/HGthecode/thinkphp-apidoc-demo)上手更快哦！
 :::
 
 ## 书写规范
@@ -340,7 +341,7 @@ PRIMARY KEY (`id`)↵) ENGINE=MyISAM AUTO_INCREMENT=23 DEFAULT CHARSET=utf8"
 |-|-|-|
 |field|返回指定字段|英文格式逗号 , 分开指定的字段|
 |withoutField|排除指定字段|英文格式逗号 , 分开指定的字段|
-|addField|添加指定字段|可定义多个，每行为一个参数|
+|addField|添加指定字段|可定义多个，每行为一个参数，也可如下示例嵌套Param使用来定义复杂层级的数据结构|
 |   \|—  |参数的字段名|如：@addField("name")|
 |   \|— type|字段类型|
 |   \|— require|是否必填| |
@@ -359,9 +360,13 @@ class User extends BaseModel
 {
 
      /**
-     * @Field("id,username,nickname")
+     * @Field("id,username,nickname,role")
      * @AddField("openid",type="string",default="abc",desc="微信openid")
      * @AddField("senkey",type="string",default="key",desc="微信key")
+     * @AddField("role",type="array",desc="重写role，该定义会覆盖数据表中的字段描述",
+     *     @Param ("name",type="string",desc="名称"),
+     *     @Param ("id",type="string",desc="id"),
+     * )
      */
     public function getInfo($id){
         $res = $this->get($id);
@@ -481,6 +486,7 @@ class ApiDocTest
 | withoutField|	配置了ref引入时有效，用来指定过滤掉的字段 | 如：withoutField:id,username；则引入模型除 id,username字段外的所有字段	 |	
 | childrenField|	字段类型为`tree`时，给其定义子节点字段名 |	默认为 children |	
 | childrenDesc|	字段类型为`tree`时，给其定义子节点字段名的备注 |	 |
+
 
 
 ## 特殊参数
