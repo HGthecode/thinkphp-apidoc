@@ -5,10 +5,10 @@ namespace hg\apidoc\annotation;
 use Doctrine\Common\Annotations\Annotation;
 
 /**
- * 作者
+ * 排序
  * @package hg\apidoc\annotation
  * @Annotation
- * @Target({"METHOD"})
+ * @Target({"CLASS"})
  */
-class Author extends Annotation
+class Sort extends Annotation
 {}

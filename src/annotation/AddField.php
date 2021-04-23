@@ -6,7 +6,6 @@ use Doctrine\Common\Annotations\Annotation;
 
 /**
  * 添加模型的字段
- *
  * @package hg\apidoc\annotation
  * @Annotation
  * @Target({"METHOD"})

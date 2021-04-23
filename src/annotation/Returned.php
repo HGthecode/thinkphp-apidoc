@@ -5,8 +5,7 @@ namespace hg\apidoc\annotation;
 use Doctrine\Common\Annotations\Annotation;
 
 /**
- * 说明
- *
+ * 返回参数
  * @package hg\apidoc\annotation
  * @Annotation
  * @Target({"METHOD","ANNOTATION"})

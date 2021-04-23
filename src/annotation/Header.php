@@ -5,7 +5,6 @@ namespace hg\apidoc\annotation;
 
 /**
  * 请求头
- *
  * @package hg\apidoc\annotation
  * @Annotation
  * @Target({"METHOD"})

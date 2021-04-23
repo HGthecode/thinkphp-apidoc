@@ -2,9 +2,7 @@
 
 namespace hg\apidoc\annotation;
 
-use Doctrine\Common\Annotations\Annotation;
 use Doctrine\Common\Annotations\Annotation\Enum;
-use Doctrine\Common\Annotations\Annotation\Target;
 
 
 final class Route extends Rule

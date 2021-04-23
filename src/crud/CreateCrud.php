@@ -1,13 +1,15 @@
 <?php
 
 
-namespace hg\apidoc;
+namespace hg\apidoc\crud;
 
 
+use hg\apidoc\exception\ErrorException;
 use think\facade\Config;
 use think\facade\Db;
 use think\helper\Str;
 use think\facade\App;
+use hg\apidoc\Utils;
 
 
 class CreateCrud
@@ -16,15 +18,15 @@ class CreateCrud
 
     protected $currentApps;
 
-    public function __construct($currentApps)
+    public function __construct()
     {
         $config = Config::get('apidoc');
         if (!empty($config) && !empty($config['crud'])){
             $this->config = $config['crud'];
         }else{
-            throw new \think\exception\HttpException(500, "未配置crud");
+            throw new ErrorException("no config crud",501);
         }
-        $this->currentApps = $currentApps;
+
     }
 
     /**
@@ -34,7 +36,11 @@ class CreateCrud
      */
     public function create($params){
 
-        $data = $this->renderTemplateData($params);
+        $appKey = $params['appKey'];
+        $currentApps = (new Utils())->getCurrentApps($appKey);
+//        $currentApp  = $currentApps[count($currentApps) - 1];
+
+        $data = $this->renderTemplateData($params,$currentApps);
         $res = [];
         // 创建数据表
         if (!empty($params['model']['table'])){
@@ -42,8 +48,8 @@ class CreateCrud
             if ($sqlRes == true){
                 $res[]="创建数据表成功";
             }else{
-                $msg= $sqlRes?$sqlRes:"数据表创建失败，请检查配置";
-                throw new \think\exception\HttpException(500, $msg);
+//                $msg= $sqlRes?$sqlRes:"数据表创建失败，请检查配置";
+                throw new ErrorException("datatable crud error",500);
             }
         }
         // 生成文件
@@ -56,13 +62,13 @@ class CreateCrud
                 !empty($this->config['route']['template']) &&
                 !empty($this->config['route']['path'])
             ){
-                $tmp_path = (new Utils())->replaceCurrentAppTemplate($this->config['route']['template'],$this->currentApps);
+                $tmp_path = (new Utils())->replaceCurrentAppTemplate($this->config['route']['template'],$currentApps);
                 $tempPath = $tmp_path.".txt";
                 $str_tmp = Utils::getFileContent($tempPath);
                 if (!empty($str_tmp)){
                     $tmp_content = Utils::replaceTemplate($str_tmp,$data);
-                    $tmp_content = (new Utils())->replaceCurrentAppTemplate($tmp_content,$this->currentApps);
-                    $routePathStr = (new Utils())->replaceCurrentAppTemplate($this->config['route']['path'],$this->currentApps);
+                    $tmp_content = (new Utils())->replaceCurrentAppTemplate($tmp_content,$currentApps);
+                    $routePathStr = (new Utils())->replaceCurrentAppTemplate($this->config['route']['path'],$currentApps);
                     $routePathStr = str_replace("\\","/",$routePathStr);
                     $routePath = App::getAppPath().$routePathStr;
                     $routeContent = Utils::getFileContent($routePath);
@@ -73,11 +79,11 @@ class CreateCrud
 
             }else{
                 $currentParam = $params[$key];
-                $tmp_path = (new Utils())->replaceCurrentAppTemplate($currentParam['template'],$this->currentApps);
+                $tmp_path = (new Utils())->replaceCurrentAppTemplate($currentParam['template'],$currentApps);
                 $tempPath = $tmp_path.".txt";
                 $str_tmp = Utils::getFileContent($tempPath);
                 $file_content = Utils::replaceTemplate($str_tmp,$data);
-                $file_content = (new Utils())->replaceCurrentAppTemplate($file_content,$this->currentApps);
+                $file_content = (new Utils())->replaceCurrentAppTemplate($file_content,$currentApps);
                 $namespacePath = str_replace("\\","/",$currentParam['path']);
                 $filePath = '../'.$namespacePath.'/'.$currentParam['class_name'].'.php';
                 $fp=Utils::createFile($filePath,$file_content);
@@ -96,7 +102,7 @@ class CreateCrud
      * @param $params
      * @return array
      */
-    public function renderTemplateData($params){
+    public function renderTemplateData($params,array $currentApps){
         // 模板参数
         $api_group = "";
         if (!empty($params['group'])){
@@ -110,22 +116,36 @@ class CreateCrud
         foreach ($keys as $index=>$key){
             $currentConfig = $this->config[$key];
             //验证模板是否存在
-            $tmp_path = (new Utils())->replaceCurrentAppTemplate($currentConfig['template'],$this->currentApps);
+            $tmp_path = (new Utils())->replaceCurrentAppTemplate($currentConfig['template'],$currentApps);
             if(!file_exists($tmp_path.'.txt')){
-                throw new \think\exception\HttpException(404, $currentConfig['template']."模板不存在");
+                throw new ErrorException("template not found",404,[
+                    'template'=>$currentConfig['template']
+                ]);
             }
             if ($key==="route"){
                 continue;
             }
             $currentParam = $params[$key];
             if(!preg_match("/^[A-Z]{1}[A-Za-z0-9]{1,32}$/",$currentParam['class_name'])){
-                throw new \think\exception\HttpException(500, $currentParam['class_name'].'文件名不合法');
+                throw new ErrorException("classname error",412,[
+                    'classname'=>$currentParam['class_name']
+                ]);
             }
             $currentParamPath = str_replace("\\","/",$currentParam['path']);
             // 验证目录是否存在
             if(!is_dir('../'.$currentParamPath)){
-                throw new \think\exception\HttpException(404, $currentParamPath."目录不存在");
+                throw new ErrorException("path not found",404,[
+                    'path'=>$currentParamPath
+                ]);
             }
+            // 验证文件是否已存在
+            $filePath = '../'.$currentParamPath.'/'.$currentParam['class_name'].'.php';
+            if(file_exists($filePath)){
+                throw new ErrorException("file already exists",500,[
+                    'filepath'=>$filePath
+                ]);
+            }
+
 
             if ($key==="controller"){
                 $pathArr = explode("\\", $currentParam['path']);
@@ -268,15 +288,14 @@ class CreateCrud
         }
         $driver = Config::get('database.default');
         $table_prefix=Config::get('database.connections.'.$driver.'.prefix');
-//        $table_name =$table_prefix.strtolower(preg_replace('/(?<=[a-z])([A-Z])/', '_$1', $params['class_name']));
         $table_name = $table_prefix.Str::snake($params['class_name']);
-
         $table_data = '';
         $main_keys = '';
         foreach ($data as $item){
-
-            $table_field="".$item['field']." ".$item['type']."(".$item['length'].")";
-
+            $table_field="`".$item['field']."` ".$item['type'];
+            if (!empty($item['length'])){
+                $table_field.="(".$item['length'].")";
+            }
             if ($item['main_key']){
                 $main_keys.=$item['field'];
                 $table_field.=" NOT NULL";
@@ -288,14 +307,10 @@ class CreateCrud
             }
             if (!empty($item['default'])){
                 $table_field.=" DEFAULT '".$item['default']."'";
-            }else if (!$item['main_key'] && !$item['not_null']){
-                $table_field.=" DEFAULT NULL";
             }
             $table_field.=" COMMENT '".$item['desc']."',";
             $table_data.=$table_field;
         }
-
-
         $sql = "CREATE TABLE IF NOT EXISTS `$table_name` (
         $table_data
         PRIMARY KEY (`$main_keys`)
