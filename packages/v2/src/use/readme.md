@@ -463,7 +463,7 @@ class ApiDocTest
 |Desc|	|接口描述 |	任意字符 |	
 |Author|	|作者 |	任意字符,默认配置文件的`apidoc.default_author` |	
 |Url|	|真实的接口URL，不配置时会根据控制器目录自动生成 |	任意字符 |	
-|Method|	`GET` `POST` `PUT` `DELETE` |请求类型,默认配置文件的`apidoc.default_method` |	 |	
+|Method|	`GET` `POST` `PUT` `DELETE` |请求类型,默认配置文件的`apidoc.default_method`,`>=v2.5.0`版本支持配置多个(用,隔开) |	 |	
 |Tag|	|接口Tag标签 |	多个标签用 空格隔开 |	
 |Header| 具体查看 [Header、Param、Returned的参数](/use/#header、param、return-的参数)	|请求头Headers参数 |	可定义多个|	
 |Param | 具体查看 [Header、Param、Returned的参数](/use/#header、param、return-的参数)	|请求参数 |	可定义多个 |	
