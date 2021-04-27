@@ -104,7 +104,7 @@ module.exports = config({
           title: "功能使用",
           prefix: "function/",
           collapsable:false,
-          icon:"help",
+          icon:"extend",
           children: [
             "apps",
             "controllerGroup",
