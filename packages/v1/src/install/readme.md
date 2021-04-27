@@ -21,12 +21,6 @@ composer require hg/apidoc:1.1.x
 
 [点击下载](https://github.com/HGthecode/apidoc-ui/releases/download/v1.0.0/apidoc.zip) ，下载完成后解压，将apidoc文件夹拷贝到你的项目 public 目录下
 
-#### 方式二 GitHub 下载
- 1、执行以下命令下载UI
-```sh
-git clone https://github.com/HGthecode/apidoc-ui.git
-```
- 2、下载完成后，将`apidoc`目录放到你的项目public目录下
 
 安装插件完成后 打开浏览器访问   http://你的域名/apidoc/ ，出现接口文档页面，表示安装成功。
 
