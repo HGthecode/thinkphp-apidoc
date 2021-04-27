@@ -92,10 +92,8 @@ class ParseAnnotation
         $configControllers = $config['controllers'];
         if (!empty($configControllers) && count($configControllers) > 0) {
             foreach ($configControllers as $item) {
-                $itemPath = $item;
-                $class    = $path . '\\' . $itemPath;
-                if (class_exists($class)) {
-                    $controllers[] = $class;
+                if ( strpos($item, $path) !== false && class_exists($item)) {
+                    $controllers[] = $item;
                 }
             }
         }
