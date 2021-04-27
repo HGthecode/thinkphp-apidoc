@@ -15,7 +15,7 @@
     "personal-blog"
   ],
   "dependencies": {
-    "vuepress": "1.8.0",
-    "vuepress-theme-hope": "1.9.3"
+    "vuepress": "1.8.2",
+    "vuepress-theme-hope": "1.15.1"
   }
 }
