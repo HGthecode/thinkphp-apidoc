@@ -84,11 +84,48 @@ module.exports = config({
         "install",
         "changelog",
       ],
+      "/config/": [
+        "",
+        "page",
+      ],
       "/use/": [
         "",
-        "actions",
-        "function",
-        "help",
+        {
+          title: "页面操作",
+          prefix: "operation/",
+          collapsable:false,
+          icon:"page",
+          children: [
+            "layout",
+            "apidebug"
+          ],
+        },
+        {
+          title: "功能使用",
+          prefix: "function/",
+          collapsable:false,
+          icon:"help",
+          children: [
+            "apps",
+            "controllerGroup",
+            "password",
+            "cache",
+            "docs",
+            "crud",
+          ],
+        },
+        {
+          title: "常见问题",
+          prefix: "help/",
+          collapsable:false,
+          icon:"help",
+          children: [
+            "notConfig",
+            "404",
+            "500",
+            "v1Tov2"
+          ],
+        },
       ],
     },
 

@@ -1,13 +1,14 @@
 ---
 icon: config
 category: 配置
-sidebarDepth: 2
-sidebar: auto
+# sidebarDepth: 2
+# sidebar: auto
 ---
 
 # 配置参数
 ::: tip
-安装插件后会在 /config/ 目录下生成一个 apidoc.php 的配置文件，以下为该文件可配置的参数说明，
+安装插件后会在/config/目录生成一个apidoc.php的配置文件，以下为该文件可配置的参数说明
+
 默认配置文件请查看 [apidoc.php](https://github.com/HGthecode/thinkphp-apidoc/blob/master/src/config.php)
 :::
 
@@ -92,6 +93,7 @@ apps配置数组的参数说明
 |title|string|应用/版本的名称|
 |path|string|应用/版本的目录（控制器命名空间）|
 |folder|string|应用/版本的文件夹名称|
+|password|string|应用/版本的访问密码|
 |items|array|多层应用/版本配置|
 
 
