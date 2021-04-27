@@ -25,7 +25,12 @@ module.exports = config({
       { src: "https://cdn.jsdelivr.net/npm/@babel/standalone/babel.min.js" },
     ],
   ],
-
+  locales: {
+    "/": {
+      // 设置需要的语言
+      lang: "zh-CN",
+    },
+  },
 
 
   themeConfig: {
@@ -37,8 +42,9 @@ module.exports = config({
     docsBranch:"docs",
     docsDir: "packages/v2/src",
     baseLang:"zh-CN",
-    pageInfo:["Author","Category","Tag","ReadTime","Time"],
+    pageInfo:['author', 'visitor', 'time', 'category', 'tag', 'reading-time'],
     displayAllHeaders:true,
+    
 
     nav: [
       { text: "指南", link: "/guide/", icon: "home" },
@@ -89,7 +95,18 @@ module.exports = config({
         "page",
       ],
       "/use/": [
-        "",
+        {
+          title: "编写注释",
+          prefix: "notes/",
+          collapsable:false,
+          icon:"edit",
+          children: [
+            "",
+            "useFile",
+            "controller",
+            "api",
+          ],
+        },
         {
           title: "页面操作",
           prefix: "operation/",
