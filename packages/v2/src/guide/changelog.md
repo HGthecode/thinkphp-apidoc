@@ -23,7 +23,7 @@ category: 指南
 ## v2.5.0
 `2021-04-23`
 
-> 需升级前端文件 [v1.3.0](https://github.com/HGthecode/apidoc-ui/releases/download/v1.3.0/apidoc.zip)
+> 需升级前端文件 [v1.3.1](https://github.com/HGthecode/apidoc-ui/releases/download/v1.3.1/apidoc.zip)
 
 - Markdown文档页支持H2、H3锚点导航
 - Markdown文档改为打开时获取内容，加快接口文档响应速度
