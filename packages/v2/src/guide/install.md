@@ -24,7 +24,7 @@ composer require hg/apidoc
 
 |前端版本(点击下载)|与apidoc版本对照|
 |-|-|
-|[v1.3.1](https://github.com/HGthecode/apidoc-ui/releases/download/v1.3.1/apidoc.zip)| 适用于`v2.5.0`版本 |
+|[v1.3.2](https://github.com/HGthecode/apidoc-ui/releases/download/v1.3.2/apidoc.zip)| 适用于`v2.5.0`版本 |
 |[v1.2.1](https://github.com/HGthecode/apidoc-ui/releases/download/v1.2.1/apidoc.zip)| 适用于`v2.4.2`版本 |
 |[v1.2.0](https://github.com/HGthecode/apidoc-ui/releases/download/v1.2.0/apidoc.zip)| 适用于`v2.4.0` - `v2.4.1`版本 |
 |[v1.1.0](https://github.com/HGthecode/apidoc-ui/releases/download/v1.1.0/apidoc.zip)| 适用于`v2.0.0` - `v2.3.0`版本 |
