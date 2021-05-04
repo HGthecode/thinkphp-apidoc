@@ -110,10 +110,10 @@ class Auth
             } else if (!(!empty($config['auth']) && $config['auth']['enable'])) {
                 return true;
             }
-        }else{
-            throw new AuthException("token not found");
         }
-        if (!$this->checkToken($token, "")) {
+        if(!empty($config['auth']) && $config['auth']['enable'] && empty($token)){
+            throw new AuthException("token not found");
+        }else if (!empty($token) && !$this->checkToken($token, "")) {
             throw new AuthException("token error");
         }
         return true;
