@@ -12,6 +12,14 @@ category: 指南
 - 修订版本号：日常 bugfix 更新
 :::
 
+## v2.5.2
+`2021-05-04`
+
+> 需升级前端文件 [v1.3.3](https://github.com/HGthecode/apidoc-ui/releases/download/v1.3.3/apidoc.zip)
+
+- 修正应用/版本的独立访问密码切换需重复验证问题
+
+
 ## v2.5.1
 `2021-04-27`
 
