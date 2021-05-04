@@ -21,14 +21,15 @@ composer require hg/apidoc
 
 ## 添加前端页面
 
+请根据你安装的apidoc版本 点击下载 对应的前端文件
 
-|前端版本(点击下载)|与apidoc版本对照|
-|-|-|
-|[v1.3.3](https://github.com/HGthecode/apidoc-ui/releases/download/v1.3.3/apidoc.zip)| 适用于`v2.5.0` - `v2.5.2`版本 |
-|[v1.2.1](https://github.com/HGthecode/apidoc-ui/releases/download/v1.2.1/apidoc.zip)| 适用于`v2.4.2`版本 |
-|[v1.2.0](https://github.com/HGthecode/apidoc-ui/releases/download/v1.2.0/apidoc.zip)| 适用于`v2.4.0` - `v2.4.1`版本 |
-|[v1.1.0](https://github.com/HGthecode/apidoc-ui/releases/download/v1.1.0/apidoc.zip)| 适用于`v2.0.0` - `v2.3.0`版本 |
-|[v1.0.0](https://github.com/HGthecode/apidoc-ui/releases/download/v1.0.0/apidoc.zip)| 适用于`v1.x` 版本 |
+|Apidoc版本|Github|Gitee|
+|-|-|-|
+|`v2.5.0` - `v2.5.2`|[v1.3.3](https://github.com/HGthecode/apidoc-ui/releases/download/v1.3.3/apidoc.zip)| [v1.3.3](https://gitee.com/hg-code/apidoc-ui/attach_files/691264/download/apidoc.zip)-|
+|`v2.4.2`|[v1.2.1](https://github.com/HGthecode/apidoc-ui/releases/download/v1.2.1/apidoc.zip)|  -|
+|`v2.4.0` - `v2.4.1`|[v1.2.0](https://github.com/HGthecode/apidoc-ui/releases/download/v1.2.0/apidoc.zip)|  -|
+|`v2.0.0` - `v2.3.0`|[v1.1.0](https://github.com/HGthecode/apidoc-ui/releases/download/v1.1.0/apidoc.zip)|  -|
+|`v1.x`|[v1.0.0](https://github.com/HGthecode/apidoc-ui/releases/download/v1.0.0/apidoc.zip)|  -|
 
 下载完成后解压，将apidoc文件夹拷贝到你的项目 public 目录下
 
