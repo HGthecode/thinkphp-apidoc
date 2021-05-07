@@ -251,6 +251,7 @@ namespace app\model;
 use hg\apidoc\annotation\Field;
 use hg\apidoc\annotation\WithoutField;
 use hg\apidoc\annotation\AddField;
+use hg\apidoc\annotation\Param;
 
 class User extends BaseModel
 {

@@ -25,7 +25,7 @@ composer require hg/apidoc
 
 |Apidoc版本|Github|Gitee|
 |-|-|-|
-|`v2.5.0` - `v2.5.2`|[v1.3.3](https://github.com/HGthecode/apidoc-ui/releases/download/v1.3.3/apidoc.zip)| [v1.3.3](https://gitee.com/hg-code/apidoc-ui/attach_files/691264/download/apidoc.zip)-|
+|`v2.5.0` - `v2.5.2`|[v1.3.4](https://github.com/HGthecode/apidoc-ui/releases/download/v1.3.4/apidoc.zip)| [v1.3.4](https://gitee.com/hg-code/apidoc-ui/attach_files/692818/download/apidoc.zip)-|
 |`v2.4.2`|[v1.2.1](https://github.com/HGthecode/apidoc-ui/releases/download/v1.2.1/apidoc.zip)|  -|
 |`v2.4.0` - `v2.4.1`|[v1.2.0](https://github.com/HGthecode/apidoc-ui/releases/download/v1.2.0/apidoc.zip)|  -|
 |`v2.0.0` - `v2.3.0`|[v1.1.0](https://github.com/HGthecode/apidoc-ui/releases/download/v1.1.0/apidoc.zip)|  -|
