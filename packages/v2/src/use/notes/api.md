@@ -384,6 +384,7 @@ class ApiDocTest
 | withoutField|	配置了ref引入时有效，用来指定过滤掉的字段 | 如：withoutField:id,username；则引入模型除 id,username字段外的所有字段	 |	
 | childrenField|	字段类型为`tree`时，给其定义子节点字段名 |	默认为 children |	
 | childrenDesc|	字段类型为`tree`时，给其定义子节点字段名的备注 |	 |
+| childrenType| 字段类型为`array`时，为子参数定义类型，可选值有`string` `int` `boolean` `array` `object` |  |
 
 
 
