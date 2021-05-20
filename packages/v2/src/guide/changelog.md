@@ -15,7 +15,7 @@ category: 指南
 ## v2.5.3
 `2021-05-20`
 
-> 需升级前端文件 [v1.3.5](https://github.com/HGthecode/apidoc-ui/releases/download/v1.3.5/apidoc.zip)
+> 需升级前端文件 [v1.3.5](https://gitee.com/hg-code/apidoc-ui/attach_files/708194/download/apidoc.zip)
 
 - 支持Param、Returned字段参数为array类型时，可通过配置`childrenType`定义子参数类型，用法可参考[示例-直接定义多层结构的参数](https://apidoc.demo.hg-code.com/apidoc/?appKey=admin&api=/admin/baseDemo/completeParams)
 - 修正withoutField过滤参数的问题
