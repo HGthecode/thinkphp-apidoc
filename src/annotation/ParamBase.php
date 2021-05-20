@@ -40,6 +40,13 @@ abstract class ParamBase extends Annotation
     public $childrenDesc = 'children';
 
     /**
+     * 为array类型时指定子节点类型
+     *  @Enum({"string", "int", "boolean", "array", "object"})
+     * @var string
+     */
+    public $childrenType = '';
+
+    /**
      * 指定引入的字段
      * @var string
      */

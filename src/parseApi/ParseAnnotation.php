@@ -384,6 +384,7 @@ class ParseAnnotation
                             "desc"    => $item->desc,
                             "default" => $item->default,
                             "require" => $item->require,
+                            "childrenType"=> $item->childrenType
                         ];
                         $children      = $this->handleParamValue($item->value);
                         $param['name'] = $children['name'];
@@ -427,6 +428,7 @@ class ParseAnnotation
                                 "desc"    => $annotation->desc,
                                 "default" => $annotation->default,
                                 "require" => $annotation->require,
+                                "childrenType"=> $annotation->childrenType
                             ];
                             $children      = $this->handleParamValue($annotation->value, 'param');
                             $param['name'] = $children['name'];
@@ -448,6 +450,7 @@ class ParseAnnotation
                                 "desc"    => $annotation->desc,
                                 "default" => $annotation->default,
                                 "require" => $annotation->require,
+                                "childrenType"=> $annotation->childrenType
                             ];
                             $children      = $this->handleParamValue($annotation->value, 'return');
                             $param['name'] = $children['name'];
