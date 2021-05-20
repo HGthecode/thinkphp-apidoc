@@ -33,8 +33,11 @@ class Utils
      * @param string $type
      * @return array
      */
-    public function filterParamsField(array $data, string $fields, string $type = "field"): array
+    public function filterParamsField(array $data, $fields, string $type = "field"): array
     {
+        if (!($fields && strpos($fields, ',') !== false)){
+            return [];
+        }
         $fieldArr = explode(',', $fields);
         $dataList = [];
         foreach ($data as $item) {
