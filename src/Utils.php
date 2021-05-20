@@ -35,10 +35,12 @@ class Utils
      */
     public function filterParamsField(array $data, $fields, string $type = "field"): array
     {
-        if (!($fields && strpos($fields, ',') !== false)){
-            return [];
+        if ($fields && strpos($fields, ',') !== false){
+            $fieldArr = explode(',', $fields);
+        }else{
+            $fieldArr = [$fields];
         }
-        $fieldArr = explode(',', $fields);
+
         $dataList = [];
         foreach ($data as $item) {
             if (!empty($item['name']) && in_array($item['name'], $fieldArr) && $type === 'field') {
