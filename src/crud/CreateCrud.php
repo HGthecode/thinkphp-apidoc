@@ -5,9 +5,9 @@ namespace hg\apidoc\crud;
 
 
 use hg\apidoc\exception\ErrorException;
+use think\Db as Db5;
 use think\facade\Config;
 use think\facade\Db;
-use think\helper\Str;
 use think\facade\App;
 use hg\apidoc\Utils;
 
@@ -18,9 +18,12 @@ class CreateCrud
 
     protected $currentApps;
 
+    protected $controller_layer = "";
+
     public function __construct()
     {
-        $config = Config::get('apidoc');
+        $config = Config::get('apidoc')?Config::get('apidoc'):Config::get('apidoc.');
+        $this->controller_layer = Config::get('route.controller_layer',"controller");
         if (!empty($config) && !empty($config['crud'])){
             $this->config = $config['crud'];
         }else{
@@ -147,9 +150,14 @@ class CreateCrud
             }
 
 
+            $appPath = App::getAppPath();
+            $appPathArr = explode("\\", $appPath);
+            $appFolder = $appPathArr[count($appPathArr)-1]?$appPathArr[count($appPathArr)-1]:$appPathArr[count($appPathArr)-2];
+            $namespace = str_replace($appFolder, App::getNamespace(), $currentParam['path']);
+
             if ($key==="controller"){
-                $pathArr = explode("\\", $currentParam['path']);
-                $notArr = array("app", "controller");
+                $pathArr = explode("\\", $namespace);
+                $notArr = array(App::getNamespace(), $this->controller_layer);
                 $url = "/";
                 foreach ($pathArr as $pathItem){
                     if (!in_array($pathItem,$notArr)){
@@ -171,9 +179,12 @@ class CreateCrud
                     }
                 }
             }
+
+            $namespace = str_replace($appFolder, App::getNamespace(), $currentParam['path']);
+
             $data[$currentParam['name'].'.class_name']=$currentParam['class_name'];
-            $data[$currentParam['name'].'.namespace']=$currentParam['path'];
-            $data[$currentParam['name'].'.use_path']=$currentParam['path']."\\".$currentParam['class_name'];
+            $data[$currentParam['name'].'.namespace']=$namespace;
+            $data[$currentParam['name'].'.use_path']=$namespace."\\".$currentParam['class_name'];
             $data[$currentParam['name'].'.use_alias']=$currentParam['class_name'].ucwords($currentParam['name']);
         }
 
@@ -288,7 +299,7 @@ class CreateCrud
         }
         $driver = Config::get('database.default');
         $table_prefix=Config::get('database.connections.'.$driver.'.prefix');
-        $table_name = $table_prefix.Str::snake($params['class_name']);
+        $table_name = $table_prefix.Utils::snake($params['class_name']);
         $table_data = '';
         $main_keys = '';
         foreach ($data as $item){
@@ -316,16 +327,31 @@ class CreateCrud
         PRIMARY KEY (`$main_keys`)
         ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='$title' AUTO_INCREMENT=1 ;";
 
-        Db::startTrans();
-        try {
-            Db::query($sql);
-            // 提交事务
-            Db::commit();
-            return true;
-        } catch (\Exception $e) {
-            // 回滚事务
-            Db::rollback();
-            return $e->getMessage();
+        $tp_version = \think\facade\App::version();
+        if (substr($tp_version, 0, 2) == '5.'){
+            Db5::startTrans();
+            try {
+                Db5::query($sql);
+                // 提交事务
+                Db5::commit();
+                return true;
+            } catch (\Exception $e) {
+                // 回滚事务
+                Db5::rollback();
+                return $e->getMessage();
+            }
+        }else{
+            Db::startTrans();
+            try {
+                Db::query($sql);
+                // 提交事务
+                Db::commit();
+                return true;
+            } catch (\Exception $e) {
+                // 回滚事务
+                Db::rollback();
+                return $e->getMessage();
+            }
         }
 
     }

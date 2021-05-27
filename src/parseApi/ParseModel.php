@@ -4,6 +4,7 @@ declare(strict_types = 1);
 namespace hg\apidoc\parseApi;
 
 use Doctrine\Common\Annotations\Reader;
+use think\Db as Db5;
 use think\facade\Db;
 use hg\apidoc\annotation\Field;
 use hg\apidoc\annotation\WithoutField;
@@ -176,7 +177,13 @@ class ParseModel
     public function getTableDocument($model,array $propertys):array
     {
 
-        $createSQL = Db::query("show create table " . $model->getTable())[0]['Create Table'];
+        $tp_version = \think\facade\App::version();
+        if (substr($tp_version, 0, 2) == '5.'){
+            $createSQL = Db5::query("show create table " . $model->getTable())[0]['Create Table'];
+        }else{
+            $createSQL = Db::query("show create table " . $model->getTable())[0]['Create Table'];
+        }
+//        $createSQL = Db::query("show create table " . $model->getTable())[0]['Create Table'];
         preg_match_all("#[^KEY]`(.*?)` (.*?) (.*?),\n#", $createSQL, $matches);
         $fields       = $matches[1];
         $types        = $matches[2];

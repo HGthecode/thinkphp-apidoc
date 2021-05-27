@@ -13,6 +13,7 @@
         "php接口文档"
       ],
     "require": {
+        "php": ">=7.0.0",
         "doctrine/annotations": "^1.6",
         "symfony/class-loader": "~3.2.0"
     },

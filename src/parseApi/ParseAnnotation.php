@@ -38,10 +38,13 @@ class ParseAnnotation
     //groups,当前应用/版本的分组name
     protected $groups = array();
 
+    protected $controller_layer = "";
+
     public function __construct()
     {
         $this->reader = new AnnotationReader();
-        $this->config = Config::get('apidoc');
+        $this->config = Config::get('apidoc')?Config::get('apidoc'):Config::get('apidoc.');
+        $this->controller_layer = Config::get('route.controller_layer',"controller");
     }
 
     /**
@@ -115,7 +118,7 @@ class ParseAnnotation
             }
             $dir = App::getRootPath() . $pathStr;
         } else {
-            $dir = App::getRootPath() . Config::get('route.controller_layer');
+            $dir = App::getRootPath() . $this->controller_layer;
         }
         $controllers = [];
         if (is_dir($dir)) {
@@ -295,13 +298,19 @@ class ParseAnnotation
      */
     protected function autoCreateUrl($method): string
     {
+        if (Config::get("controller_auto_search") || in_array('controller_auto_search',$this->config)){
+            $pathArr = explode("\\", $method->class );
+        }else{
+            $searchString = $this->controller_layer . '\\';
+            $substr = substr(strstr($method->class, $searchString), strlen($searchString));
+            $pathArr = explode("\\", str_replace($substr, str_replace('\\', '.', $substr), $method->class));
+        }
         // 控制器地址
-        $pathArr         = explode("\\", $method->class);
-        $filterPathNames = array("app", "controller");
-        $classPathArr    = [];
+        $filterPathNames = array(App::getNamespace(), $this->controller_layer);
+        $classPathArr = [];
         foreach ($pathArr as $item) {
             if (!in_array($item, $filterPathNames)) {
-                $classPathArr[] = $item;
+                $classPathArr[] = lcfirst($item);
             }
         }
         $classPath = implode('/', $classPathArr);
@@ -434,6 +443,15 @@ class ParseAnnotation
                             $param['name'] = $children['name'];
                             if (count($children['params']) > 0) {
                                 $param['params'] = $children['params'];
+                                if ($annotation->type === 'tree' && !empty($annotation->childrenField)) {
+                                    // 类型为tree的
+                                    $param['params'][] = [
+                                        'params' => $children['params'],
+                                        'name'   => $annotation->childrenField,
+                                        'type'   => 'array',
+                                        'desc'   => $annotation->childrenDesc,
+                                    ];
+                                }
                             }
                             $params[] = $param;
 
@@ -456,6 +474,15 @@ class ParseAnnotation
                             $param['name'] = $children['name'];
                             if (count($children['params']) > 0) {
                                 $param['params'] = $children['params'];
+                                if ($annotation->type === 'tree' && !empty($annotation->childrenField)) {
+                                    // 类型为tree的
+                                    $param['params'][] = [
+                                        'params' => $children['params'],
+                                        'name'   => $annotation->childrenField,
+                                        'type'   => 'array',
+                                        'desc'   => $annotation->childrenDesc,
+                                    ];
+                                }
                             }
                             $returns[] = $param;
                         }
@@ -583,7 +610,7 @@ class ParseAnnotation
                 // 类型为tree的
                 $item['params'][] = [
                     'params' => $data,
-                    'name'   => $annotation->childrenField,
+                    'name'   => !empty($annotation->childrenField)?$annotation->childrenField:"children",
                     'type'   => 'array',
                     'desc'   => $annotation->childrenDesc,
                 ];

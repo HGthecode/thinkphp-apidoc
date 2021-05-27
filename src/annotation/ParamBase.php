@@ -31,7 +31,7 @@ abstract class ParamBase extends Annotation
      * 为tree类型时指定children字段
      * @var string
      */
-    public $childrenField = 'children';
+    public $childrenField = '';
 
     /**
      * 为tree类型时指定children字段说明

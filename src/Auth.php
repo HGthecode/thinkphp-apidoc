@@ -14,7 +14,7 @@ class Auth
 
     public function __construct()
     {
-        $this->config = Config::get('apidoc');
+        $this->config = Config::get('apidoc')?Config::get('apidoc'):Config::get('apidoc.');
     }
 
     /**

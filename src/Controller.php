@@ -69,7 +69,7 @@ class Controller
     public function __construct(App $app)
     {
         $this->app = $app;
-        $this->config = Config::get("apidoc");
+        $this->config = Config::get("apidoc")?Config::get("apidoc"):Config::get("apidoc.");
     }
 
     /**

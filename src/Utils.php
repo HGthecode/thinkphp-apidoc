@@ -9,6 +9,7 @@ use think\response\Json;
 
 class Utils
 {
+    protected static $snakeCache = [];
     /**
      * 统一返回json格式
      * @param int $code
@@ -250,7 +251,7 @@ class Utils
      */
     public function getCurrentApps(string $appKey):array
     {
-        $config = Config::get('apidoc');
+        $config = Config::get("apidoc")?Config::get("apidoc"):Config::get("apidoc.");
         if (!(!empty($config['apps']) && count($config['apps']) > 0)) {
             throw new ErrorException("no config apps", 500);
         }
@@ -288,6 +289,41 @@ class Utils
             $appsConfig[] = $app;
         }
         return $appsConfig;
+    }
+
+    /**
+     * 驼峰转下划线
+     *
+     * @param  string $value
+     * @param  string $delimiter
+     * @return string
+     */
+    public static function snake(string $value, string $delimiter = '_'): string
+    {
+        $key = $value;
+
+        if (isset(static::$snakeCache[$key][$delimiter])) {
+            return static::$snakeCache[$key][$delimiter];
+        }
+
+        if (!ctype_lower($value)) {
+            $value = preg_replace('/\s+/u', '', $value);
+
+            $value = static::lower(preg_replace('/(.)(?=[A-Z])/u', '$1' . $delimiter, $value));
+        }
+
+        return static::$snakeCache[$key][$delimiter] = $value;
+    }
+
+    /**
+     * 字符串转小写
+     *
+     * @param  string $value
+     * @return string
+     */
+    public static function lower(string $value): string
+    {
+        return mb_strtolower($value, 'UTF-8');
     }
 
 
