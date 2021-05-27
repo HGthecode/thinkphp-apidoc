@@ -43,3 +43,26 @@ apidoc接口请求地址（非调试接口的地址）
 - 默认值:true
 
 是否显示接口请求类型
+
+### HOSTS
+- 类型: array
+- 默认值:undefined
+
+配置多个可选的tp项目地址，可通过文档头部HOST选择框进行切换不同的项目文档
+
+```json
+HOSTS: [
+    {
+      title: "tp6本地",
+      host: "http://tp6.apidoc.net.cn"
+    },
+    {
+      title: "tp5本地",
+      host: "http://tp5.apidoc.net.cn"
+    },
+    {
+      title: "demo演示",
+      host: "http://apidoc.demo.hg-code.com"
+    }
+]
+```

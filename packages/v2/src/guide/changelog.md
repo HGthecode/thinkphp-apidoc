@@ -12,6 +12,20 @@ category: 指南
 - 修订版本号：日常 bugfix 更新
 :::
 
+
+## v2.6.0
+`2021-05-27`
+
+> 需升级前端文件 [v1.3.6](https://gitee.com/hg-code/apidoc-ui/attach_files/714638/download/apidoc.zip)
+
+- 支持TP5使用，需PHP>=7.0
+- 增加自动生成多级控制器的url规则
+- 增加配置参数`allowCrossDomain`是否允许跨域访问apidoc接口
+- 支持前端独立部署，可配置多个host进行切换不同项目的文档
+- 修正tree类型解析异常问题
+- 修正返回参数returned表格展示字段类型不正常问题
+
+
 ## v2.5.3
 `2021-05-20`
 

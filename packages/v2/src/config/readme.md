@@ -41,23 +41,6 @@ category: 配置
 
 默认的作者名称，编写接口注解时，不配置Author时，为该配置的默认作者
 
-## versions <MyBadge text="已弃用" type="error"/>
-- 类型: array
-- 默认值: undefined
-
-设置API文档的版本
-> `v2.1.0`已删除，改为用`apps`配置
-```php
-// config/apidoc.php
-<?php
-return [
-    //设置可选版本
-    'versions'=>[
-        ['title'=>'V1.0','folder'=>'v1'],
-        ['title'=>'V2.0','folder'=>'v2'],
-    ],
-]
-```
 
 ## apps
 
@@ -144,7 +127,7 @@ return [
 - 类型: array
 - 默认值: undefined
 
-如不配置`controllers`时有效，在自动生成控制器列表时配置不解析的控制器
+不配置`controllers`时有效，在自动生成控制器列表时配置不解析的控制器
 ```php
 // config/apidoc.php
 <?php
@@ -177,13 +160,6 @@ return [
 缓存文件路径
 
 
-### cache.reload
-- 类型: boolean
-- 默认值:true
-
-是否显示更新缓存按钮
-> `v2.1.0`已删除，改为用TP的 `APP_DEBUG`控制
-
 ### cache.max
 - 类型: number
 - 默认值:5
@@ -215,14 +191,6 @@ return [
 
 密码加密的盐，请务必更改
 
-
-## global\_auth\_key <MyBadge text="已弃用" type="error"/>
-- 类型: string
-- 默认值: Authorization
-
-> `v2.4.0`版本已弃用
-
-设置全局Authorize时请求头headers携带的key，对应token的key
 
 
 ## headers
@@ -265,25 +233,6 @@ return [
 ```php
 // config/apidoc.php
 
-// 统一的请求响应体
-'responses'=>'{
-    "code":"状态码",
-    "message":"操作描述",
-    "data":"业务数据",
-    "timestamp":"响应时间戳"
-}',
-
-//  >= v2.2.1版本
-'responses'=>[
-    'show_responses'=>true,
-    'data'=>[
-        ['name'=>'code','desc'=>'状态码','type'=>'int'],
-        ['name'=>'message','desc'=>'操作描述','type'=>'string'],
-        ['name'=>'data','desc'=>'业务数据','main'=>true,'type'=>'object'],
-    ]
-],
-
-//  >= v2.4.0版本（推荐）
 'responses'=>[
     ['name'=>'code','desc'=>'状态码','type'=>'int'],
     ['name'=>'message','desc'=>'操作描述','type'=>'string'],
@@ -292,50 +241,20 @@ return [
 
 ```
 
-### responses.show_responses
+
+## controller_auto_search
 - 类型: boolean
 - 默认值: false
 
-> `v2.4.0`版本已弃用，改为以上示例 v2.4.0版本的使用方式
-
-是否将统一响应体数据显示在响应结果中
+是否将多级路由的url生成为/形式。tp5用户可直接在config/app.php中配置，由于tp6废除了该配置，所以该配置是为了方便tp6用户进行配置
 
 
-### responses.data
-- 类型: array
-- 默认值: undefined
+## allowCrossDomain
+- 类型: boolean
+- 默认值: false
 
-> `v2.4.0`版本已弃用，改为以上示例 v2.4.0版本的使用方式
+是否允许跨域访问apidoc的相关接口
 
-统一响应体的数据结构配置，如配置`responses.show_responses`为true时，响应体数据中必须有一个指定`main`为true，以将接口数据挂载到该字段下
-
-
-
-
-## filter_method
-- 类型: array
-- 默认值: 如下示例
-
-指定公共注释定义的控制器地址
-
-```php
-// config/apidoc.php
-<?php
-return [
-    // 过滤、不解析的方法名称
-    'filter_method'=>[
-        '_empty',
-        '_initialize',
-        '__construct',
-        '__destruct',
-        '__get',
-        '__set',
-        '__isset',
-        '__unset',
-        '__cal',
-    ]
-]
-```
 
 ## docs
 - 类型: array
