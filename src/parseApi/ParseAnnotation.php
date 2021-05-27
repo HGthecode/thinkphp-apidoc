@@ -298,7 +298,7 @@ class ParseAnnotation
      */
     protected function autoCreateUrl($method): string
     {
-        if (Config::get("controller_auto_search") || in_array('controller_auto_search',$this->config)){
+        if (Config::get("controller_auto_search") || !empty($this->config['controller_auto_search'])){
             $pathArr = explode("\\", $method->class );
         }else{
             $searchString = $this->controller_layer . '\\';
