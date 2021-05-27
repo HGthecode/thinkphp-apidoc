@@ -253,7 +253,7 @@ return [
 - 类型: boolean
 - 默认值: false
 
-是否允许跨域访问apidoc的相关接口
+适用于TP6，是否允许跨域访问apidoc的相关接口，TP5自行修改手动添加的路由即可
 
 
 ## docs

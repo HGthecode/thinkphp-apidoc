@@ -10,7 +10,7 @@ sidebar: auto
 使用apidoc对接口的请求参数Param与响应参数Returned，根据所需的参数类型，可参考以下示例实现你的接口参数的注解
 
 
-## String 字符串
+## string 字符串
 
 #### 注解：
 ```php
@@ -31,7 +31,7 @@ name:"";
 |name|string| | |姓名|
 
 
-## Int 整型
+## int 整型
 
 #### 注解：
 ```php
@@ -50,7 +50,7 @@ age:0;
 |age|int| | |年龄|
 
 
-## Boolean 布尔
+## boolean 布尔
 
 #### 注解：
 ```php
