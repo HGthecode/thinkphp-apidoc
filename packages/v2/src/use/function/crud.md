@@ -153,6 +153,9 @@ app
 |model.namespace|app\model|模型命名空间|
 |model.use_alias|TestCrudModel|模型别名|
 |model.use_path|app\model\TestCrud|模型use地址|
+|model.table_name| test_crud |表明（不含前缀）|
+|model.table_prefix|""|表前缀|
+|model.file_name| TestCrud | 文件名称|
 |validate.class_name|TestCrud|页面填入的验证器文件名|
 |validate.namespace|app\admin\validate|验证器命名空间|
 |validate.use_alias|TestCrudValidate|验证器别名|
@@ -166,6 +169,7 @@ app
 |service.namespace|app\admin\service|逻辑层（自定义的）命名空间|
 |service.use_alias|TestCrudservice|逻辑层（自定义的）别名|
 |service.use_path|app\admin\service\TestCrud|逻辑层（自定义的）use地址|
+|service.file_name|TestCrud|文件名|
 
 ### 自定义文件
 如果你的项目需要更多层文件来实现Crud，你只需要在配置文件`config/apidoc.php`的`crud`配置项中加入你的配置，如下

@@ -383,8 +383,9 @@ class ApiDocTest
 | field|	配置了ref引入时有效，用来指定引入的字段 | 如：field="id,username,nickname"；则只会引入定义的 id,username字段	 |	
 | withoutField|	配置了ref引入时有效，用来指定过滤掉的字段 | 如：withoutField:id,username；则引入模型除 id,username字段外的所有字段	 |	
 | childrenField|	字段类型为`tree`时，给其定义子节点字段名 |	默认为 children |	
-| childrenDesc|	字段类型为`tree`时，给其定义子节点字段名的备注 |	 |
+| childrenDesc|	字段类型为`tree`时，给其定义子节点字段名的备注|	 |
 | childrenType| 字段类型为`array`时，为子参数定义类型，可选值有`string` `int` `boolean` `array` `object` |  |
+| replaceGlobal| Returned有效，replaceGlobal="true"时，将该字段覆盖配置的`responses`统一响应体参数 |  |
 
 
 

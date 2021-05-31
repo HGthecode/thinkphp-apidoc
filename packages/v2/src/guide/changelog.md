@@ -13,6 +13,17 @@ category: 指南
 :::
 
 
+## v2.6.1
+`2021-05-31`
+
+> 无需升级前端文件
+
+- 支持Param、Returned合并相同参数，[查看如何使用](/course/paramSkills/#参数重写)
+- 支持Returned配置`replaceGlobal="true"`将字段覆盖配置的`responses`统一响应体参数
+- 增加配置参数`auto_url_rule`控制自动生成接口url的规则，[查看配置](/config/#auto-url-rule)
+- 增加配置参数，crud配置model的`file_name`参数来定义模型文件名的生成规则[详见配置参数](/config/#crud-model-的参数)
+- 修正crud默认值为0时字段创建为null的问题
+
 ## v2.6.0
 `2021-05-27`
 

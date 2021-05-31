@@ -242,7 +242,7 @@ return [
 ```
 
 
-## controller_auto_search
+## controller\_auto\_search
 - 类型: boolean
 - 默认值: false
 
@@ -255,6 +255,12 @@ return [
 
 适用于TP6，是否允许跨域访问apidoc的相关接口，TP5自行修改手动添加的路由即可
 
+
+## auto\_url\_rule
+- 类型: string
+- 默认值: undefined
+
+自动生成url的规则，可选值有 `lcfirst`首字母小写，`ucfirst`首字母大写
 
 ## docs
 - 类型: array
@@ -359,6 +365,7 @@ return [
 |template|string|模型生成的模板地址。[同crud.contreller.template参数](/config/#crud-controller-的参数)|
 |default_fields|array|创建数据表窗口，默认填入的字段方便快速填写，具体可参考下方示例|
 |fields_types|array|创建数据表窗口，可选的字段类型|
+|file_name|string|文件名生成规则，支持模板参数如：`${model.class_name}Model`|
 
 ### crud.validate 的参数
 
