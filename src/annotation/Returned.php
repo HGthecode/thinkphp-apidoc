@@ -25,6 +25,10 @@ final class Returned extends ParamBase
      */
     public $ref;
 
-
+    /**
+     * 是否替换全局响应体中的参数
+     * @var bool
+     */
+    public $replaceGlobal = false;
 
 }

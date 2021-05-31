@@ -189,7 +189,7 @@ class ParseAnnotation
 
         foreach ($refClass->getMethods(\ReflectionMethod::IS_PUBLIC) as $refMethod) {
             if (!empty($refMethod->name) && !in_array($refMethod->name, $filter_method)) {
-                $methodItem = $this->parseAnnotation($refMethod, true);
+                $methodItem = $this->parseAnnotation($refMethod, true,"controller");
                 if (!count((array)$methodItem)) {
                     continue;
                 }
@@ -234,12 +234,36 @@ class ParseAnnotation
                     } else {
                         $responsesData = $config['responses'];
                     }
+                    // 合并统一响应体及响应参数相同的字段
+                    $returnData = [];
+                    $resKeys = [];
                     foreach ($responsesData as $resItem) {
-                        if (!empty($resItem['main']) && $resItem['main'] === true) {
-                            $resItem['params'] = $methodItem['return'];
+                        $resKeys[]=$resItem['name'];
+                    }
+                    foreach ($methodItem['return'] as $returnItem){
+                        if (!(in_array($returnItem['name'],$resKeys) && $returnItem['source']==='controller' && !empty($returnItem['replaceGlobal']))){
+                            $returnData[]=$returnItem;
+                        }
+                    }
+
+                    foreach ($responsesData as $resItem) {
+                        $resData = $resItem;
+                        $globalFind = Utils::getArrayFind($methodItem['return'],function ($item)use ($resItem){
+                            if ($item['name'] == $resItem['name'] && $item['source']==='controller' && !empty($item['replaceGlobal'])){
+                                return true;
+                            }
+                            return false;
+                        });
+                        if (!empty($globalFind)){
+                            $resData = array_merge($resItem,$globalFind);
+                        }else if (!empty($resData['main']) && $resData['main'] === true) {
+                            $resData['params'] = $returnData;
+
+                            $resData['resKeys']=$resKeys;
                             $hasMian           = true;
                         }
-                        $returned[] = $resItem;
+                        $resData['find'] =$globalFind;
+                        $returned[] = $resData;
                     }
                     if (!$hasMian) {
                         $returned = Utils::arrayMergeAndUnique("name", $returned, $methodItem['return']);
@@ -310,7 +334,20 @@ class ParseAnnotation
         $classPathArr = [];
         foreach ($pathArr as $item) {
             if (!in_array($item, $filterPathNames)) {
-                $classPathArr[] = lcfirst($item);
+                if (!empty($this->config['auto_url_rule'])){
+                    switch ($this->config['auto_url_rule']) {
+                        case 'lcfirst':
+                            $classPathArr[] = lcfirst($item);
+                            break;
+                        case 'ucfirst':
+                            $classPathArr[] = ucfirst($item);
+                            break;
+                        default:
+                            $classPathArr[] = $item;
+                    }
+                }else{
+                    $classPathArr[] = $item;
+                }
             }
         }
         $classPath = implode('/', $classPathArr);
@@ -414,9 +451,10 @@ class ParseAnnotation
      * 解析方法注释
      * @param $refMethod
      * @param bool $enableRefService 是否终止service的引入
+     * @param string $source 注解来源
      * @return array
      */
-    protected function parseAnnotation($refMethod, bool $enableRefService = true): array
+    protected function parseAnnotation($refMethod, bool $enableRefService = true,$source=""): array
     {
         $data = [];
         if ($annotations = $this->reader->getMethodAnnotations($refMethod)) {
@@ -427,65 +465,11 @@ class ParseAnnotation
             foreach ($annotations as $annotation) {
                 switch (true) {
                     case $annotation instanceof Param:
-                        if (!empty($annotation->ref)) {
-                            $refRes = $this->renderRef($annotation->ref, $enableRefService);
-                            $params = $this->handleRefData($params, $refRes, $annotation, 'param');
-                        } else {
-                            $param         = [
-                                "name"    => "",
-                                "type"    => $annotation->type,
-                                "desc"    => $annotation->desc,
-                                "default" => $annotation->default,
-                                "require" => $annotation->require,
-                                "childrenType"=> $annotation->childrenType
-                            ];
-                            $children      = $this->handleParamValue($annotation->value, 'param');
-                            $param['name'] = $children['name'];
-                            if (count($children['params']) > 0) {
-                                $param['params'] = $children['params'];
-                                if ($annotation->type === 'tree' && !empty($annotation->childrenField)) {
-                                    // 类型为tree的
-                                    $param['params'][] = [
-                                        'params' => $children['params'],
-                                        'name'   => $annotation->childrenField,
-                                        'type'   => 'array',
-                                        'desc'   => $annotation->childrenDesc,
-                                    ];
-                                }
-                            }
-                            $params[] = $param;
-
-                        }
+                        $params = $this->handleParamAndReturned($params,$annotation,'param',$enableRefService);
                         break;
                     case $annotation instanceof Returned:
-                        if (!empty($annotation->ref)) {
-                            $refRes  = $this->renderRef($annotation->ref, $enableRefService);
-                            $returns = $this->handleRefData($returns, $refRes, $annotation, 'return');
-                        } else {
-                            $param         = [
-                                "name"    => "",
-                                "type"    => $annotation->type,
-                                "desc"    => $annotation->desc,
-                                "default" => $annotation->default,
-                                "require" => $annotation->require,
-                                "childrenType"=> $annotation->childrenType
-                            ];
-                            $children      = $this->handleParamValue($annotation->value, 'return');
-                            $param['name'] = $children['name'];
-                            if (count($children['params']) > 0) {
-                                $param['params'] = $children['params'];
-                                if ($annotation->type === 'tree' && !empty($annotation->childrenField)) {
-                                    // 类型为tree的
-                                    $param['params'][] = [
-                                        'params' => $children['params'],
-                                        'name'   => $annotation->childrenField,
-                                        'type'   => 'array',
-                                        'desc'   => $annotation->childrenDesc,
-                                    ];
-                                }
-                            }
-                            $returns[] = $param;
-                        }
+
+                        $returns = $this->handleParamAndReturned($returns,$annotation,'return',$enableRefService,$source);
                         break;
                     case $annotation instanceof Header:
                         if (!empty($annotation->ref)) {
@@ -543,6 +527,51 @@ class ParseAnnotation
         return $data;
     }
 
+
+    /**
+     * 处理请求参数与返回参数
+     * @param $params
+     * @param $annotation
+     * @param string $type
+     * @param false $enableRefService
+     * @param string $source 注解来源
+     * @return array
+     */
+    protected function handleParamAndReturned($params,$annotation,$type="param",$enableRefService=false,$source=""){
+        if (!empty($annotation->ref)) {
+            $refRes = $this->renderRef($annotation->ref, $enableRefService);
+            $params = $this->handleRefData($params, $refRes, $annotation, $type,$source);
+        } else {
+            $param         = [
+                "name"         => "",
+                "type"         => $annotation->type,
+                "desc"         => $annotation->desc,
+                "default"      => $annotation->default,
+                "require"      => $annotation->require,
+                "childrenType" => $annotation->childrenType,
+                "source" => $source,
+                "replaceGlobal" =>!empty($annotation->replaceGlobal)?$annotation->replaceGlobal:""
+            ];
+            $children      = $this->handleParamValue($annotation->value, $type);
+            $param['name'] = $children['name'];
+            if (count($children['params']) > 0) {
+                $param['params'] = $children['params'];
+                if ($annotation->type === 'tree' && !empty($annotation->childrenField)) {
+                    // 类型为tree的
+                    $param['params'][] = [
+                        'params' => $children['params'],
+                        'name'   => $annotation->childrenField,
+                        'type'   => 'array',
+                        'desc'   => $annotation->childrenDesc,
+                    ];
+                }
+            }
+            // 合并同级已有的字段
+            $params = Utils::arrayMergeAndUnique("name", $params, [$param]);
+        }
+            return $params;
+    }
+
     /**
      * 解析非注解文本注释
      * @param $refMethod
@@ -575,9 +604,10 @@ class ParseAnnotation
      * @param $params
      * @param $refRes
      * @param $annotation
+     * @param string|null $source 注解来源
      * @return array
      */
-    protected function handleRefData($params, $refRes, $annotation, string $field): array
+    protected function handleRefData($params, $refRes, $annotation, string $field,$source=""): array
     {
         if ($refRes['type'] === "model" && count($refRes['data']) > 0) {
             // 模型引入
@@ -604,20 +634,27 @@ class ParseAnnotation
                 'type'    => $annotation->type,
                 'require' => $annotation->require,
                 'default' => $annotation->default,
-                'params'  => $data
+                'params'  => $data,
+                'source'=>$source,
+                "replaceGlobal" =>!empty($annotation->replaceGlobal)?$annotation->replaceGlobal:""
             ];
-            if ($annotation->type === 'tree') {
-                // 类型为tree的
-                $item['params'][] = [
-                    'params' => $data,
-                    'name'   => !empty($annotation->childrenField)?$annotation->childrenField:"children",
-                    'type'   => 'array',
-                    'desc'   => $annotation->childrenDesc,
-                ];
-                $params[]         = $item;
-            } else {
-                $params[] = $item;
+            $children      = $this->handleParamValue($annotation->value, 'param');
+            $item['name'] = $children['name'];
+            if (count($children['params']) > 0) {
+                $item['params'] = Utils::arrayMergeAndUnique("name",$data,$children['params']);
+                if ($annotation->type === 'tree' && !empty($annotation->childrenField)) {
+                    // 类型为tree的
+                    $item['params'][] = [
+                        'params' => $item['params'],
+                        'name'   => $annotation->childrenField,
+                        'type'   => 'array',
+                        'desc'   => $annotation->childrenDesc,
+                    ];
+                }
             }
+            $params[] = $item;
+
+
         } else {
             $params = array_merge($params, $data);
         }

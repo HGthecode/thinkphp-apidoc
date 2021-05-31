@@ -81,6 +81,7 @@ class CreateCrud
                 }
 
             }else{
+                $currentConfig = $this->config[$key];
                 $currentParam = $params[$key];
                 $tmp_path = (new Utils())->replaceCurrentAppTemplate($currentParam['template'],$currentApps);
                 $tempPath = $tmp_path.".txt";
@@ -88,7 +89,8 @@ class CreateCrud
                 $file_content = Utils::replaceTemplate($str_tmp,$data);
                 $file_content = (new Utils())->replaceCurrentAppTemplate($file_content,$currentApps);
                 $namespacePath = str_replace("\\","/",$currentParam['path']);
-                $filePath = '../'.$namespacePath.'/'.$currentParam['class_name'].'.php';
+                $fileName = $data[$key.'.file_name'];
+                $filePath = '../'.$namespacePath.'/'.$fileName.'.php';
                 $fp=Utils::createFile($filePath,$file_content);
                 if ($fp){
                     $res[]="创建文件成功 path:".$filePath;
@@ -141,13 +143,7 @@ class CreateCrud
                     'path'=>$currentParamPath
                 ]);
             }
-            // 验证文件是否已存在
-            $filePath = '../'.$currentParamPath.'/'.$currentParam['class_name'].'.php';
-            if(file_exists($filePath)){
-                throw new ErrorException("file already exists",500,[
-                    'filepath'=>$filePath
-                ]);
-            }
+
 
 
             $appPath = App::getAppPath();
@@ -178,15 +174,41 @@ class CreateCrud
                         break;
                     }
                 }
+                $tp_version = \think\facade\App::version();
+                if (substr($tp_version, 0, 2) == '5.') {
+                    $table_prefix = Config::get('database.prefix');
+                }else{
+                    $driver                                        = Config::get('database.default');
+                    $table_prefix                                  = Config::get('database.connections.' . $driver . '.prefix');
+                }
+                $data[$currentParam['name'] . '.table_prefix'] = $table_prefix;
+                $table_name = Utils::snake($currentParam['class_name']);
+                $data[$currentParam['name'].'.table_name']=$table_name;
             }
 
             $namespace = str_replace($appFolder, App::getNamespace(), $currentParam['path']);
-
             $data[$currentParam['name'].'.class_name']=$currentParam['class_name'];
             $data[$currentParam['name'].'.namespace']=$namespace;
-            $data[$currentParam['name'].'.use_path']=$namespace."\\".$currentParam['class_name'];
-            $data[$currentParam['name'].'.use_alias']=$currentParam['class_name'].ucwords($currentParam['name']);
+
+            // 验证文件是否已存在
+            $fileName = $currentParam['class_name'];
+            if (!empty($currentConfig['file_name'])){
+                $fileName = (new Utils())->replaceTemplate($currentConfig['file_name'],$data);
+            }
+            $filePath = '../'.$currentParamPath.'/'.$fileName.'.php';
+            $data[$currentParam['name'].'.file_name']=$fileName;
+            if(file_exists($filePath)){
+                throw new ErrorException("file already exists",500,[
+                    'filepath'=>$filePath
+                ]);
+            }
+            $data[$currentParam['name'].'.use_path']=$namespace."\\".$fileName;
+            $data[$currentParam['name'].'.use_alias']=$fileName.ucwords($currentParam['name']);
+
+
         }
+
+
 
         // 字段过滤数据
         if (!empty($params['model']['table'])){
@@ -316,7 +338,7 @@ class CreateCrud
             if ($item['incremental']==true){
                 $table_field.=" AUTO_INCREMENT";
             }
-            if (!empty($item['default'])){
+            if (!empty($item['default']) || $item['default']=="0"){
                 $table_field.=" DEFAULT '".$item['default']."'";
             }
             $table_field.=" COMMENT '".$item['desc']."',";
