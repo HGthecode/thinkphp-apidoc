@@ -5,12 +5,16 @@ namespace hg\apidoc\annotation;
 use Doctrine\Common\Annotations\Annotation;
 
 /**
- * 描述
+ * Url
  * @package hg\apidoc\annotation
  * @Annotation
- * @Target({"METHOD","CLASS"})
+ * @Target({"METHOD"})
  */
-class Desc extends Annotation
+class Md extends Annotation
 {
-
+    /**
+     * 引入md内容
+     * @var string
+     */
+    public $ref;
 }

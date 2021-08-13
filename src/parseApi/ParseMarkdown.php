@@ -6,6 +6,7 @@ namespace hg\apidoc\parseApi;
 use think\facade\App;
 use hg\apidoc\Utils;
 use think\facade\Config;
+use think\facade\Lang;
 
 class ParseMarkdown
 {
@@ -24,8 +25,8 @@ class ParseMarkdown
     {
         $config  = $this->config;
         $docData = [];
-        if (!empty($config['docs']) && !empty($config['docs']['menus']) && count($config['docs']['menus']) > 0) {
-            $docData = $this->handleDocsMenuData($config['docs']['menus']);
+        if (!empty($config['docs']) && count($config['docs']) > 0) {
+            $docData = $this->handleDocsMenuData($config['docs']);
         }
         return $docData;
     }
@@ -39,14 +40,14 @@ class ParseMarkdown
     {
         $list = [];
         foreach ($menus as $item) {
-            if (!empty($item['items']) && count($item['items']) > 0) {
-                $item['items']    = $this->handleDocsMenuData($item['items']);
-                $item['group']    = 'markdown_doc';
-                $item['menu_key'] = "md_group_" . mt_rand(10000, 99999);
+            if (!empty($item['children']) && count($item['children']) > 0) {
+                $item['children']    = $this->handleDocsMenuData($item['children']);
+                $item['menu_key'] = Utils::createRandKey("md_group");
                 $list[]           = $item;
             } else {
                 $item['type']     = 'md';
-                $item['menu_key'] = "md_" . mt_rand(10000, 99999);
+                $item['title']     = Utils::getLang($item['title']);
+                $item['menu_key'] = Utils::createRandKey("md");
                 $list[]           = $item;
             }
         }
@@ -60,12 +61,54 @@ class ParseMarkdown
      * @param string $path
      * @return string
      */
-    public function getContent(string $appKey, string $path): string
+    public function getContent(string $appKey, string $path,$lang="")
     {
-        $currentApps = (new Utils())->getCurrentApps($appKey);
-        $mdPath      = (new Utils())->replaceCurrentAppTemplate($path, $currentApps);
-        $filePath    = App::getRootPath() . $mdPath . '.md';
+        if (!empty($appKey)){
+            $currentApps = (new Utils())->getCurrentApps($appKey);
+            $fullPath      = (new Utils())->replaceCurrentAppTemplate($path, $currentApps);
+        }else{
+            $fullPath = $path;
+        }
+        $fullPath = Utils::replaceTemplate($fullPath,[
+            'lang'=>$lang
+        ]);
+
+        if (strpos($fullPath, '#') !== false) {
+            $mdPathArr = explode("#", $fullPath);
+            $mdPath=$mdPathArr[0];
+            $mdAnchor =$mdPathArr[1];
+        } else {
+            $mdPath = $fullPath;
+            $mdAnchor="";
+        }
+        $fileSuffix = "";
+        if (strpos($fullPath, '.md') === false) {
+            $fileSuffix = ".md";
+        }
+        $filePath    = App::getRootPath() . $mdPath . $fileSuffix;
         $contents    = Utils::getFileContent($filePath);
+        // 获取指定h2标签内容
+        if (!empty($mdAnchor)){
+            if (strpos($contents, '## ') !== false) {
+                $contentArr = explode("\r\n", $contents);
+                $contentText = "";
+                foreach ($contentArr as $line){
+                    $contentText.="\r\n".trim($line);
+                }
+                $contentArr = explode("\r\n## ", $contentText);
+                $content="";
+                foreach ($contentArr as $item){
+                    $itemArr = explode("\r\n", $item);
+                    if (!empty($itemArr) && $itemArr[0] && $mdAnchor===$itemArr[0]){
+                        $content = str_replace($itemArr[0]."\r\n", '', $item);
+                        break;
+                    }
+                }
+                return $content;
+            }
+        }
         return $contents;
     }
+
+
 }

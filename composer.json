@@ -4,13 +4,13 @@
     "type": "think-extend",
     "keywords": [
         "thinkphp",
-        "swagger",
         "apidoc",
         "api文档",
         "接口文档",
-        "自动生成",
+        "自动生成api",
         "注释生成",
-        "php接口文档"
+        "php接口文档",
+        "php api文档"
       ],
     "require": {
         "php": ">=7.1.0",

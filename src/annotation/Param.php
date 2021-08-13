@@ -17,11 +17,17 @@ final class Param extends ParamBase
      * 必须
      * @var bool
      */
-    public $require = false;
+    public $require;
     
     /**
      * 引入
      * @var string
      */
     public $ref;
+
+    /**
+     * mock
+     * @var string
+     */
+    public $mock;
 }

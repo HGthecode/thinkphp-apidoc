@@ -5,6 +5,7 @@ namespace hg\apidoc;
 
 use hg\apidoc\exception\ErrorException;
 use think\facade\Config;
+use think\facade\Lang;
 use think\response\Json;
 
 class Utils
@@ -129,6 +130,8 @@ class Utils
         return $array;
     }
 
+
+
     /**
      * 根据一组keys获取所有关联节点
      * @param $tree
@@ -221,6 +224,55 @@ class Utils
     }
 
     /**
+     * 根据条件获取数组中的值
+     * @param array $array
+     * @param $query
+     * @return mixed|null
+     */
+    public static function getArrayFindIndex(array $array, $query)
+    {
+        $res = null;
+        if (is_array($array)) {
+            foreach ($array as $k=>$item) {
+                if ($query($item)) {
+                    $res = $k;
+                    break;
+                }
+            }
+        }
+        return $res;
+    }
+
+    /**
+     * 查询符合条件的数组
+     * @param array $array
+     * @param $query
+     * @return array
+     */
+    public static function getArraybyQuery(array $array, $query)
+    {
+        $res = [];
+        if (is_array($array)) {
+            foreach ($array as $item) {
+                if ($query($item)) {
+                    $res[] = $item;
+                }
+            }
+        }
+        return $res;
+    }
+
+    /**
+     * 对象转为数组
+     * @param $object
+     * @return mixed
+     */
+    public static function objectToArray($object) {
+        $object =  json_decode( json_encode($object),true);
+        return  $object;
+    }
+
+    /**
      * 合并对象数组并根据key去重
      * @param string $name
      * @param mixed ...$array
@@ -228,19 +280,34 @@ class Utils
      */
     public static function arrayMergeAndUnique(string $key = "name", ...$array):array
     {
-        $mergeArr = [];
-        foreach ($array as $k => $v) {
-            $mergeArr = array_merge($mergeArr, $v);
+        $newArray = [];
+        foreach ($array as $k => $arr) {
+            if ($k===0){
+                $newArray = array_merge($newArray, $arr);
+            }else if(is_array($arr)){
+                foreach ($arr as $item){
+                    $findIndex = Utils::getArrayFindIndex($newArray,function ($row)use ($key,$item){
+                        if ($item[$key] === $row[$key]){
+                            return true;
+                        }
+                        return false;
+                    });
+                    if($findIndex>-1){
+                        $data = [];
+                        foreach ($item as $itemK=>$itemV){
+                            if ($itemV !=="" && $itemV !== null){
+                                $data[$itemK]=$itemV;
+                            }
+                        }
+                        $newArray[$findIndex] = array_merge($newArray[$findIndex],$data);
+                    }else{
+                        $newArray[]=$item;
+                    }
+                }
+            }
         }
-        $keys = [];
-        foreach ($mergeArr as $k => $v) {
-            $keys[] = $v[$key];
-        }
-        $uniqueKeys = array_flip(array_flip($keys));
-        $newArray   = [];
-        foreach ($uniqueKeys as $k => $v) {
-            $newArray[] = $mergeArr[$k];
-        }
+
+
         return $newArray;
 
     }
@@ -249,9 +316,14 @@ class Utils
      * 初始化当前所选的应用/版本数据
      * @param $appKey
      */
-    public function getCurrentApps(string $appKey):array
+    public function getCurrentApps(string $appKey,$configData=""):array
     {
-        $config = Config::get("apidoc")?Config::get("apidoc"):Config::get("apidoc.");
+        if (!empty($configData)){
+            $config =$configData;
+        }else{
+            $config = Config::get("apidoc")?Config::get("apidoc"):Config::get("apidoc.");
+            $config['apps'] = $this->handleAppsConfig($config['apps']);
+        }
         if (!(!empty($config['apps']) && count($config['apps']) > 0)) {
             throw new ErrorException("no config apps", 500);
         }
@@ -275,20 +347,47 @@ class Utils
      * @param array $apps
      * @return array
      */
-    public function handleAppsConfig(array $apps):array
+    public function handleAppsConfig(array $apps,$isHandlePassword=false):array
     {
         $appsConfig = [];
         foreach ($apps as $app) {
-            if (!empty($app['password'])) {
+            if (!empty($app['password']) && $isHandlePassword===true) {
                 unset($app['password']);
                 $app['hasPassword'] = true;
             }
+            if (!empty($app['title'])){
+                $app['title'] = Utils::getLang($app['title']);
+            }
             if (!empty($app['items']) && count($app['items']) > 0) {
-                $app['items'] = $this->handleAppsConfig($app['items']);
+                $app['items'] = $this->handleAppsConfig($app['items'],$isHandlePassword);
+            }
+            if (!empty($app['groups']) && count($app['groups']) > 0){
+                $app['groups'] = $this->handleGroupsConfig($app['groups']);
             }
             $appsConfig[] = $app;
         }
         return $appsConfig;
+    }
+
+    /**
+     * 处理groups配置参数
+     * @param array $groups
+     * @return array
+     */
+    public function handleGroupsConfig(array $groups):array
+    {
+        $groupConfig = [];
+        foreach ($groups as $group) {
+            if (!empty($group['title'])){
+                $group['title'] = Utils::getLang($group['title']);
+            }
+            if (!empty($group['children']) && count($group['children']) > 0) {
+                $group['children'] = $this->handleAppsConfig($group['children']);
+            }
+
+            $groupConfig[] = $group;
+        }
+        return $groupConfig;
     }
 
     /**
@@ -325,6 +424,69 @@ class Utils
     {
         return mb_strtolower($value, 'UTF-8');
     }
+
+    /**
+     * 创建随机key
+     * @param string $prefix
+     * @return string
+     */
+    public static function createRandKey(string $prefix=""): string{
+       return uniqid($prefix);
+    }
+
+    /**
+     * 获取多语言变量值
+     * @param $string
+     * @return mixed
+     */
+    public static function getLang($string) {
+        if (!$string){
+            return $string;
+        }
+        if (strpos($string, 'lang(') !== false) {
+            if (preg_match('#lang\((.*)\)#s', $string, $key) !== false){
+                $langKey = $key && count($key)>1 ? trim($key[1]):"";
+                return Lang::get($langKey);
+            }
+        }
+        return $string;
+    }
+
+    /**
+     * 二维数组设置指定字段的多语言
+     * @param $array
+     * @param $field
+     * @return array
+     */
+    public static function getArrayLang($array,$field){
+        $data = [];
+        if (!empty($array) && is_array($array)){
+            foreach ($array as $item){
+                $item[$field] = Utils::getLang($item[$field]);
+                $data[]=$item;
+            }
+        }
+        return $data;
+    }
+
+    /**
+     * 二维数组根据key排序
+     * @param $array
+     * @param string $field
+     * @param int $order
+     * @return mixed
+     */
+    public static function arraySortByKey($array, $field="sort",$order=SORT_ASC){
+        $sorts = [];
+        foreach ($array as $key => $row) {
+            $sorts[$key]  = $row[$field];
+        }
+        array_multisort($sorts, $order,  $array);
+        return $array;
+    }
+
+
+
 
 
 }

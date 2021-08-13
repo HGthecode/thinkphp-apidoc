@@ -52,7 +52,8 @@ class Auth
      */
     protected function getTokenCode(string $password): string
     {
-        return md5(md5($password) . strtotime(date('Y-m-d', time())));
+//        return md5(md5($password) . strtotime(date('Y-m-d', time())));
+        return md5(md5($password));
     }
 
 
@@ -63,7 +64,13 @@ class Auth
      */
     public function createToken(string $password): string
     {
-        return $this->handleToken($this->getTokenCode($password), "CE");
+        $expire = $this->config['auth']['expire']?$this->config['auth']['expire']:86400;
+        $data = [
+            'key'=>$this->getTokenCode($password),
+            'expire'=>time()+$expire
+        ];
+        $code = json_encode($data);
+        return $this->handleToken($code, "CE");
     }
 
     /**
@@ -77,9 +84,16 @@ class Auth
             $password = $this->config['auth']['password'];
         }
         $decode = $this->handleToken($token, "DE");
-        if ($decode === $this->getTokenCode($password)) {
+        $deData = json_decode($decode,true);
+
+        if (!empty($deData['key']) && $deData['key'] === $this->getTokenCode($password) && !empty($deData['expire']) && $deData['expire']>time()){
             return true;
         }
+
+
+//        if ($decode === $this->getTokenCode($password)) {
+//            return true;
+//        }
         return false;
     }
 
@@ -92,7 +106,7 @@ class Auth
         $config  = $this->config;
         $request = Request::instance();
 
-        $token = $request->param("apidocToken");
+        $token = $request->param("token");
 
         if (!empty($appKey)) {
             $currentApps = (new Utils())->getCurrentApps($appKey);

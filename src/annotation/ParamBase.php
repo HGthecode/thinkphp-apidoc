@@ -12,7 +12,7 @@ abstract class ParamBase extends Annotation
      * @Enum({"string", "integer", "int", "boolean", "array", "double", "object", "tree", "file","float","date","time","datetime"})
      * @var string
      */
-    public $type = 'string';
+    public $type;
 
 
     /**
@@ -57,6 +57,18 @@ abstract class ParamBase extends Annotation
      * @var string
      */
     public $withoutField;
+
+    /**
+     * 说明md内容
+     * @var string
+     */
+    public $md;
+
+    /**
+     * 引入说明md内容
+     * @var string
+     */
+    public $mdRef;
 
 
 }

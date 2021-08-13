@@ -14,6 +14,7 @@ use hg\apidoc\annotation\Sort;
 use hg\apidoc\annotation\Param;
 use hg\apidoc\annotation\Title;
 use hg\apidoc\annotation\Desc;
+use hg\apidoc\annotation\Md;
 use hg\apidoc\annotation\Author;
 use hg\apidoc\annotation\Tag;
 use hg\apidoc\annotation\Header;
@@ -21,9 +22,12 @@ use hg\apidoc\annotation\Returned;
 use hg\apidoc\annotation\ParamType;
 use hg\apidoc\annotation\Url;
 use hg\apidoc\annotation\Method;
+use hg\apidoc\annotation\Before;
+use hg\apidoc\annotation\After;
 use think\annotation\route\Group as RouteGroup;
 use think\facade\App;
 use think\facade\Config;
+use think\facade\Lang;
 
 class ParseAnnotation
 {
@@ -54,13 +58,12 @@ class ParseAnnotation
      */
     public function renderApiData(string $appKey): array
     {
-        $config      = $this->config;
         $currentApps = (new Utils())->getCurrentApps($appKey);
         $currentApp  = $currentApps[count($currentApps) - 1];
 
-        if (!empty($config['controllers']) && count($config['controllers']) > 0) {
+        if (!empty($currentApp['controllers']) && count($currentApp['controllers']) > 0) {
             // 配置的控制器列表
-            $controllers = $this->getConfigControllers($currentApp['path']);
+            $controllers = $this->getConfigControllers($currentApp['path'],$currentApp['controllers']);
         } else {
             // 默认读取所有的
             $controllers = $this->getDirControllers($currentApp['path']);
@@ -74,10 +77,12 @@ class ParseAnnotation
                 }
             }
         }
+        // 排序
+        $apiList = Utils::arraySortByKey($apiData);
         $json = array(
-            "data"   => $apiData,
+            "data"   => $apiList,
             "tags"   => $this->tags,
-            "groups" => $this->groups
+            "groups" => $this->groups,
         );
         return $json;
     }
@@ -87,12 +92,10 @@ class ParseAnnotation
      * @param string $path
      * @return array
      */
-    protected function getConfigControllers(string $path): array
+    protected function getConfigControllers(string $path,$appControllers): array
     {
-        $config      = $this->config;
         $controllers = [];
-
-        $configControllers = $config['controllers'];
+        $configControllers = $appControllers;
         if (!empty($configControllers) && count($configControllers) > 0) {
             foreach ($configControllers as $item) {
                 if ( strpos($item, $path) !== false && class_exists($item)) {
@@ -183,136 +186,294 @@ class ParseAnnotation
                 $data['title'] = $controllersName;
             }
         }
+        $data['title'] = Utils::getLang($data['title']);
         $methodList       = [];
-        $filter_method    = !empty($config['filter_method']) ? $config['filter_method'] : [];
-        $data['menu_key'] = $data['controller'] . "_" . mt_rand(10000, 99999);
+        $data['menu_key'] = Utils::createRandKey($data['controller']);
 
         foreach ($refClass->getMethods(\ReflectionMethod::IS_PUBLIC) as $refMethod) {
-            if (!empty($refMethod->name) && !in_array($refMethod->name, $filter_method)) {
-                $methodItem = $this->parseAnnotation($refMethod, true,"controller");
-                if (!count((array)$methodItem)) {
-                    continue;
-                }
-                $textAnnotations = $this->parseTextAnnotation($refMethod);
-                // 标注不解析的方法
-                if (in_array("NotParse", $textAnnotations)) {
-                    continue;
-                }
-                // 无标题，且有文本注释
-                if (empty($methodItem['title']) && !empty($textAnnotations) && count($textAnnotations) > 0) {
-                    $methodItem['title'] = $textAnnotations[0];
-                }
-                // 添加统一headers请求头参数
-                if (!empty($config['headers']) && !in_array("NotHeaders", $textAnnotations)) {
-                    if (!empty($methodItem['header'])) {
-                        $methodItem['header'] = Utils::arrayMergeAndUnique("name", $config['headers'], $methodItem['header']);
-                    } else {
-                        $methodItem['header'] = $config['headers'];
-                    }
-                }
-                // 添加统一params请求参数
-                if (!empty($config['parameters']) && !in_array("NotParameters", $textAnnotations)) {
-                    if (!empty($methodItem['param'])) {
-                        $methodItem['param'] = Utils::arrayMergeAndUnique("name", $config['parameters'], $methodItem['param']);
-                    } else {
-                        $methodItem['param'] = $config['parameters'];
-                    }
-                }
-                // 添加responses统一响应体
-                if (
-                    !empty($config['responses']) &&
-                    !is_string($config['responses']) &&
-                    !in_array("NotResponses", $textAnnotations)
-                ) {
-                    // 显示在响应体中
-                    $returned = [];
-                    $hasMian  = false;
-                    if (isset($config['responses']['data']) && !$config['responses']['show_responses']) {
-                        $responsesData = [];
-                    } else if (isset($config['responses']['data']) && $config['responses']['show_responses'] === true) {
-                        $responsesData = $config['responses']['data'];
-                    } else {
-                        $responsesData = $config['responses'];
-                    }
-                    // 合并统一响应体及响应参数相同的字段
-                    $returnData = [];
-                    $resKeys = [];
-                    foreach ($responsesData as $resItem) {
-                        $resKeys[]=$resItem['name'];
-                    }
-                    foreach ($methodItem['return'] as $returnItem){
-                        if (!(in_array($returnItem['name'],$resKeys) && $returnItem['source']==='controller' && !empty($returnItem['replaceGlobal']))){
-                            $returnData[]=$returnItem;
-                        }
-                    }
 
-                    foreach ($responsesData as $resItem) {
-                        $resData = $resItem;
-                        $globalFind = Utils::getArrayFind($methodItem['return'],function ($item)use ($resItem){
-                            if ($item['name'] == $resItem['name'] && $item['source']==='controller' && !empty($item['replaceGlobal'])){
-                                return true;
-                            }
-                            return false;
-                        });
-                        if (!empty($globalFind)){
-                            $resData = array_merge($resItem,$globalFind);
-                        }else if (!empty($resData['main']) && $resData['main'] === true) {
-                            $resData['params'] = $returnData;
-
-                            $resData['resKeys']=$resKeys;
-                            $hasMian           = true;
-                        }
-                        $resData['find'] =$globalFind;
-                        $returned[] = $resData;
-                    }
-                    if (!$hasMian) {
-                        $returned = Utils::arrayMergeAndUnique("name", $returned, $methodItem['return']);
-                    }
-                    $methodItem['return'] = $returned;
-                }
-                // 默认method
-                if (empty($methodItem['method'])) {
-                    $methodItem['method'] = !empty($config['default_method']) ? $config['default_method'] : 'GET';
-                }
-                // 默认default_author
-                if (empty($methodItem['author']) && !empty($config['default_author']) && !in_array("NotDefaultAuthor", $textAnnotations)) {
-                    $methodItem['author'] = $config['default_author'];
-                }
-
-                // Tags
-                if (!empty($methodItem['tag'])) {
-                    if (strpos($methodItem['tag'], ' ') !== false) {
-                        $tagArr = explode(" ", $methodItem['tag']);
-                        foreach ($tagArr as $tag) {
-                            if (!in_array($tag, $this->tags)) {
-                                $this->tags[] = $tag;
-                            }
-                        }
-                    } else if (!in_array($methodItem['tag'], $this->tags)) {
-                        $this->tags[] = $methodItem['tag'];
-                    }
-                }
-
-                // 无url,自动生成
-                if (empty($methodItem['url'])) {
-                    $methodItem['url'] = $this->autoCreateUrl($refMethod);
-                } else if (!empty($routeGroup->value)) {
-                    // 路由分组，url加上分组
-                    $methodItem['url'] = '/' . $routeGroup->value . '/' . $methodItem['url'];
-                }
-                if (!empty($methodItem['url']) && substr($methodItem['url'], 0, 1) != "/") {
-                    $methodItem['url'] = "/" . $methodItem['url'];
-                }
-                $methodItem['name']     = $refMethod->name;
-                $methodItem['menu_key'] = $methodItem['method'] . "_" . $refMethod->name . "_" . mt_rand(10000, 99999);
-
-                $methodList[] = $methodItem;
-
+            $methodItem = $this->parseApiMethod($refMethod);
+            if ($methodItem===false){
+                continue;
             }
+            $methodList[] = $methodItem;
+//            if (!empty($refMethod->name)) {
+//                $methodItem = $this->parseAnnotation($refMethod, true,"controller");
+//                if (!count((array)$methodItem)) {
+//                    continue;
+//                }
+//                $textAnnotations = $this->parseTextAnnotation($refMethod);
+//                // 标注不解析的方法
+//                if (in_array("NotParse", $textAnnotations)) {
+//                    continue;
+//                }
+//                // 无标题，且有文本注释
+//                if (empty($methodItem['title']) && !empty($textAnnotations) && count($textAnnotations) > 0) {
+//                    $methodItem['title'] = $textAnnotations[0];
+//                }
+//                // 添加统一headers请求头参数
+//                if (!empty($config['headers']) && !in_array("NotHeaders", $textAnnotations)) {
+//                    $configHeaders = [];
+//                    foreach ($config['headers'] as $headerItem){
+//                        $headerItem['desc'] = Utils::getLang($headerItem['desc']);
+//                        $configHeaders[] = $headerItem;
+//                    }
+//                    if (!empty($methodItem['header'])) {
+//                        $methodItem['header'] = Utils::arrayMergeAndUnique("name", $configHeaders, $methodItem['header']);
+//                    } else {
+//                        $methodItem['header'] = $configHeaders;
+//                    }
+//                }
+//                // 添加统一params请求参数
+//                if (!empty($config['parameters']) && !in_array("NotParameters", $textAnnotations)) {
+//                    $configParams = [];
+//                    foreach ($config['parameters'] as $paramItem){
+//                        $paramItem['desc'] = Utils::getLang($paramItem['desc']);
+//                        $configParams[] = $paramItem;
+//                    }
+//
+//                    if (!empty($methodItem['param'])) {
+//                        $methodItem['param'] = Utils::arrayMergeAndUnique("name", $configParams, $methodItem['param']);
+//                    } else {
+//                        $methodItem['param'] = $configParams;
+//                    }
+//                }
+//                // 添加responses统一响应体
+//                if (
+//                    !empty($config['responses']) &&
+//                    !is_string($config['responses']) &&
+//                    !in_array("NotResponses", $textAnnotations)
+//                ) {
+//                    // 显示在响应体中
+//                    $returned = [];
+//                    $hasMian  = false;
+//                    $responsesData = $config['responses'];
+//                    // 合并统一响应体及响应参数相同的字段
+//                    $returnData = [];
+//                    $resKeys = [];
+//                    foreach ($responsesData as $resItem) {
+//                        $resKeys[]=$resItem['name'];
+//                    }
+//                    foreach ($methodItem['return'] as $returnItem){
+//                        if (!(in_array($returnItem['name'],$resKeys) && $returnItem['source']==='controller' && !empty($returnItem['replaceGlobal']))){
+//                            $returnData[]=$returnItem;
+//                        }
+//                    }
+//
+//                    foreach ($responsesData as $resItem) {
+//                        $resData = $resItem;
+//                        $globalFind = Utils::getArrayFind($methodItem['return'],function ($item)use ($resItem){
+//                            if ($item['name'] == $resItem['name'] && $item['source']==='controller' && !empty($item['replaceGlobal'])){
+//                                return true;
+//                            }
+//                            return false;
+//                        });
+//                        if (!empty($globalFind)){
+//                            $resData = array_merge($resItem,$globalFind);
+//                        }else if (!empty($resData['main']) && $resData['main'] === true) {
+//                            $resData['children'] = $returnData;
+//
+//                            $resData['resKeys']=$resKeys;
+//                            $hasMian           = true;
+//                        }
+//                        $resData['find'] =$globalFind;
+//                        $resData['desc'] = Utils::getLang($resData['desc']);
+//                        $returned[] = $resData;
+//                    }
+//                    if (!$hasMian) {
+//                        $returned = Utils::arrayMergeAndUnique("name", $returned, $methodItem['return']);
+//                    }
+//                    $methodItem['return'] = $returned;
+//                }
+//                // 默认method
+//                if (empty($methodItem['method'])) {
+//                    $methodItem['method'] = !empty($config['default_method']) ? $config['default_method'] : 'GET';
+//                }
+//                $methodItem['method'] = strtoupper($methodItem['method']);
+//
+//
+//
+//
+//                // 默认default_author
+//                if (empty($methodItem['author']) && !empty($config['default_author']) && !in_array("NotDefaultAuthor", $textAnnotations)) {
+//                    $methodItem['author'] = $config['default_author'];
+//                }
+//
+//                // Tags
+//                if (!empty($methodItem['tag'])) {
+//                    $tagText = Utils::getLang($methodItem['tag']);
+//                    if (strpos($tagText, ',') !== false) {
+//                        $tagArr = explode(",", $tagText);
+//                        foreach ($tagArr as $tag) {
+//                            if (!in_array($tag, $this->tags)) {
+//                                $this->tags[] = $tag;
+//                            }
+//                        }
+//                        $methodItem['tag'] = $tagArr;
+//                    } else {
+//                        $methodItem['tag'] = [$tagText];
+//                        if (!in_array($tagText, $this->tags)) {
+//                            $this->tags[] = $tagText;
+//                        }
+//                    }
+//                }
+//
+//                // 无url,自动生成
+//                if (empty($methodItem['url'])) {
+//                    $methodItem['url'] = $this->autoCreateUrl($refMethod);
+//                } else if (!empty($routeGroup->value)) {
+//                    // 路由分组，url加上分组
+//                    $methodItem['url'] = '/' . $routeGroup->value . '/' . $methodItem['url'];
+//                }else if (!empty($methodItem['url']) && substr($methodItem['url'], 0, 1) != "/") {
+//                    $methodItem['url'] = "/" . $methodItem['url'];
+//                }
+//                $methodItem['name']     = $refMethod->name;
+//                $methodItem['menu_key'] = Utils::createRandKey($methodItem['method'] . "_" . $refMethod->name);
+//
+//                $methodList[] = $methodItem;
+//
+//            }
 
         }
         $data['children'] = $methodList;
         return $data;
+    }
+
+
+    protected function parseApiMethod($refMethod){
+        if (empty($refMethod->name)) {
+            return false;
+        }
+        $methodItem = $this->parseAnnotation($refMethod, true,"controller");
+        if (!count((array)$methodItem)) {
+            return false;
+        }
+        $textAnnotations = $this->parseTextAnnotation($refMethod);
+        // 标注不解析的方法
+        if (in_array("NotParse", $textAnnotations)) {
+            return false;
+        }
+        // 无标题，且有文本注释
+        if (empty($methodItem['title']) && !empty($textAnnotations) && count($textAnnotations) > 0) {
+            $methodItem['title'] = $textAnnotations[0];
+        }
+        // 添加统一headers请求头参数
+        if (!empty($config['headers']) && !in_array("NotHeaders", $textAnnotations)) {
+            $configHeaders = [];
+            foreach ($config['headers'] as $headerItem){
+                $headerItem['desc'] = Utils::getLang($headerItem['desc']);
+                $configHeaders[] = $headerItem;
+            }
+            if (!empty($methodItem['header'])) {
+                $methodItem['header'] = Utils::arrayMergeAndUnique("name", $configHeaders, $methodItem['header']);
+            } else {
+                $methodItem['header'] = $configHeaders;
+            }
+        }
+        // 添加统一params请求参数
+        if (!empty($config['parameters']) && !in_array("NotParameters", $textAnnotations)) {
+            $configParams = [];
+            foreach ($config['parameters'] as $paramItem){
+                $paramItem['desc'] = Utils::getLang($paramItem['desc']);
+                $configParams[] = $paramItem;
+            }
+
+            if (!empty($methodItem['param'])) {
+                $methodItem['param'] = Utils::arrayMergeAndUnique("name", $configParams, $methodItem['param']);
+            } else {
+                $methodItem['param'] = $configParams;
+            }
+        }
+        // 添加responses统一响应体
+        if (
+            !empty($config['responses']) &&
+            !is_string($config['responses']) &&
+            !in_array("NotResponses", $textAnnotations)
+        ) {
+            // 显示在响应体中
+            $returned = [];
+            $hasMian  = false;
+            $responsesData = $config['responses'];
+            // 合并统一响应体及响应参数相同的字段
+            $returnData = [];
+            $resKeys = [];
+            foreach ($responsesData as $resItem) {
+                $resKeys[]=$resItem['name'];
+            }
+            foreach ($methodItem['return'] as $returnItem){
+                if (!(in_array($returnItem['name'],$resKeys) && $returnItem['source']==='controller' && !empty($returnItem['replaceGlobal']))){
+                    $returnData[]=$returnItem;
+                }
+            }
+
+            foreach ($responsesData as $resItem) {
+                $resData = $resItem;
+                $globalFind = Utils::getArrayFind($methodItem['return'],function ($item)use ($resItem){
+                    if ($item['name'] == $resItem['name'] && $item['source']==='controller' && !empty($item['replaceGlobal'])){
+                        return true;
+                    }
+                    return false;
+                });
+                if (!empty($globalFind)){
+                    $resData = array_merge($resItem,$globalFind);
+                }else if (!empty($resData['main']) && $resData['main'] === true) {
+                    $resData['children'] = $returnData;
+
+                    $resData['resKeys']=$resKeys;
+                    $hasMian           = true;
+                }
+                $resData['find'] =$globalFind;
+                $resData['desc'] = Utils::getLang($resData['desc']);
+                $returned[] = $resData;
+            }
+            if (!$hasMian) {
+                $returned = Utils::arrayMergeAndUnique("name", $returned, $methodItem['return']);
+            }
+            $methodItem['return'] = $returned;
+        }
+        // 默认method
+        if (empty($methodItem['method'])) {
+            $methodItem['method'] = !empty($config['default_method']) ? $config['default_method'] : 'GET';
+        }
+        $methodItem['method'] = strtoupper($methodItem['method']);
+
+
+        // 默认default_author
+        if (empty($methodItem['author']) && !empty($config['default_author']) && !in_array("NotDefaultAuthor", $textAnnotations)) {
+            $methodItem['author'] = $config['default_author'];
+        }
+
+        // Tags
+        if (!empty($methodItem['tag'])) {
+            $tagText = Utils::getLang($methodItem['tag']);
+            if (strpos($tagText, ',') !== false) {
+                $tagArr = explode(",", $tagText);
+                foreach ($tagArr as $tag) {
+                    if (!in_array($tag, $this->tags)) {
+                        $this->tags[] = $tag;
+                    }
+                }
+                $methodItem['tag'] = $tagArr;
+            } else {
+                $methodItem['tag'] = [$tagText];
+                if (!in_array($tagText, $this->tags)) {
+                    $this->tags[] = $tagText;
+                }
+            }
+        }
+
+        // 无url,自动生成
+        if (empty($methodItem['url'])) {
+            $methodItem['url'] = $this->autoCreateUrl($refMethod);
+        } else if (!empty($routeGroup->value)) {
+            // 路由分组，url加上分组
+            $methodItem['url'] = '/' . $routeGroup->value . '/' . $methodItem['url'];
+        }else if (!empty($methodItem['url']) && substr($methodItem['url'], 0, 1) != "/") {
+            $methodItem['url'] = "/" . $methodItem['url'];
+        }
+        $methodItem['name']     = $refMethod->name;
+        $methodItem['menu_key'] = Utils::createRandKey($methodItem['method'] . "_" . $refMethod->name);
+        return $methodItem;
     }
 
     /**
@@ -322,20 +483,22 @@ class ParseAnnotation
      */
     protected function autoCreateUrl($method): string
     {
-        if (Config::get("controller_auto_search") || !empty($this->config['controller_auto_search'])){
-            $pathArr = explode("\\", $method->class );
-        }else{
-            $searchString = $this->controller_layer . '\\';
-            $substr = substr(strstr($method->class, $searchString), strlen($searchString));
-            $pathArr = explode("\\", str_replace($substr, str_replace('\\', '.', $substr), $method->class));
+        if (!empty($this->config['auto_url']) && !empty($this->config['auto_url']['custom']) && is_callable($this->config['auto_url']['custom'])){
+           return $this->config['auto_url']['custom']($method->class,$method->name);
         }
-        // 控制器地址
+        $searchString = $this->controller_layer . '\\';
+        $substr = substr(strstr($method->class, $searchString), strlen($searchString));
+        $multistage_route_separator = ".";
+        if (!empty($this->config['auto_url']) && !empty($this->config['auto_url']['multistage_route_separator'])){
+            $multistage_route_separator = $this->config['auto_url']['multistage_route_separator'];
+        }
+        $pathArr = explode("\\", str_replace($substr, str_replace('\\', $multistage_route_separator, $substr), $method->class));
         $filterPathNames = array(App::getNamespace(), $this->controller_layer);
         $classPathArr = [];
         foreach ($pathArr as $item) {
             if (!in_array($item, $filterPathNames)) {
-                if (!empty($this->config['auto_url_rule'])){
-                    switch ($this->config['auto_url_rule']) {
+                if (!empty($this->config['auto_url']) && !empty($this->config['auto_url']['letter_rule'])){
+                    switch ($this->config['auto_url']['letter_rule']) {
                         case 'lcfirst':
                             $classPathArr[] = lcfirst($item);
                             break;
@@ -427,7 +590,7 @@ class ParseAnnotation
                         $param         = [
                             "name"    => "",
                             "type"    => $item->type,
-                            "desc"    => $item->desc,
+                            "desc"    => Utils::getLang($item->desc),
                             "default" => $item->default,
                             "require" => $item->require,
                             "childrenType"=> $item->childrenType
@@ -435,7 +598,7 @@ class ParseAnnotation
                         $children      = $this->handleParamValue($item->value);
                         $param['name'] = $children['name'];
                         if (count($children['params']) > 0) {
-                            $param['params'] = $children['params'];
+                            $param['children'] = $children['params'];
                         }
                         $params[] = $param;
                     }
@@ -461,6 +624,8 @@ class ParseAnnotation
             $headers = [];
             $params  = [];
             $returns = [];
+            $before = [];
+            $after = [];
 
             foreach ($annotations as $annotation) {
                 switch (true) {
@@ -478,7 +643,7 @@ class ParseAnnotation
                         } else {
                             $param     = [
                                 "name"    => $annotation->value,
-                                "desc"    => $annotation->desc,
+                                "desc"    => Utils::getLang($annotation->desc),
                                 "require" => $annotation->require,
                                 "type"    => $annotation->type,
                                 "default" => $annotation->default,
@@ -499,10 +664,19 @@ class ParseAnnotation
                         break;
 
                     case $annotation instanceof Title:
-                        $data['title'] = $annotation->value;
+                        $data['title'] = Utils::getLang($annotation->value);
                         break;
                     case $annotation instanceof Desc:
-                        $data['desc'] = $annotation->value;
+                        $data['desc'] = Utils::getLang($annotation->value);
+                        if (!empty($annotation->mdRef)){
+                            $data['md'] = $annotation->mdRef;
+                        }
+                        break;
+                    case $annotation instanceof Md:
+                        $data['md'] = $annotation->value;
+                        if (!empty($annotation->ref)){
+                            $data['md'] = (new ParseMarkdown())->getContent("",$annotation->ref);
+                        }
                         break;
                     case $annotation instanceof ParamType:
                         $data['paramType'] = $annotation->value;
@@ -516,6 +690,12 @@ class ParseAnnotation
                     case $annotation instanceof Tag:
                         $data['tag'] = $annotation->value;
                         break;
+                    case $annotation instanceof Before:
+                        $before[] = $annotation;
+                        break;
+                    case $annotation instanceof After:
+                        $after[] = $annotation;
+                        break;
                 }
             }
             if ($headers && count($headers) > 0) {
@@ -523,6 +703,8 @@ class ParseAnnotation
             }
             $data['param']  = $params;
             $data['return'] = $returns;
+            $data['before'] = $before;
+            $data['after'] = $after;
         }
         return $data;
     }
@@ -542,29 +724,25 @@ class ParseAnnotation
             $refRes = $this->renderRef($annotation->ref, $enableRefService);
             $params = $this->handleRefData($params, $refRes, $annotation, $type,$source);
         } else {
-            $param         = [
-                "name"         => "",
-                "type"         => $annotation->type,
-                "desc"         => $annotation->desc,
-                "default"      => $annotation->default,
-                "require"      => $annotation->require,
-                "childrenType" => $annotation->childrenType,
-                "source" => $source,
-                "replaceGlobal" =>!empty($annotation->replaceGlobal)?$annotation->replaceGlobal:""
-            ];
+
+            $param =  Utils::objectToArray($annotation);
+            $param["source"] = $source;
+            $param["desc"] = Utils::getLang($param['desc']);
+
             $children      = $this->handleParamValue($annotation->value, $type);
             $param['name'] = $children['name'];
             if (count($children['params']) > 0) {
-                $param['params'] = $children['params'];
-                if ($annotation->type === 'tree' && !empty($annotation->childrenField)) {
-                    // 类型为tree的
-                    $param['params'][] = [
-                        'params' => $children['params'],
-                        'name'   => $annotation->childrenField,
-                        'type'   => 'array',
-                        'desc'   => $annotation->childrenDesc,
-                    ];
-                }
+                $param['children'] = $children['params'];
+
+            }
+            if ($annotation->type === 'tree' ) {
+                // 类型为tree的
+                $param['children'][] = [
+                    'children' => $children['params'],
+                    'name'   => !empty($annotation->childrenField)?$annotation->childrenField:"children",
+                    'type'   => 'array',
+                    'desc'   => Utils::getLang($annotation->childrenDesc),
+                ];
             }
             // 合并同级已有的字段
             $params = Utils::arrayMergeAndUnique("name", $params, [$param]);
@@ -628,29 +806,24 @@ class ParseAnnotation
         }
 
         if (!empty($annotation->value)) {
-            $item = [
-                'name'    => $annotation->value,
-                'desc'    => $annotation->desc,
-                'type'    => $annotation->type,
-                'require' => $annotation->require,
-                'default' => $annotation->default,
-                'params'  => $data,
-                'source'=>$source,
-                "replaceGlobal" =>!empty($annotation->replaceGlobal)?$annotation->replaceGlobal:""
-            ];
+            $item =  Utils::objectToArray($annotation);
+            $item['children'] = $data;
+            $item['source'] = $source;
+            $param["desc"] = Utils::getLang($item['desc']);
+
             $children      = $this->handleParamValue($annotation->value, 'param');
             $item['name'] = $children['name'];
             if (count($children['params']) > 0) {
-                $item['params'] = Utils::arrayMergeAndUnique("name",$data,$children['params']);
-                if ($annotation->type === 'tree' && !empty($annotation->childrenField)) {
-                    // 类型为tree的
-                    $item['params'][] = [
-                        'params' => $item['params'],
-                        'name'   => $annotation->childrenField,
-                        'type'   => 'array',
-                        'desc'   => $annotation->childrenDesc,
-                    ];
-                }
+                $item['children'] = Utils::arrayMergeAndUnique("name",$data,$children['params']);
+            }
+            if ($annotation->type === 'tree' ) {
+                // 类型为tree的
+                $item['children'][] = [
+                    'children' => $item['children'],
+                    'name'   =>!empty($annotation->childrenField) ?$annotation->childrenField:'children',
+                    'type'   => 'array',
+                    'desc'   => Utils::getLang($annotation->childrenDesc),
+                ];
             }
             $params[] = $item;
 
@@ -659,5 +832,60 @@ class ParseAnnotation
             $params = array_merge($params, $data);
         }
         return $params;
+    }
+
+
+    /**
+     * 对象分组到tree
+     * @param $tree
+     * @param $objectData
+     * @param string $childrenField
+     * @return array
+     */
+    public function objtctGroupByTree($tree,$objectData,$childrenField='children'){
+        $data = [];
+        foreach ($tree as $node){
+            if (!empty($node[$childrenField])){
+                $node[$childrenField] = $this->objtctGroupByTree($node[$childrenField],$objectData);
+            }else if (!empty($objectData[$node['name']])){
+                $node[$childrenField] =  $objectData[$node['name']];
+            }
+            $node['menu_key'] = Utils::createRandKey( $node['name']);
+            $data[] = $node;
+        }
+        return $data;
+    }
+
+    /**
+     * 合并接口到应用分组
+     * @param $apiData
+     * @param $groups
+     * @return array
+     */
+    public function mergeApiGroup($apiData,$groups){
+        if (empty($groups) || count($apiData)<1){
+            return $apiData;
+        }
+        $apiObject = [];
+        foreach ($apiData as $controller){
+            if (!empty($controller['group'])){
+                if (!empty($apiObject[$controller['group']])){
+                    $apiObject[$controller['group']][] = $controller;
+                }else{
+                    $apiObject[$controller['group']] = [$controller];
+                }
+            }else{
+                if (!empty($apiObject['notGroup'])){
+                    $apiObject['notGroup'][] = $controller;
+                }else{
+                    $apiObject['notGroup'] = [$controller];
+                }
+            }
+        }
+        if (!empty($apiObject['notGroup'])){
+            array_unshift($groups,['title'=>'未分组','name'=>'notGroup']);
+        }
+        $res = $this->objtctGroupByTree($groups,$apiObject);
+        return $res;
     }
 }

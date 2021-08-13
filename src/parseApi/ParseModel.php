@@ -70,7 +70,7 @@ class ParseModel
                         $children      = $this->handleParamValue($annotation->value);
                         $param['name'] = $children['name'];
                         if (count($children['params']) > 0) {
-                            $param['params'] = $children['params'];
+                            $param['children'] = $children['params'];
                         }
                         $isExists = false;
                         $newTable = [];
@@ -117,7 +117,7 @@ class ParseModel
                     $children      = $this->handleParamValue($item->value);
                     $param['name'] = $children['name'];
                     if (count($children['params']) > 0) {
-                        $param['params'] = $children['params'];
+                        $param['children'] = $children['params'];
                     }
                     $params[] = $param;
                 }
@@ -203,8 +203,11 @@ class ParseModel
             if (strpos($content, 'COMMENT') !== false) {
                 // 存在字段注释
                 preg_match_all("#COMMENT\s*'(.*?)'#", $content, $edscs);
-                if (!empty($edscs[1]) && !empty($edscs[1][0]))
-                    $desc = $edscs[1][0];
+                if (!empty($edscs[1]) && !empty($edscs[1][0])){
+                    $desc = Utils::getLang($edscs[1][0]);
+
+                }
+
             }
             if (strpos($content, 'DEFAULT') !== false) {
                 // 存在字段默认值
