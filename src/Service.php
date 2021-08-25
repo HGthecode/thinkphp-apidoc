@@ -12,8 +12,8 @@ class Service extends \think\Service
     {
 
         $this->registerRoutes(function (){
-            $route_prefix = 'apidoc';
             $apidocConfig = Config::get("apidoc")?Config::get("apidoc"):Config::get("apidoc.");
+            $route_prefix = 'apidoc';
             $routes = function () {
                 $controller_namespace = '\hg\apidoc\Controller@';
                 Route::get('config'     , $controller_namespace . 'getConfig');
@@ -28,17 +28,6 @@ class Service extends \think\Service
                 Route::group($route_prefix, $routes);
             }
         });
-
-        // 合并默认配置
-        $config = Config::get("apidoc")?Config::get("apidoc"):Config::get("apidoc.");
-        if (!(!empty($config['apps']) && count($config['apps']))){
-            $default_app = Config::get("app.default_app");
-            $namespace = \think\facade\App::getNamespace();
-            $defaultAppConfig = ['title'=>$default_app,'path'=>$namespace.'\\'.$default_app.'\\controller','folder'=>$default_app];
-            $config['apps'] = [$defaultAppConfig];
-        }
-        Config::set(['apidoc'=>$config]);
-
 
     }
 

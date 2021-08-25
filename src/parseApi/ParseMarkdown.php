@@ -6,7 +6,6 @@ namespace hg\apidoc\parseApi;
 use think\facade\App;
 use hg\apidoc\Utils;
 use think\facade\Config;
-use think\facade\Lang;
 
 class ParseMarkdown
 {

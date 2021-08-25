@@ -10,6 +10,7 @@ use hg\apidoc\parseApi\ParseAnnotation;
 use hg\apidoc\parseApi\ParseMarkdown;
 use think\App;
 use think\facade\Config;
+use think\facade\Lang;
 use think\facade\Request;
 
 class Controller
@@ -18,11 +19,37 @@ class Controller
 
     protected $config;
 
+    /**
+     * @var int tp版本
+     */
+    protected $tp_version;
 
     public function __construct(App $app)
     {
         $this->app = $app;
-        $this->config = Config::get("apidoc")?Config::get("apidoc"):Config::get("apidoc.");
+        $this->tp_version = substr(\think\facade\App::version(), 0, 2) == '5.'? 5: 6;
+        $config = Config::get("apidoc")?Config::get("apidoc"):Config::get("apidoc.");
+        if (!(!empty($config['apps']) && count($config['apps']))){
+            $default_app = Config::get("app.default_app")?Config::get("app.default_app"):Config::get("app.default_module");
+            $namespace = \think\facade\App::getNamespace();
+            // tp5获取 application
+            if ($this->tp_version === 5){
+                $appPath = \think\facade\App::getAppPath();
+                $appPathArr = explode("\\", $appPath);
+                for ($i = count($appPathArr)-1; $i>0 ;$i--){
+                    if ($appPathArr[$i]){
+                        $namespace = $appPathArr[$i];
+                        break;
+                    }
+                }
+            }
+            $defaultAppConfig = ['title'=>$default_app,'path'=>$namespace.'\\'.$default_app.'\\controller','folder'=>$default_app];
+            $config['apps'] = [$defaultAppConfig];
+        }
+        Config::set(['apidoc'=>$config]);
+        $this->config = $config;
+
+
 
     }
 
@@ -40,7 +67,12 @@ class Controller
         $params = $request->param();
 
         if (!empty($params['lang'])){
-            \think\facade\App::loadLangPack($params['lang']);
+            if ($this->tp_version === 5){
+                Lang::setLangCookieVar($params['lang']);
+            }else{
+                \think\facade\App::loadLangPack($params['lang']);
+            }
+
         }
         $config['headers'] = Utils::getArrayLang($config['headers'],"desc");
         $config['parameters'] = Utils::getArrayLang($config['parameters'],"desc");
@@ -96,7 +128,12 @@ class Controller
 
         if (!empty($params['lang'])){
             $lang = $params['lang'];
-            \think\facade\App::loadLangPack($params['lang']);
+            if ($this->tp_version === 5){
+                Lang::setLangCookieVar($lang);
+            }else{
+                \think\facade\App::loadLangPack($lang);
+            }
+
         }
 
         if (!empty($params['appKey'])){
@@ -152,7 +189,11 @@ class Controller
         $params = $request->param();
 
         if (!empty($params['lang'])){
-            \think\facade\App::loadLangPack($params['lang']);
+            if ($this->tp_version === 5){
+                Lang::setLangCookieVar($params['lang']);
+            }else{
+                \think\facade\App::loadLangPack($params['lang']);
+            }
         }
         $docs = (new ParseMarkdown())->getDocsMenu();
         return Utils::showJson(0,"",$docs);
@@ -167,7 +208,11 @@ class Controller
         $request = Request::instance();
         $params = $request->param();
         if (!empty($params['lang'])){
-            \think\facade\App::loadLangPack($params['lang']);
+            if ($this->tp_version === 5){
+                Lang::setLangCookieVar($params['lang']);
+            }else{
+                \think\facade\App::loadLangPack($params['lang']);
+            }
         }
         try {
             if (empty($params['path'])){

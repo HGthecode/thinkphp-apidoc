@@ -4,7 +4,6 @@ declare(strict_types = 1);
 namespace hg\apidoc\parseApi;
 
 
-use hg\apidoc\Utils;
 use think\facade\Cache;
 use think\facade\Config;
 

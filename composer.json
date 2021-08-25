@@ -10,7 +10,8 @@
         "自动生成api",
         "注释生成",
         "php接口文档",
-        "php api文档"
+        "php api文档",
+        "Markdown"
       ],
     "require": {
         "php": ">=7.1.0",

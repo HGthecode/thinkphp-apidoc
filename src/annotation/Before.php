@@ -20,7 +20,7 @@ final class Before
 
     /**
      * 事件
-     * @Enum({"setHeader", "setGlobalHeader", "setParam", "setGlobalParam", "clearGlobalHeader", "clearGlobalParam", "clearParam"})
+     * @Enum({"setHeader", "setGlobalHeader", "setParam", "setGlobalParam", "clearGlobalHeader", "clearGlobalParam", "clearParam","handleParam"})
      * @var string
      */
     public $event;
