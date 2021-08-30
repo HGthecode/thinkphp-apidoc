@@ -1,30 +1,11 @@
 const { config } = require("vuepress-theme-hope");
 
 module.exports = config({
-  title: "ThinkPHP-ApiDoc",
+  title: "ThinkPHP-ApiDoc V2",
   description: "ThinkPHP-ApiDoc是一个基于ThinkPHP开发的，根据注释自动生成API文档、在线调试、Markdown文档、快速生成Crud、一键生成模块代码的扩展插件",
-  base: "/thinkphp-apidoc/",
+  base: "/thinkphp-apidoc/v2/",
   dest: "./dist",
 
-  // remove this if you are not using Vue and React in "markdownEnhance: code demo"
-  head: [
-    [
-      "script",
-      { src: "https://cdn.jsdelivr.net/npm/react/umd/react.production.min.js" },
-    ],
-    [
-      "script",
-      {
-        src:
-          "https://cdn.jsdelivr.net/npm/react-dom/umd/react-dom.production.min.js",
-      },
-    ],
-    ["script", { src: "https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js" }],
-    [
-      "script",
-      { src: "https://cdn.jsdelivr.net/npm/@babel/standalone/babel.min.js" },
-    ],
-  ],
   locales: {
     "/": {
       // 设置需要的语言
@@ -73,16 +54,16 @@ module.exports = config({
             link:"/"
           },
           {
-            text:"V1",
-            link:"https://hgthecode.github.io/thinkphp-apidoc/v1/"
+            text:"V3",
+            link:"https://hgthecode.github.io/thinkphp-apidoc/"
           }
         ]
       },
-      {
-        text: "演示",
-        link: "https://apidoc.demo.hg-code.com/apidoc/",
-        icon: "demo",
-      },
+      // {
+      //   text: "演示",
+      //   link: "https://apidoc.demo.hg-code.com/apidoc/",
+      //   icon: "demo",
+      // },
     ],
     sidebar: {
       "/guide/": [

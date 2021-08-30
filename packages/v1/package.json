@@ -11,8 +11,8 @@
   "author": "HG",
   "license": "MIT",
   "keywords": [
-    "vuepress",
-    "personal-blog"
+    "thinkphp-apidoc",
+    "thinkphp-apidoc-docs"
   ],
   "dependencies": {
     "vuepress": "1.8.0",

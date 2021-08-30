@@ -1,7 +1,7 @@
 {
-  "name": "thinkphp-apidoc-v2",
+  "name": "thinkphp-apidoc-v3",
   "version": "1.0.0",
-  "description": "thinkphp-apidoc-v2 docs",
+  "description": "thinkphp-apidoc-v3 docs",
   "scripts": {
     "serve": "vuepress dev src",
     "cleanServe": "vuepress dev src --no-cache",
@@ -12,7 +12,8 @@
   "license": "MIT",
   "keywords": [
     "thinkphp-apidoc",
-    "thinkphp-apidoc-docs"
+    "apidoc",
+    "api文档"
   ],
   "dependencies": {
     "vuepress": "1.8.2",

@@ -1,30 +1,18 @@
 const { config } = require("vuepress-theme-hope");
 
 module.exports = config({
-  title: "ThinkPHP-ApiDoc-V1",
+  title: "ThinkPHP-ApiDoc",
   description: "ThinkPHP-ApiDoc是一个基于ThinkPHP开发的，根据注释自动生成API文档、在线调试、Markdown文档、快速生成Crud、一键生成模块代码的扩展插件",
-  base: "/thinkphp-apidoc/v1/",
+  base: "/thinkphp-apidoc/",
   dest: "./dist",
 
-  // remove this if you are not using Vue and React in "markdownEnhance: code demo"
-  head: [
-    [
-      "script",
-      { src: "https://cdn.jsdelivr.net/npm/react/umd/react.production.min.js" },
-    ],
-    [
-      "script",
-      {
-        src:
-          "https://cdn.jsdelivr.net/npm/react-dom/umd/react-dom.production.min.js",
-      },
-    ],
-    ["script", { src: "https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js" }],
-    [
-      "script",
-      { src: "https://cdn.jsdelivr.net/npm/@babel/standalone/babel.min.js" },
-    ],
-  ],
+  locales: {
+    "/": {
+      // 设置需要的语言
+      lang: "zh-CN",
+    },
+  },
+
 
   themeConfig: {
     logo: "/logo.png",
@@ -33,51 +21,137 @@ module.exports = config({
     repo: "https://github.com/HGthecode/thinkphp-apidoc",
     docsRepo: "https://github.com/HGthecode/thinkphp-apidoc",
     docsBranch:"docs",
-    docsDir: "packages/v1/src",
+    docsDir: "packages/v3/src",
     baseLang:"zh-CN",
-    pageInfo:["Author","Category","Tag","ReadTime","Time"],
+    pageInfo:['author', 'visitor', 'time', 'category', 'tag', 'reading-time'],
     displayAllHeaders:true,
+    
 
     nav: [
-      { text: '指南', link: '/' },
-      { 
-        text: '安装', 
-        items: [
-          { text: '安装', link: '/install/' },
-          { text: '更新日志', link: '/changelog/' }
-        ]
+      { text: "指南", link: "/guide/", icon: "home" },
+      {
+        text: "配置",
+        icon: "config",
+        link: "/config/",
       },
-      { text: '配置', link: '/config/' },
-      { text: '使用', link: '/use/' },
-      { text: '支持', link: '/sponsor/' },
+      {
+        text: "使用",
+        icon: "note",
+        link: "/use/",
+      },
+      {
+        text: "教程",
+        icon: "book",
+        link: "/course/",
+      },
+      
       {
         text: "版本",
         icon: "version",
         items:[
           {
-            text:"V2",
-            link:"https://hgthecode.github.io/thinkphp-apidoc/"
+            text:"V3",
+            link:"/"
           },
           {
-            text:"V1",
-            link:"/"
+            text:"V2",
+            link:"https://hgthecode.github.io/thinkphp-apidoc/v2/"
           }
         ]
       },
-      { text: '演示', link: 'https://apidoc.demo.hg-code.com/apidoc/', target:'_blank'},
+      // {
+      //   text: "演示",
+      //   link: "https://apidoc.demo.hg-code.com/apidoc/",
+      //   icon: "demo",
+      // },
+      {
+        text: "更多",
+        icon: "link",
+        items:[
+          // {
+          //   text: "教程",
+          //   icon: "book",
+          //   link: "/course/",
+          // },
+          {
+            text: "TP6演示",
+            link: "https://apidoc.demo.hg-code.com/apidoc/",
+          },
+          {
+            text: "TP5演示",
+            link: "http://apidoc.tp5.hg-code.com/apidoc/",
+          },
+          
+        ]
+      },
+
+      
     ],
     sidebar: {
-      '/config/': [
-          '',  
-          'function', 
+      "/guide/": [
+        "",
+        "install",
+        "changelog",
       ],
-      '/use/': [
-          '', 
-          'actions',
-          'help',
+      "/config/": [
+        "",
+        "page",
+      ],
+      "/use/": [
+        {
+          title: "编写注释",
+          prefix: "notes/",
+          collapsable:false,
+          icon:"edit",
+          children: [
+            "",
+            "useFile",
+            "controller",
+            "api",
+          ],
+        },
+        {
+          title: "页面操作",
+          prefix: "operation/",
+          collapsable:false,
+          icon:"page",
+          children: [
+            "layout",
+            "apidebug"
+          ],
+        },
+        {
+          title: "功能使用",
+          prefix: "function/",
+          collapsable:false,
+          icon:"extend",
+          children: [
+            "apps",
+            "controllerGroup",
+            "password",
+            "cache",
+            "docs",
+            "lang",
+            "debugEvent",
+            "mock"
+          ],
+        },
+        {
+          title: "常见问题",
+          prefix: "help/",
+          collapsable:false,
+          icon:"help",
+          children: [
+            "notConfig",
+            "404",
+            "500",
+            "v2Tov3"
+          ],
+        },
       ],
     },
-    
+
+   
     blog:false,
     footer: {
       display: true,

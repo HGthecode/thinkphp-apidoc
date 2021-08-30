@@ -5,8 +5,8 @@
     "packages/*"
   ],
   "scripts": {
-    "v1:serve": "yarn workspace thinkphp-apidoc-v1 serve",
     "v2:serve": "yarn workspace thinkphp-apidoc-v2 serve",
+    "v3:serve": "yarn workspace thinkphp-apidoc-v3 serve",
     "build": "lerna run build --parallel"
   },
   "devDependencies": {

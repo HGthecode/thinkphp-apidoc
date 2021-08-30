@@ -44,8 +44,8 @@ jobs:
 
       - name: Combine output
         run: |
-          yarn cpx "packages/v2/dist/**" dist
-          yarn cpx "packages/v1/dist/**" dist/v1
+          yarn cpx "packages/v3/dist/**" dist
+          yarn cpx "packages/v2/dist/**" dist/v2
 
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@releases/v3
