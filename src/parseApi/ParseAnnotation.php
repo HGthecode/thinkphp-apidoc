@@ -558,10 +558,43 @@ class ParseAnnotation
                         $data['tag'] = $annotation->value;
                         break;
                     case $annotation instanceof Before:
-                        $before[] = $annotation;
+                        if (!empty($annotation->value) && is_array($annotation->value)){
+                            $beforeInfo = Utils::objectToArray($annotation);
+                            $valueList = [];
+                            foreach ($annotation->value as $valueItem){
+                                $valueItemInfo = Utils::objectToArray($valueItem);
+                                if ($valueItem instanceof Before){
+                                    $valueItemInfo['type'] = "before";
+                                }else if ($valueItem instanceof After){
+                                    $valueItemInfo['type'] = "after";
+                                }
+                                $valueList[] = $valueItemInfo;
+                            }
+                            $beforeInfo['value'] = $valueList;
+                            $before[] = $beforeInfo;
+                        }else{
+                            $before[] = $annotation;
+                        }
+
                         break;
                     case $annotation instanceof After:
-                        $after[] = $annotation;
+                        if (!empty($annotation->value) && is_array($annotation->value)){
+                            $afterInfo = Utils::objectToArray($annotation);
+                            $valueList = [];
+                            foreach ($annotation->value as $valueItem){
+                                $valueItemInfo = Utils::objectToArray($valueItem);
+                                if ($valueItem instanceof Before){
+                                    $valueItemInfo['type'] = "before";
+                                }else if ($valueItem instanceof After){
+                                    $valueItemInfo['type'] = "after";
+                                }
+                                $valueList[] = $valueItemInfo;
+                            }
+                            $afterInfo['value'] = $valueList;
+                            $after[] = $afterInfo;
+                        }else{
+                            $after[] = $annotation;
+                        }
                         break;
                 }
             }

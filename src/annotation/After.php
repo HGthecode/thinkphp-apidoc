@@ -3,13 +3,15 @@
 namespace hg\apidoc\annotation;
 
 
+use Doctrine\Common\Annotations\Annotation;
+
 /**
  * 接口调试前置事件
  * @package hg\apidoc\annotation
  * @Annotation
- * @Target({"METHOD"})
+ * @Target({"METHOD","ANNOTATION"})
  */
-final class After
+final class After extends Annotation
 {
 
     /**
@@ -20,16 +22,29 @@ final class After
 
     /**
      * 事件
-     * @Enum({"setGlobalHeader", "setGlobalParam", "clearGlobalHeader", "clearGlobalParam"})
+     * @Enum({"setGlobalHeader", "setGlobalParam", "clearGlobalHeader", "clearGlobalParam","ajax"})
      * @var string
      */
     public $event;
 
     /**
-     * 值
+     * ajax时的url
      * @var string
      */
-    public $value;
+    public $url;
+
+    /**
+     * ajax时的Method
+     * @Enum({"GET", "POST", "PUT", "DELETE"})
+     * @var string
+     */
+    public $method;
+
+    /**
+     * ajax时的 content-type
+     * @var string
+     */
+    public $contentType;
 
     /**
      * 描述
