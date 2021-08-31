@@ -12,7 +12,7 @@ composer update hg/apidoc
 
 ## 更新前端文件
 
-[Apidoc UI v2.0.0](https://gitee.com/hg-code/apidoc-ui/attach_files/816042/download/apidoc.zip)
+[Apidoc UI v2.0.1](https://gitee.com/hg-code/apidoc-ui/attach_files/817036/download/apidoc.zip)
 
 
 ## 调整配置

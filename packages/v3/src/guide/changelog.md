@@ -23,7 +23,7 @@ category: 指南
 :::
 
 
-> 前端文件下载 [v2.0.0](https://gitee.com/hg-code/apidoc-ui/attach_files/816042/download/apidoc.zip)
+> 前端文件下载 [v2.0.1](https://gitee.com/hg-code/apidoc-ui/attach_files/817036/download/apidoc.zip)
 
 - 支持多页签，多接口联调更方便
 - 支持多语言
