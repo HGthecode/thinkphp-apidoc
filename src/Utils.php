@@ -327,8 +327,8 @@ class Utils
         if (!(!empty($config['apps']) && count($config['apps']) > 0)) {
             throw new ErrorException("no config apps", 500);
         }
-        if (strpos($appKey, '_') !== false) {
-            $keyArr = explode("_", $appKey);
+        if (strpos($appKey, ',') !== false) {
+            $keyArr = explode(",", $appKey);
         } else {
             $keyArr = [$appKey];
         }
