@@ -28,7 +28,7 @@ composer require hg/apidoc
 
 |Apidoc版本|Github|Gitee（推荐）|
 |-|-|-|
-|`v3.0.0`|[v2.0.1](https://github.com/HGthecode/apidoc-ui/releases/download/v2.0.1/apidoc.zip)| [v2.0.1](https://gitee.com/hg-code/apidoc-ui/attach_files/817036/download/apidoc.zip)-|
+|`v3.0.0`|[v2.0.2](https://github.com/HGthecode/apidoc-ui/releases/download/v2.0.2/apidoc.zip)| [v2.0.2](https://gitee.com/hg-code/apidoc-ui/attach_files/825257/download/apidoc.zip)-|
 
 下载完成后解压，将apidoc文件夹拷贝到你的项目 public 目录下
 
