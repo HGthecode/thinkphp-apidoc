@@ -282,10 +282,7 @@ return [
     ],
 ],
 'docs'=>[
-    'menu_title' => '开发文档',
-    'menus'      => [
-        ['title'=>'Http状态码','path'=>'docs/${app[0].folder}/HttpCode_${app[1].folder}'],
-    ]
+    ['title'=>'Http状态码','path'=>'docs/${app[0].folder}/HttpCode_${app[1].folder}'],
 ]
 ```
 1、当应用/版本选为`后台管理`的应用时，此时`${app[0].folder}`就等于`admin` 由于该应用配置无子级`items`此时的`${app[1].folder}`也就为空。最终文件地址为`dosc/admin/HttpCode_.md`。
