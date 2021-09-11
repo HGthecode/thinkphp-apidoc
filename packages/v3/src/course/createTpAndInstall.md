@@ -45,7 +45,7 @@ composer require hg/apidoc
 
 ### 2、下载前端文件
 
-进入[官网文档安装页面](/install)，如下图点击下载前端文件
+进入[官网文档安装页面](/guide/install/#添加前端页面)，如下图点击下载前端文件
 
 ![install-apidoc-2](/thinkphp-apidoc/images/course/install-apidoc-2.png "install-apidoc-2")
 
