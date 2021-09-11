@@ -139,15 +139,26 @@ class ParseAnnotation
     {
         $list = [];
         foreach (ClassMapGenerator::createMap($dir) as $class => $path) {
+            if (strpos($class, $appPath) !== false) {
+                $classNamespace = $class;
+            }else{
+                $pathStr = str_replace("/", "\\", $path);
+                $pathArr   = explode($appPath, $pathStr);
+                if (!empty($pathArr[1])){
+                    $classNamespace = $appPath.str_replace(".php", "", $pathArr[1]);
+                }else{
+                    continue;
+                }
+            }
             if (
                 !isset($this->config['filter_controllers']) ||
-                (isset($this->config['filter_controllers']) && !in_array($class, $this->config['filter_controllers'])) &&
-                $this->config['definitions'] != $class
+                (isset($this->config['filter_controllers']) && !in_array($classNamespace, $this->config['filter_controllers'])) &&
+                $this->config['definitions'] != $classNamespace
             ) {
-                if (strpos($class, '\\') === false) {
-                    $list[] = $appPath . "\\" . $class;
+                if (strpos($classNamespace, '\\') === false) {
+                    $list[] = $appPath . "\\" . $classNamespace;
                 } else {
-                    $list[] = $class;
+                    $list[] = $classNamespace;
                 }
             }
         }

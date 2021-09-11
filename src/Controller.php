@@ -43,7 +43,11 @@ class Controller
                     }
                 }
             }
-            $defaultAppConfig = ['title'=>$default_app,'path'=>$namespace.'\\'.$default_app.'\\controller','folder'=>$default_app];
+            $path = $namespace.'\\'.$default_app.'\\controller';
+            if (!is_dir($path)){
+                $path =$namespace.'\\controller';
+            }
+            $defaultAppConfig = ['title'=>$default_app,'path'=>$path,'folder'=>$default_app];
             $config['apps'] = [$defaultAppConfig];
         }
         Config::set(['apidoc'=>$config]);
