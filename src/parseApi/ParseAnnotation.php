@@ -139,7 +139,7 @@ class ParseAnnotation
     {
         $list = [];
         foreach (ClassMapGenerator::createMap($dir) as $class => $path) {
-            if (strpos($class, $appPath) !== false) {
+            if (strpos($class, $appPath) !== false || strpos($class, "\\") !== false) {
                 $classNamespace = $class;
             }else{
                 $pathStr = str_replace("/", "\\", $path);
