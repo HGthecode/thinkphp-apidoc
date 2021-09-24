@@ -255,7 +255,7 @@ return [
         ['title'=>'md语法示例','path'=>'docs/Use'],
         [
             'title'=>'HTTP响应编码',
-            'items'=>[
+            'children'=>[
                 ['title'=>'status错误码说明','path'=>'docs/${app[0].folder}/HttpStatus'],
                 ['title'=>'code错误码说明','path'=>'docs/${app[0].folder}/HttpCode_${app[1].folder}'],
             ],
