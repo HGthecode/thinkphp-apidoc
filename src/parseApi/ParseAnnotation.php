@@ -233,7 +233,7 @@ class ParseAnnotation
         }
         // 无标题，且有文本注释
         if (empty($methodItem['title']) && !empty($textAnnotations) && count($textAnnotations) > 0) {
-            $methodItem['title'] = $textAnnotations[0];
+            $methodItem['title'] = Utils::getLang($textAnnotations[0]);
         }
         // 添加统一headers请求头参数
         if (!empty($config['headers']) && !in_array("NotHeaders", $textAnnotations)) {
@@ -569,43 +569,12 @@ class ParseAnnotation
                         $data['tag'] = $annotation->value;
                         break;
                     case $annotation instanceof Before:
-                        if (!empty($annotation->value) && is_array($annotation->value)){
-                            $beforeInfo = Utils::objectToArray($annotation);
-                            $valueList = [];
-                            foreach ($annotation->value as $valueItem){
-                                $valueItemInfo = Utils::objectToArray($valueItem);
-                                if ($valueItem instanceof Before){
-                                    $valueItemInfo['type'] = "before";
-                                }else if ($valueItem instanceof After){
-                                    $valueItemInfo['type'] = "after";
-                                }
-                                $valueList[] = $valueItemInfo;
-                            }
-                            $beforeInfo['value'] = $valueList;
-                            $before[] = $beforeInfo;
-                        }else{
-                            $before[] = $annotation;
-                        }
-
+                        $beforeAnnotation = $this->handleEventAnnotation($annotation,'before');
+                        $before =  array_merge($before,$beforeAnnotation);
                         break;
                     case $annotation instanceof After:
-                        if (!empty($annotation->value) && is_array($annotation->value)){
-                            $afterInfo = Utils::objectToArray($annotation);
-                            $valueList = [];
-                            foreach ($annotation->value as $valueItem){
-                                $valueItemInfo = Utils::objectToArray($valueItem);
-                                if ($valueItem instanceof Before){
-                                    $valueItemInfo['type'] = "before";
-                                }else if ($valueItem instanceof After){
-                                    $valueItemInfo['type'] = "after";
-                                }
-                                $valueList[] = $valueItemInfo;
-                            }
-                            $afterInfo['value'] = $valueList;
-                            $after[] = $afterInfo;
-                        }else{
-                            $after[] = $annotation;
-                        }
+                        $afterAnnotation = $this->handleEventAnnotation($annotation,'after');
+                        $after =array_merge($after,$afterAnnotation);
                         break;
                 }
             }
@@ -618,6 +587,37 @@ class ParseAnnotation
             $data['after'] = $after;
         }
         return $data;
+    }
+
+    public function handleEventAnnotation($annotation,$type){
+        $config      = $this->config;
+        if (!empty($annotation->ref)){
+            if (strpos($annotation->ref, '\\') === false && !empty($config['definitions']) ) {
+                $refPath     = $config['definitions'] . '\\' . $annotation->ref;
+                $data        = $this->renderService($refPath);
+                if (!empty($data[$type])){
+                    return $data[$type];
+                }
+                return [];
+            }
+        }
+        if (!empty($annotation->value) && is_array($annotation->value)){
+            $beforeInfo = Utils::objectToArray($annotation);
+            $valueList = [];
+            foreach ($annotation->value as $valueItem){
+                $valueItemInfo = Utils::objectToArray($valueItem);
+                if ($valueItem instanceof Before){
+                    $valueItemInfo['type'] = "before";
+                }else if ($valueItem instanceof After){
+                    $valueItemInfo['type'] = "after";
+                }
+                $valueList[] = $valueItemInfo;
+            }
+            $beforeInfo['value'] = $valueList;
+            return [$beforeInfo];
+        }else{
+            return [$annotation];
+        }
     }
 
 

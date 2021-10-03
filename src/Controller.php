@@ -50,6 +50,8 @@ class Controller
             $defaultAppConfig = ['title'=>$default_app,'path'=>$path,'folder'=>$default_app];
             $config['apps'] = [$defaultAppConfig];
         }
+
+
         Config::set(['apidoc'=>$config]);
         $this->config = $config;
 
@@ -74,10 +76,13 @@ class Controller
             if ($this->tp_version === 5){
                 Lang::setLangCookieVar($params['lang']);
             }else{
+                Lang::setLangSet($params['lang']);
                 \think\facade\App::loadLangPack($params['lang']);
             }
 
         }
+        $config['title'] = Utils::getLang($config['title']);
+        $config['desc'] = Utils::getLang($config['desc']);
         $config['headers'] = Utils::getArrayLang($config['headers'],"desc");
         $config['parameters'] = Utils::getArrayLang($config['parameters'],"desc");
         $config['responses'] = Utils::getArrayLang($config['responses'],"desc");
@@ -196,6 +201,7 @@ class Controller
             if ($this->tp_version === 5){
                 Lang::setLangCookieVar($params['lang']);
             }else{
+                Lang::setLangSet($params['lang']);
                 \think\facade\App::loadLangPack($params['lang']);
             }
         }
@@ -215,6 +221,7 @@ class Controller
             if ($this->tp_version === 5){
                 Lang::setLangCookieVar($params['lang']);
             }else{
+                Lang::setLangSet($params['lang']);
                 \think\facade\App::loadLangPack($params['lang']);
             }
         }

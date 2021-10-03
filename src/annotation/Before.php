@@ -52,5 +52,10 @@ final class Before extends Annotation
      */
     public $desc;
 
+    /**
+     * 引用
+     * @var string
+     */
+    public $ref;
 
 }

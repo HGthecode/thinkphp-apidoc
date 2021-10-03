@@ -6,6 +6,7 @@ namespace hg\apidoc\parseApi;
 use think\facade\App;
 use hg\apidoc\Utils;
 use think\facade\Config;
+use think\facade\Lang;
 
 class ParseMarkdown
 {
@@ -39,16 +40,19 @@ class ParseMarkdown
     {
         $list = [];
         foreach ($menus as $item) {
+            $item['title']     = Utils::getLang($item['title']);
+            if(!empty($item['path'])){
+                $lang = Lang::getLangSet();
+                $item['path'] = Utils::replaceTemplate($item['path'],['lang'=>$lang]);
+            }
             if (!empty($item['children']) && count($item['children']) > 0) {
                 $item['children']    = $this->handleDocsMenuData($item['children']);
                 $item['menu_key'] = Utils::createRandKey("md_group");
-                $list[]           = $item;
             } else {
                 $item['type']     = 'md';
-                $item['title']     = Utils::getLang($item['title']);
                 $item['menu_key'] = Utils::createRandKey("md");
-                $list[]           = $item;
             }
+            $list[]           = $item;
         }
         return $list;
     }
