@@ -67,7 +67,13 @@ category: 配置
         // 'controllers'=>[
         //     'app\admin\controller\BaseDemo',
         //     'app\admin\controller\CrudDemo',
-        // ]
+        // ],
+        // 'headers'=>[
+        //     ['name'=>'token','type'=>'string','desc'=>'admin应用的全局请求头参数token'],
+        // ],
+        // 'parameters'=>[
+        //     ['name'=>'abc','type'=>'string','desc'=>'admin应用的全局请求体参数abc'],
+        // ],
     ],
     [
         'title'=>'演示示例',
@@ -92,6 +98,8 @@ apps配置数组的参数说明
 |items|array|多层应用配置|
 |groups|array|应用的控制器分组|
 |controllers|array<\string>|指定api文档解析的控制器|
+|headers|array|指定当前应用的全局请求头参数，参数定义参考[全局参数headers](#headers)|
+|parameters|array|指定当前应用的全局请求体参数，参数定义参考[全局参数parameters](#parameters)|
 
 
 apps中groups控制器分组参数说明
@@ -265,7 +273,10 @@ return [
 ```
 
 ### path可用变量说明
-变量写法`${app[N].folder}`其中的`N`表示`apps`中配置的层级：
+
+- `${lang}`当前语言变量。
+
+- 变量写法`${app[N].folder}`其中的`N`表示`apps`中配置的层级：
 
 比如配置为如下
 ```php
