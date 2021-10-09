@@ -43,6 +43,8 @@ class ParseAnnotation
 
     protected $controller_layer = "";
 
+    protected $currentApp = [];
+
     public function __construct()
     {
         $this->reader = new AnnotationReader();
@@ -59,6 +61,7 @@ class ParseAnnotation
     {
         $currentApps = (new Utils())->getCurrentApps($appKey);
         $currentApp  = $currentApps[count($currentApps) - 1];
+        $this->currentApp = $currentApp;
 
         if (!empty($currentApp['controllers']) && count($currentApp['controllers']) > 0) {
             // 配置的控制器列表
@@ -236,30 +239,39 @@ class ParseAnnotation
             $methodItem['title'] = Utils::getLang($textAnnotations[0]);
         }
         // 添加统一headers请求头参数
-        if (!empty($config['headers']) && !in_array("NotHeaders", $textAnnotations)) {
-            $configHeaders = [];
-            foreach ($config['headers'] as $headerItem){
+        if ((!empty($config['headers']) || !empty($this->currentApp['headers'])) && !in_array("NotHeaders", $textAnnotations)) {
+            $headers = [];
+            $configHeaders = !empty($config['headers'])?$config['headers']:[];
+            if (!empty($this->currentApp['headers'])){
+                $configHeaders = Utils::arrayMergeAndUnique("name", $configHeaders, $this->currentApp['headers']);
+            }
+            foreach ($configHeaders as $headerItem){
                 $headerItem['desc'] = Utils::getLang($headerItem['desc']);
-                $configHeaders[] = $headerItem;
+                $headers[] = $headerItem;
             }
             if (!empty($methodItem['header'])) {
-                $methodItem['header'] = Utils::arrayMergeAndUnique("name", $configHeaders, $methodItem['header']);
+                $methodItem['header'] = Utils::arrayMergeAndUnique("name", $headers, $methodItem['header']);
             } else {
-                $methodItem['header'] = $configHeaders;
+                $methodItem['header'] = $headers;
             }
         }
+
         // 添加统一params请求参数
-        if (!empty($config['parameters']) && !in_array("NotParameters", $textAnnotations)) {
-            $configParams = [];
-            foreach ($config['parameters'] as $paramItem){
+        if ((!empty($config['parameters']) || !empty($this->currentApp['parameters'])) && !in_array("NotParameters", $textAnnotations)) {
+            $params = [];
+            $configParams = !empty($config['parameters'])?$config['parameters']:[];
+            if (!empty($this->currentApp['parameters'])){
+                $configParams = Utils::arrayMergeAndUnique("name", $configParams, $this->currentApp['parameters']);
+            }
+            foreach ($configParams as $paramItem){
                 $paramItem['desc'] = Utils::getLang($paramItem['desc']);
-                $configParams[] = $paramItem;
+                $params[] = $paramItem;
             }
 
             if (!empty($methodItem['param'])) {
                 $methodItem['param'] = Utils::arrayMergeAndUnique("name", $configParams, $methodItem['param']);
             } else {
-                $methodItem['param'] = $configParams;
+                $methodItem['param'] = $params;
             }
         }
         // 添加responses统一响应体
@@ -323,17 +335,20 @@ class ParseAnnotation
 
         // Tags
         if (!empty($methodItem['tag'])) {
-            $tagText = Utils::getLang($methodItem['tag']);
+            $tagText = $methodItem['tag'];
             if (strpos($tagText, ',') !== false) {
                 $tagArr = explode(",", $tagText);
+                $tagList = [];
                 foreach ($tagArr as $tag) {
+                    $t = Utils::getLang($tag);
+                    $tagList[]=$t;
                     if (!in_array($tag, $this->tags)) {
-                        $this->tags[] = $tag;
+                        $this->tags[] =  $t;
                     }
                 }
-                $methodItem['tag'] = $tagArr;
+                $methodItem['tag'] = $tagList;
             } else {
-                $methodItem['tag'] = [$tagText];
+                $methodItem['tag'] = [Utils::getLang($tagText)];
                 if (!in_array($tagText, $this->tags)) {
                     $this->tags[] = $tagText;
                 }

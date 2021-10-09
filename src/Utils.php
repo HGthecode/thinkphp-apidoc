@@ -364,6 +364,12 @@ class Utils
             if (!empty($app['groups']) && count($app['groups']) > 0){
                 $app['groups'] = $this->handleGroupsConfig($app['groups']);
             }
+            if (!empty($app['headers']) && count($app['headers']) > 0){
+                $app['headers'] = Utils::getArrayLang($app['headers'],"desc");
+            }
+            if (!empty($app['parameters']) && count($app['parameters']) > 0){
+                $app['parameters'] = Utils::getArrayLang($app['parameters'],"desc");
+            }
             $appsConfig[] = $app;
         }
         return $appsConfig;
