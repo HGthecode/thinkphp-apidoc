@@ -194,7 +194,7 @@ class ParseModel
             $key     = $fields[$i];
             $type    = $types[$i];
             $default = "";
-            $require = "0";
+            $require = "";
             $desc    = "";
             $content = $contents[$i];
             if (strpos($type, '(`') !== false) {
