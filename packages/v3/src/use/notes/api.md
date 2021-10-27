@@ -364,7 +364,9 @@ class ApiDocTest
 |Header| 具体查看 [Header、Param、Returned的参数](/use/#header、param、return-的参数)	|请求头Headers参数 |	可定义多个|	
 |Param | 具体查看 [Header、Param、Returned的参数](/use/#header、param、return-的参数)	|请求参数 |	可定义多个 |	
 |ParamType| `json` `formdata` `route`	|请求参数类型，默认json。为route时，接口调试参数将替换路由表达式中的变量传递 | |
+|ParamMd | 	| 使用Markdown定义请求参数内容，可ref引用md文件 |	 |	
 |Returned| 具体查看 [Header、Param、Returned的参数](/use/#header、param、return-的参数)	|响应结果 |	可定义多个 |	
+|ReturnedMd | 	| 使用Markdown定义响应内容，可ref引用md文件 |	 |	
 |Before| 具体查看 [功能使用-调试时的事件](/use/function/debugEvent/)	|调试时请求发起前执行的事件 |	可定义多个 |
 |After| 具体查看 [功能使用-调试时的事件](/use/function/debugEvent/)	|调试时请求返回后执行的事件 |	可定义多个 |
 
