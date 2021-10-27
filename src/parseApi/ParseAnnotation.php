@@ -15,6 +15,8 @@ use hg\apidoc\annotation\Param;
 use hg\apidoc\annotation\Title;
 use hg\apidoc\annotation\Desc;
 use hg\apidoc\annotation\Md;
+use hg\apidoc\annotation\ParamMd;
+use hg\apidoc\annotation\ReturnedMd;
 use hg\apidoc\annotation\Author;
 use hg\apidoc\annotation\Tag;
 use hg\apidoc\annotation\Header;
@@ -386,7 +388,14 @@ class ParseAnnotation
             $multistage_route_separator = $this->config['auto_url']['multistage_route_separator'];
         }
         $pathArr = explode("\\", str_replace($substr, str_replace('\\', $multistage_route_separator, $substr), $method->class));
-        $filterPathNames = array(App::getNamespace(), $this->controller_layer);
+        $filterPathNames = array($this->controller_layer);
+        $appNameespace = App::getNamespace();
+        if (strpos($appNameespace, '\\') !== false){
+            $appNameespaceArr    = explode("\\", $appNameespace);
+            $filterPathNames[] = $appNameespaceArr[0];
+        }else{
+            $filterPathNames[]=App::getNamespace();
+        }
         $classPathArr = [];
         foreach ($pathArr as $item) {
             if (!in_array($item, $filterPathNames)) {
@@ -569,6 +578,18 @@ class ParseAnnotation
                         $data['md'] = $annotation->value;
                         if (!empty($annotation->ref)){
                             $data['md'] = (new ParseMarkdown())->getContent("",$annotation->ref);
+                        }
+                        break;
+                    case $annotation instanceof ParamMd:
+                        $data['paramMd'] = $annotation->value;
+                        if (!empty($annotation->ref)){
+                            $data['paramMd'] = (new ParseMarkdown())->getContent("",$annotation->ref);
+                        }
+                        break;
+                    case $annotation instanceof ReturnedMd:
+                        $data['returnMd'] = $annotation->value;
+                        if (!empty($annotation->ref)){
+                            $data['returnMd'] = (new ParseMarkdown())->getContent("",$annotation->ref);
                         }
                         break;
                     case $annotation instanceof ParamType:
@@ -755,7 +776,8 @@ class ParseAnnotation
 
 
         } else {
-            $params = array_merge($params, $data);
+            $params = Utils::arrayMergeAndUnique("name",$params,$data);
+//            $params = array_merge($params, $data);
         }
         return $params;
     }

@@ -295,7 +295,7 @@ class Utils
                     if($findIndex>-1){
                         $data = [];
                         foreach ($item as $itemK=>$itemV){
-                            if ($itemV !=="" && $itemV !== null){
+                            if ( $itemV !== null){
                                 $data[$itemK]=$itemV;
                             }
                         }
