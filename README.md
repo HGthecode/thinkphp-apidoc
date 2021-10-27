@@ -43,7 +43,7 @@
 
 ## 📌兼容
 
-ThinkPHP 5.x
+ThinkPHP 5.1
 
 ThinkPHP 6.x
 

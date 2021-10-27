@@ -207,7 +207,7 @@ class ParseAnnotation
 
         foreach ($refClass->getMethods(\ReflectionMethod::IS_PUBLIC) as $refMethod) {
 
-            $methodItem = $this->parseApiMethod($refMethod,$routeGroup);
+            $methodItem = $this->parseApiMethod($refClass,$refMethod,$routeGroup);
             if ($methodItem===false){
                 continue;
             }
@@ -222,7 +222,7 @@ class ParseAnnotation
     }
 
 
-    protected function parseApiMethod($refMethod,$routeGroup){
+    protected function parseApiMethod($refClass,$refMethod,$routeGroup){
         $config               = $this->config;
         if (empty($refMethod->name)) {
             return false;
@@ -356,10 +356,9 @@ class ParseAnnotation
                 }
             }
         }
-
         // 无url,自动生成
         if (empty($methodItem['url'])) {
-            $methodItem['url'] = $this->autoCreateUrl($refMethod);
+            $methodItem['url'] = $this->autoCreateUrl($refClass->name,$refMethod);
         } else if (!empty($routeGroup->value)) {
             // 路由分组，url加上分组
             $methodItem['url'] = '/' . $routeGroup->value . '/' . $methodItem['url'];
@@ -376,18 +375,18 @@ class ParseAnnotation
      * @param $method
      * @return string
      */
-    protected function autoCreateUrl($method): string
+    protected function autoCreateUrl($classPath,$method): string
     {
         if (!empty($this->config['auto_url']) && !empty($this->config['auto_url']['custom']) && is_callable($this->config['auto_url']['custom'])){
-           return $this->config['auto_url']['custom']($method->class,$method->name);
+           return $this->config['auto_url']['custom']($classPath,$method->name);
         }
         $searchString = $this->controller_layer . '\\';
-        $substr = substr(strstr($method->class, $searchString), strlen($searchString));
+        $substr = substr(strstr($classPath, $searchString), strlen($searchString));
         $multistage_route_separator = ".";
         if (!empty($this->config['auto_url']) && !empty($this->config['auto_url']['multistage_route_separator'])){
             $multistage_route_separator = $this->config['auto_url']['multistage_route_separator'];
         }
-        $pathArr = explode("\\", str_replace($substr, str_replace('\\', $multistage_route_separator, $substr), $method->class));
+        $pathArr = explode("\\", str_replace($substr, str_replace('\\', $multistage_route_separator, $substr), $classPath));
         $filterPathNames = array($this->controller_layer);
         $appNameespace = App::getNamespace();
         if (strpos($appNameespace, '\\') !== false){
@@ -396,27 +395,27 @@ class ParseAnnotation
         }else{
             $filterPathNames[]=App::getNamespace();
         }
-        $classPathArr = [];
+        $classUrlArr = [];
         foreach ($pathArr as $item) {
             if (!in_array($item, $filterPathNames)) {
                 if (!empty($this->config['auto_url']) && !empty($this->config['auto_url']['letter_rule'])){
                     switch ($this->config['auto_url']['letter_rule']) {
                         case 'lcfirst':
-                            $classPathArr[] = lcfirst($item);
+                            $classUrlArr[] = lcfirst($item);
                             break;
                         case 'ucfirst':
-                            $classPathArr[] = ucfirst($item);
+                            $classUrlArr[] = ucfirst($item);
                             break;
                         default:
-                            $classPathArr[] = $item;
+                            $classUrlArr[] = $item;
                     }
                 }else{
-                    $classPathArr[] = $item;
+                    $classUrlArr[] = $item;
                 }
             }
         }
-        $classPath = implode('/', $classPathArr);
-        return '/' . $classPath . '/' . $method->name;
+        $classUrl = implode('/', $classUrlArr);
+        return '/' . $classUrl . '/' . $method->name;
     }
 
     /**

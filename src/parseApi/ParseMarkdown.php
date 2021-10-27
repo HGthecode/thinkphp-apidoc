@@ -21,12 +21,12 @@ class ParseMarkdown
      * 获取md文档菜单
      * @return array
      */
-    public function getDocsMenu(): array
+    public function getDocsMenu(string $lang): array
     {
         $config  = $this->config;
         $docData = [];
         if (!empty($config['docs']) && count($config['docs']) > 0) {
-            $docData = $this->handleDocsMenuData($config['docs']);
+            $docData = $this->handleDocsMenuData($config['docs'],$lang);
         }
         return $docData;
     }
@@ -36,17 +36,17 @@ class ParseMarkdown
      * @param array $menus
      * @return array
      */
-    protected function handleDocsMenuData(array $menus): array
+    protected function handleDocsMenuData(array $menus,string $lang): array
     {
         $list = [];
         foreach ($menus as $item) {
             $item['title']     = Utils::getLang($item['title']);
             if(!empty($item['path'])){
-                $lang = Lang::getLangSet();
+//                $lang = Lang::getLangSet();
                 $item['path'] = Utils::replaceTemplate($item['path'],['lang'=>$lang]);
             }
             if (!empty($item['children']) && count($item['children']) > 0) {
-                $item['children']    = $this->handleDocsMenuData($item['children']);
+                $item['children']    = $this->handleDocsMenuData($item['children'],$lang);
                 $item['menu_key'] = Utils::createRandKey("md_group");
             } else {
                 $item['type']     = 'md';

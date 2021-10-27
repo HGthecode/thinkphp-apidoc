@@ -196,8 +196,9 @@ class Controller
         // 获取md
         $request = Request::instance();
         $params = $request->param();
-
+        $lang = "";
         if (!empty($params['lang'])){
+            $lang = $params['lang'];
             if ($this->tp_version === 5){
                 Lang::setLangCookieVar($params['lang']);
             }else{
@@ -205,7 +206,7 @@ class Controller
                 \think\facade\App::loadLangPack($params['lang']);
             }
         }
-        $docs = (new ParseMarkdown())->getDocsMenu();
+        $docs = (new ParseMarkdown())->getDocsMenu($lang);
         return Utils::showJson(0,"",$docs);
 
     }
