@@ -32,3 +32,4 @@ class ApiDocTest
 |参数名|说明|
 |-|-|	
 |NotParse| 不需要解析Api文档的控制器 |	
+|NotDebug| 关闭该控制器的接口调试 |

@@ -63,6 +63,22 @@ HOSTS: [
 ]
 ```
 
+## MENU
+- 类型: array
+
+
+### MENU.SHOWURL
+- 类型: boolean
+- 默认值:false
+
+Api菜单是否显示url
+
+### MENU.WIDTH
+- 类型: number
+- 默认值:300
+
+左侧菜单默认宽度
+
 
 ## LANG
 

@@ -37,6 +37,14 @@ category: 配置
 默认的作者名称，编写接口注解时，不配置Author时，为该配置的默认作者
 
 
+## notDebug
+- 类型: boolean
+- 默认值: false
+
+设置为`true`时关闭接口调试功能
+
+
+
 ## apps
 
 - 类型: array
@@ -100,7 +108,7 @@ apps配置数组的参数说明
 |controllers|array<\string>|指定api文档解析的控制器|
 |headers|array|指定当前应用的全局请求头参数，参数定义参考[全局参数headers](#headers)|
 |parameters|array|指定当前应用的全局请求体参数，参数定义参考[全局参数parameters](#parameters)|
-
+|notDebug|boolean|指定当前应用关闭接口调试功能|
 
 apps中groups控制器分组参数说明
 |参数名|类型|说明|
