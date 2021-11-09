@@ -211,6 +211,9 @@ class ParseAnnotation
             if ($methodItem===false){
                 continue;
             }
+            if (in_array("NotDebug", $classTextAnnotations)) {
+                $methodItem['notDebug'] = true;
+            }
             $methodList[] = $methodItem;
 
         }
@@ -235,6 +238,13 @@ class ParseAnnotation
         // 标注不解析的方法
         if (in_array("NotParse", $textAnnotations)) {
             return false;
+        }
+        if (
+            in_array("NotDebug", $textAnnotations) ||
+            (isset($config['notDebug']) && $config['notDebug']===true) ||
+            (isset($this->currentApp['notDebug']) && $this->currentApp['notDebug']===true)
+        ) {
+            $methodItem['notDebug'] = true;
         }
         // 无标题，且有文本注释
         if (empty($methodItem['title']) && !empty($textAnnotations) && count($textAnnotations) > 0) {
@@ -293,7 +303,7 @@ class ParseAnnotation
                 $resKeys[]=$resItem['name'];
             }
             foreach ($methodItem['return'] as $returnItem){
-                if (!(in_array($returnItem['name'],$resKeys) && $returnItem['source']==='controller' && !empty($returnItem['replaceGlobal']))){
+                if (!(in_array($returnItem['name'],$resKeys) && !empty($returnItem['source']) &&  $returnItem['source']==='controller' && !empty($returnItem['replaceGlobal']))){
                     $returnData[]=$returnItem;
                 }
             }
@@ -301,7 +311,7 @@ class ParseAnnotation
             foreach ($responsesData as $resItem) {
                 $resData = $resItem;
                 $globalFind = Utils::getArrayFind($methodItem['return'],function ($item)use ($resItem){
-                    if ($item['name'] == $resItem['name'] && $item['source']==='controller' && !empty($item['replaceGlobal'])){
+                    if ($item['name'] == $resItem['name'] && !empty($item['source']) && $item['source']==='controller' && !empty($item['replaceGlobal'])){
                         return true;
                     }
                     return false;
