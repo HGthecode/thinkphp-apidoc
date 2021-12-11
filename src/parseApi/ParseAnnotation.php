@@ -26,6 +26,7 @@ use hg\apidoc\annotation\Url;
 use hg\apidoc\annotation\Method;
 use hg\apidoc\annotation\Before;
 use hg\apidoc\annotation\After;
+use hg\apidoc\annotation\ContentType;
 use think\annotation\route\Group as RouteGroup;
 use think\facade\App;
 use think\facade\Config;
@@ -613,6 +614,9 @@ class ParseAnnotation
                     case $annotation instanceof Tag:
                         $data['tag'] = $annotation->value;
                         break;
+                    case $annotation instanceof ContentType:
+                    $data['contentType'] = $annotation->value;
+                    break;
                     case $annotation instanceof Before:
                         $beforeAnnotation = $this->handleEventAnnotation($annotation,'before');
                         $before =  array_merge($before,$beforeAnnotation);
