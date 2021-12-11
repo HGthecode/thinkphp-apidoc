@@ -64,7 +64,7 @@ HOSTS: [
 ```
 
 ## MENU
-- 类型: array
+- 类型: object
 
 
 ### MENU.SHOWURL
@@ -78,6 +78,23 @@ Api菜单是否显示url
 - 默认值:300
 
 左侧菜单默认宽度
+
+
+### METHODCOLOR
+- 类型: object
+
+配置请求类型的显示颜色，如下
+
+```js
+// 请求类型的颜色
+METHODCOLOR: {
+  GET: "#87d068",
+  POST: "#2db7f5",
+  PUT: "#ff9800",
+  DELETE: "#ff4d4f",
+  PATCH: "#802feb",
+}
+```
 
 
 ## LANG
