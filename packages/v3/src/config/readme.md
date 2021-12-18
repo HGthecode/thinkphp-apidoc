@@ -103,6 +103,7 @@ apps配置数组的参数说明
 |path|string|应用的目录|
 |folder|string|应用的文件夹名称|
 |password|string|应用的访问密码，不配置则无需密码|
+|host|string|应用接口调试时，使用该host发起请求，通常用于多应用多域名时配置|
 |items|array|多层应用配置|
 |groups|array|应用的控制器分组|
 |controllers|array<\string>|指定api文档解析的控制器|

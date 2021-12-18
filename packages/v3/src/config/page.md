@@ -96,6 +96,12 @@ METHODCOLOR: {
 }
 ```
 
+### WITHCREDENTIALS
+- 类型: boolean
+- 默认值:false
+
+接口调试时是否自动携带cookie
+
 
 ## LANG
 

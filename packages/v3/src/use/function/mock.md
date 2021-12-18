@@ -788,3 +788,22 @@ PRIMARY KEY (`id`)↵) ENGINE=MyISAM AUTO_INCREMENT=23 DEFAULT CHARSET=utf8"
 ```
 
 
+
+### @phone
+
+随机获得一个11位手机号
+
+```javascript
+@phone
+// "13100667890"
+```
+
+
+### @idcard
+
+随机获得一个18位身份证号码
+
+```javascript
+@idcard
+// "450311198810100505"
+```
