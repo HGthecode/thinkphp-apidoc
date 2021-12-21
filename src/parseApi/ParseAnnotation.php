@@ -377,7 +377,7 @@ class ParseAnnotation
             $methodItem['url'] = "/" . $methodItem['url'];
         }
         $methodItem['name']     = $refMethod->name;
-        $methodItem['menu_key'] = Utils::createRandKey($methodItem['method'] . "_" . $refMethod->name);
+        $methodItem['menu_key'] =$this->currentApp['folder']."_".$methodItem['method']."_".$methodItem['url'];
         return $methodItem;
     }
 
@@ -507,6 +507,9 @@ class ParseAnnotation
                             "require" => $item->require,
                             "childrenType"=> $item->childrenType
                         ];
+                        if (!empty($item->mock)){
+                            $param['mock']=$item->mock;
+                        }
                         $children      = $this->handleParamValue($item->value);
                         $param['name'] = $children['name'];
                         if (count($children['params']) > 0) {
