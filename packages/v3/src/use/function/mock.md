@@ -807,3 +807,15 @@ PRIMARY KEY (`id`)↵) ENGINE=MyISAM AUTO_INCREMENT=23 DEFAULT CHARSET=utf8"
 @idcard
 // "450311198810100505"
 ```
+
+
+### @regexp
+
+- 指定长度 `@paragraph(reg, leng)`
+
+根据正则生成数据
+
+```javascript
+@regexp('/\[a-z]{5,10}\-/',3)
+// "feyoiga-eqiig-pbyriaj-"
+```
