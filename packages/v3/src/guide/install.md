@@ -28,6 +28,7 @@ composer require hg/apidoc
 
 |Apidoc版本|Github|Gitee（国内推荐）|
 |-|-|-|
+|`v3.1.0`|[v2.1.0](https://github.com/HGthecode/apidoc-ui/releases/download/v2.1.0/apidoc.zip)| [v2.1.0](https://gitee.com/hg-code/apidoc-ui/attach_files/950032/download/apidoc.zip)|
 |`v3.0.0 - v3.0.8`|[v2.0.11](https://github.com/HGthecode/apidoc-ui/releases/download/v2.0.11/apidoc.zip)| [v2.0.11](https://gitee.com/hg-code/apidoc-ui/attach_files/920303/download/apidoc.zip)|
 
 下载完成后解压，将apidoc文件夹拷贝到你的项目 public 目录下
@@ -53,6 +54,7 @@ Route::group('apidoc', function () {
     Route::get('mdMenus'     , $controller_namespace . 'getMdMenus');
     Route::get('mdDetail'     , $controller_namespace . 'getMdDetail');
     Route::post('verifyAuth'     , $controller_namespace . 'verifyAuth');
+    Route::post('generator'     , $controller_namespace . 'createGenerator');
 });
 ```
 
@@ -64,3 +66,7 @@ Route::group('apidoc', function () {
 composer update hg/apidoc
 ```
 2、更新前端页面，可通过安装时的[添加前端页面](/install/#添加前端页面) 方式下载最新的前端文件，覆盖/public/apidoc的文件夹即可。
+
+::: warning TP5升级注意
+TP5.1项目需对照一下上面的[TP5添加路由](#tp5添加路由)，手动添加的路由是否有变化，升级时覆盖一下
+:::

@@ -33,8 +33,8 @@ features:
   - title: Markdown文档
     details: 支持.md文件的文档展示
 
-  - title: 快速生成Crud
-    details: 配置+模板即可快速生成Crud接口代码及数据表的创建，大大提高工作效率
+  - title: 代码生成器
+    details: 配置+模板即可快速生成代码及数据表的创建，大大提高工作效率
     
   - title: 控制器分组
     details: 更精细化的对控制器接口进行分组展示

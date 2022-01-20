@@ -309,3 +309,203 @@ return [
 
 2、当应用/版本选为`演示示例-V1.0`时，此时`${app[0].folder}`就等于`demo` 由于该应用配置存在子级（多个版本）`items`此时的`${app[1].folder}`也就为`v1`。最终文件地址为`dosc/admin/HttpCode_v1.txt`。
 
+
+## generator
+- 类型: array
+- 默认值: undefined
+
+代码生成器配置，具体看注释
+
+配置中的 path、namespace、template可使用应用变量，`${app[N].folder}`其中的`N`表示`apps`中配置的层级：
+
+```php
+// config/apidoc.php
+<?php
+return [
+    // 代码生成器配置 注意：是一个二维数组
+    'generator' =>[
+        [
+            // 标题
+            'title'=>'创建Crud',
+            // 是否启用
+            'enable'=>true,
+            // 执行中间件，具体请查看下方中间件介绍
+            'middleware'=>[
+                \app\middleware\CreateCrudMiddleware::class
+            ],
+            // 生成器窗口的表单配置
+            'form' =>[
+                // 表单显示列数
+                'colspan'=>3,
+                // 表单项字段配置
+                'items'=>[
+                    [
+                        // 表单项标题
+                        'title'=>'控制器标题',
+                        // 字段名
+                        'field'=>'controller_title',
+                        // 输入类型，支持：input、select
+                        'type'=>'input',
+                        // 输入项属性
+                        'props'=>[
+                            // 提示文本
+                            'placeholder'=>'请输入',
+                            // type类型为select时有效，multiple=多选
+                            'mode' =>'multiple',
+                            // type类型为select时有效，最多显示选项的个数
+                            'maxTagCount'=>1,
+                            // type类型为select时有效，下拉选项数据
+                            'options'=>[
+                                // 每个选项的标题与值，label=标题，value=值
+                                ['label'=>'选项A','value'=>1],
+                            ]
+                        ],
+                        // 验证规则
+                        'rules'=>[
+                            // 必填的验证
+                            ['required'=>true,'message'=>'请输入控制器文件名'],
+                            // 自定义正则验证
+                            ['pattern'=>'^[A-Z]{1}([a-zA-Z0-9]|[._]){2,19}$','message'=>'请输入正确的目录名'],
+                        ]
+                    ],
+                ]
+            ],
+            // 文件生成配置，注意：是一个二维数组
+            'files'=>[
+                [
+                    // 生成文件的文件夹地址，或php文件地址
+                    'path'=>'app\${app[0].folder}\controller',
+                    // 生成文件的命名空间
+                    'namespace'=>'app\${app[0].folder}\controller',
+                    // 模板文件地址
+                    'template'=>'template/controller.tpl',
+                    // 名称
+                    'name'=>'controller',
+                    // 验证规则
+                    'rules'=>[
+                        ['required'=>true,'message'=>'请输入控制器文件名'],
+                        ['pattern'=>'^[A-Z]{1}([a-zA-Z0-9]|[._]){2,19}$','message'=>'请输入正确的目录名'],
+                    ]
+                ],
+                [
+                    'name'=>'service',
+                    'path'=>'app\${app[0].folder}\services',
+                    'template'=>'template/service.tpl',
+                ],
+                [
+                    'name'=>'validate',
+                    'path'=>'app\${app[0].folder}\validate',
+                    'template'=>'template/validate.tpl',
+                ],
+                [
+                    // 这里的path地址为php文件地址，当指定到php文件地址时，不会创建文件，而会将模板内容添加的该.php文件内
+                    'path'=>'app\${app[0].folder}\route\admin.php',
+                    'name'=>'route',
+                    'template'=>'template/route.tpl',
+                ],
+            ],
+            // 数据表配置
+            'table'=>[
+                // 可选的字段类型
+                'field_types'=>[
+                    "int",
+                    "tinyint",
+                    "integer",
+                    "float",
+                    "decimal",
+                    "char",
+                    "varchar",
+                    "blob",
+                    "text",
+                    "point",
+                ],
+                // 数据表配置，注意：是一个二维数组，可定义多个数据表
+                'items'=>[
+                     [
+                         // 表标题
+                        'title'=>'主表',
+                        // 模型名验证规则
+                        'model_rules'=>[
+                            ['pattern'=>'^[A-Z]{1}([a-zA-Z0-9]|[._]){2,19}$','message'=>'模型文件名错误，请输入大写字母开头的字母+数字，长度2-19的组合']
+                        ],
+                        // 表名验证规则
+                        'table_rules'=>[
+                            ['pattern'=>'^[a-z]{1}([a-z0-9]|[_]){2,19}$','message'=>'表名错误，请输入小写字母开头的字母+数字+下划线，长度2-19的组合']
+                        ],
+                        // 显示的提示文本
+                        'desc'=>'提示说明文本',
+                        // 生成模型的命名空间
+                        'namespace'=>'app\model',
+                        // 生成模型的文件夹地址
+                        'path'=>"app\model",
+                        // 模板文件地址
+                        'template'=>"template/model.tpl",
+                        // 自定义配置列
+                        'columns'=>[
+                            [
+                                // 标题
+                                'title'=>'验证',
+                                // 字段名
+                                'field'=>'check',
+                                // 字段类型，input、select、checkbox、number
+                                'type'=>'select',
+                                //列宽 px
+                                'width'=>180,
+                                // 输入项属性
+                                'props'=>[
+                                    // 提示文本
+                                    'placeholder'=>'请输入1',
+                                    // type类型为select时有效，multiple=多选
+                                    'mode' =>'multiple',
+                                    // type类型为select时有效，最多显示选项的个数
+                                    'maxTagCount'=>1,
+                                     // type类型为select时有效，下拉选项数据
+                                    'options'=>[
+                                        // 每个选项的标题与值，label=标题，value=值
+                                        ['label'=>'必填','value'=>'require','message'=>'缺少必要参数{$item.field}'],
+                                    ]
+                                ],
+                            ],
+                            //...
+                        ],
+                        // 默认字段
+                        'default_fields'=>[
+                            [
+                                // 字段名
+                                'field'=> 'id',
+                                // 字段注释
+                                'desc'=> '唯一id',
+                                // 字段类型
+                                'type'=> 'int',
+                                // 字段长度
+                                'length'=> 11,
+                                // 默认值
+                                'default'=> '',
+                                // 非Null
+                                'not_null'=> true,
+                                // 主键
+                                'main_key'=> true,
+                                // 自增
+                                'incremental'=> true,
+                                //也可以添加自定义列的值
+                                'query'=>true, 
+
+                            ],
+                            //...
+                        ],
+                        // 添加一行字段时，默认的值
+                        'default_values'=>[
+                            //这里就是对应每列字段名=>值
+                            'type'=>'varchar',
+                            'length'=>255,
+                            //...
+                        ],
+                    ],
+                ]
+            ]
+        ],
+    ]
+]
+```
+
+

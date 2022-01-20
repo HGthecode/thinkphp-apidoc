@@ -2,7 +2,7 @@ const { config } = require("vuepress-theme-hope");
 
 module.exports = config({
   title: "ThinkPHP-ApiDoc",
-  description: "ThinkPHP-ApiDoc是一个基于ThinkPHP开发的，根据注释自动生成API文档、在线调试、Markdown文档、快速生成Crud、一键生成模块代码的扩展插件",
+  description: "ThinkPHP-ApiDoc是一个基于ThinkPHP开发的，根据注释自动生成API文档、在线调试、Markdown文档、代码生成器、一键生成模块代码的扩展插件",
   base: "/thinkphp-apidoc/",
   dest: "./dist",
 
@@ -133,7 +133,8 @@ module.exports = config({
             "docs",
             "lang",
             "debugEvent",
-            "mock"
+            "mock",
+            "generator"
           ],
         },
         {
