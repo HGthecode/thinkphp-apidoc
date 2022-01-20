@@ -314,7 +314,7 @@ class Index
                 Db5::commit();
                 return true;
             } catch (\Exception $e) {
-                Db5rollback();
+                Db5::rollback();
                 return $e->getMessage();
             }
         }else{
