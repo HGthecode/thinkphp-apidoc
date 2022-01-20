@@ -32,7 +32,7 @@ category: 指南
 - 增加代码生成器功能，（不止于快速创建CRUD）。
 - 接口字段类型支持`files`，文件多选。
 - 调试时请求事件eventAjax，当不定义method时，请求类型与调试接口相同。
-- 移除调试时请求头参数的encodeURIComponent转码
+- 增加调试时请求头参数的encodeURIComponent转码的配置
 
 
 ## v3.0.8
