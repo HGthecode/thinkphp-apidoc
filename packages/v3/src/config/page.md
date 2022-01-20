@@ -63,6 +63,13 @@ HOSTS: [
 ]
 ```
 
+
+### HTTP.HEADERS_ENCODEURICOMPONENT
+- 类型: boolean
+- 默认值:undefined
+
+是否将请求头参数进行 encodeURIComponent 转码
+
 ## MENU
 - 类型: object
 
