@@ -50,6 +50,16 @@ class Controller
             $defaultAppConfig = ['title'=>$default_app,'path'=>$path,'folder'=>$default_app];
             $config['apps'] = [$defaultAppConfig];
         }
+        // 过滤关闭的生成器
+        if (!empty($config['generator']) && count($config['generator'])){
+            $generatorList =[];
+            foreach ($config['generator'] as $item) {
+                if (!isset($item['enable']) || (isset($item['enable']) && $item['enable']===true)){
+                    $generatorList[]=$item;
+                }
+            }
+            $config['generator'] = $generatorList;
+        }
 
 
         Config::set(['apidoc'=>$config]);
@@ -152,7 +162,6 @@ class Controller
             // 获取默认控制器
             $default_app = $config = Config::get("app.default_app");
             $appKey = $default_app;
-
         }
         $currentApps = (new Utils())->getCurrentApps($appKey);
         $currentApp  = $currentApps[count($currentApps) - 1];
@@ -206,6 +215,16 @@ class Controller
                 \think\facade\App::loadLangPack($params['lang']);
             }
         }
+        if (!empty($params['appKey'])){
+            // 获取指定应用
+            $appKey = $params['appKey'];
+        }else{
+            // 获取默认控制器
+            $default_app = $config = Config::get("app.default_app");
+            $appKey = $default_app;
+        }
+        (new Auth())->checkAuth($appKey);
+
         $docs = (new ParseMarkdown())->getDocsMenu($lang);
         return Utils::showJson(0,"",$docs);
 
@@ -247,6 +266,14 @@ class Controller
         } catch (ErrorException $e) {
             return Utils::showJson($e->getCode(),$e->getMessage());
         }
+    }
+
+
+    public function createGenerator(){
+        $request = Request::instance();
+        $params = $request->param();
+        $res = (new generator\Index())->create($params);
+        return Utils::showJson(0,"",$res);
     }
 
 

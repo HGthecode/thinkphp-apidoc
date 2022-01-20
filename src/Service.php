@@ -21,6 +21,7 @@ class Service extends \think\Service
                 Route::get('mdMenus'     , $controller_namespace . 'getMdMenus');
                 Route::get('mdDetail'     , $controller_namespace . 'getMdDetail');
                 Route::post('verifyAuth'     , $controller_namespace . 'verifyAuth');
+                Route::post('generator'     , $controller_namespace . 'createGenerator');
             };
             if (!empty($apidocConfig['allowCrossDomain'])){
                 Route::group($route_prefix, $routes)->allowCrossDomain();

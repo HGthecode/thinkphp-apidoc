@@ -224,7 +224,7 @@ class Utils
     }
 
     /**
-     * 根据条件获取数组中的值
+     * 根据条件获取数组中的index
      * @param array $array
      * @param $query
      * @return mixed|null
@@ -489,6 +489,38 @@ class Utils
         }
         array_multisort($sorts, $order,  $array);
         return $array;
+    }
+
+
+    /**
+     * 格式化路径
+     * @param $path
+     * @param string $type
+     * @return array|string|string[]
+     */
+    public static function formatPath($path,$type="/"){
+        if ($type==="/"){
+            $path = str_replace("\\","/",$path);
+        }else{
+            $path = str_replace("/","\\",$path);
+            $path = str_replace("\\\\","\\",$path);
+            $endStr = substr($path, -1);
+            if ($endStr=='\\'){
+                $path = substr($path,0,strlen($path)-1);
+            }
+        }
+       return $path;
+    }
+
+    /**
+     * 过滤所有空格换行符
+     * @param $str
+     * @return array|string|string[]
+     */
+    public static function trimEmpty($str){
+        $search = array(" ","　","\n","\r","\t");
+        $replace = array("","","","","");
+        return str_replace($search, $replace, $str);
     }
 
 

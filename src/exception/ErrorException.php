@@ -23,6 +23,8 @@ class ErrorException extends HttpException
         'no config crud'       => ['code' => 5002, 'msg' => 'crud未配置'],
         'datatable crud error' => ['code' => 5003, 'msg' => '数据表创建失败，请检查配置'],
         'file already exists' => ['code' => 5004, 'msg' => '${filepath}文件已存在'],
+        'file not exists' => ['code' => 5005, 'msg' => '${filepath}文件不存在'],
+        'datatable already exists' => ['code' => 5004, 'msg' => '数据表${table}已存在'],
 
     ];
 
