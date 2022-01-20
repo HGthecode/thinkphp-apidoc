@@ -101,7 +101,7 @@ class Index
                 ];
 
                 // 验证模板是否存在
-                $templatePath = App::getRootPath() . $template;
+                $templatePath =Utils::formatPath( App::getRootPath() . $template,"/");
                 if (is_readable($templatePath) == false) {
                     throw new ErrorException("template not found", 412, [
                         'template' => $template
@@ -130,6 +130,7 @@ class Index
                 $createFiles[] = [
                     'fileFullPath' => $fileFullPath,
                     'template' => $template,
+                    'templatePath'=>$templatePath,
                     'type' => $type
                 ];
 
@@ -166,7 +167,7 @@ class Index
                     $path = $tableConfig['items'][$k]['path'];
 
                     // 验证模板是否存在
-                    $templatePath = App::getRootPath() . $template;
+                    $templatePath = Utils::formatPath(App::getRootPath() . $template,"/");
                     if (is_readable($templatePath) == false) {
                         throw new ErrorException("template not found", 412, [
                             'template' => $template
@@ -223,7 +224,7 @@ class Index
 
         if (!empty($createFiles) && count($createFiles)>0){
             foreach ($createFiles as $fileItem) {
-                $html = (new ParseTemplate())->compile($fileItem['template'],$tplParams);
+                $html = (new ParseTemplate())->compile($fileItem['templatePath'],$tplParams);
                 if ($fileItem['type'] === "file"){
                     // 路径为文件，则添加到该文件
                     $pathFileContent = Utils::getFileContent($fileItem['fileFullPath']);
@@ -248,7 +249,7 @@ class Index
                 $table = $item['table'];
                 if (!empty($table['model_name'])){
                     $tplParams['tables'][$k]['class_name'] =$table['model_name'];
-                    $html = (new ParseTemplate())->compile($item['template'],$tplParams);
+                    $html = (new ParseTemplate())->compile($item['templatePath'],$tplParams);
                     Utils::createFile($item['fileFullPath'],$html);
                 }
                 if ($table['table_name']){
@@ -307,21 +308,27 @@ class Index
 
         $tp_version = \think\facade\App::version();
         if (substr($tp_version, 0, 2) == '5.'){
-            Db5::query($sql);
+            Db5::startTrans();
+            try {
+                Db5::query($sql);
+                Db5::commit();
+                return true;
+            } catch (\Exception $e) {
+                Db5rollback();
+                return $e->getMessage();
+            }
         }else{
-            Db::query($sql);
+            Db::startTrans();
+            try {
+                Db::query($sql);
+                Db::commit();
+                return true;
+            } catch (\Exception $e) {
+                Db::rollback();
+                return $e->getMessage();
+            }
         }
-        return true;
-//
-//        Db::startTrans();
-//        try {
-//            Db::query($sql);
-//            Db::commit();
-//            return true;
-//        } catch (\Exception $e) {
-//            Db::rollback();
-//            return $e->getMessage();
-//        }
+
 
     }
 }

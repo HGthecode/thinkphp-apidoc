@@ -10,7 +10,7 @@ class ParseTemplate
 
     public function compile($path,$params)
     {
-        $filePath    = App::getRootPath() . $path;
+        $filePath    =  $path;
         $tplContent = Utils::getFileContent($filePath);
         $tplContent = $this->replaceForeach($tplContent,$params);
         $tplContent = $this->replaceParams($tplContent,$params);

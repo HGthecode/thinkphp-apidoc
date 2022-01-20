@@ -4,6 +4,7 @@ declare(strict_types = 1);
 namespace hg\apidoc\parseApi;
 
 use Doctrine\Common\Annotations\Reader;
+use hg\apidoc\exception\ErrorException;
 use think\Db as Db5;
 use think\facade\Db;
 use hg\apidoc\annotation\Field;
@@ -179,12 +180,20 @@ class ParseModel
 
         $tp_version = \think\facade\App::version();
         if (substr($tp_version, 0, 2) == '5.'){
-            $createSQL = Db5::query("show create table " . $model->getTable())[0]['Create Table'];
+            $createSQL = Db5::query("show create table " . $model->getTable())[0];
         }else{
-            $createSQL = Db::query("show create table " . $model->getTable())[0]['Create Table'];
+            $createSQL = Db::query("show create table " . $model->getTable())[0];
         }
-//        $createSQL = Db::query("show create table " . $model->getTable())[0]['Create Table'];
-        preg_match_all("#[^KEY]`(.*?)` (.*?) (.*?),\n#", $createSQL, $matches);
+
+        $createTable = "";
+        if (!empty($createSQL['Create Table'])){
+            $createTable = $createSQL['Create Table'];
+        }else  if(!empty($createSQL['create table'])){
+            $createTable = $createSQL['create table'];
+        }else{
+            throw new ErrorException("datatable not exists", 412, $createSQL);
+        }
+        preg_match_all("#[^KEY]`(.*?)` (.*?) (.*?),\n#", $createTable, $matches);
         $fields       = $matches[1];
         $types        = $matches[2];
         $contents     = $matches[3];

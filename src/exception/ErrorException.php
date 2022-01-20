@@ -25,6 +25,7 @@ class ErrorException extends HttpException
         'file already exists' => ['code' => 5004, 'msg' => '${filepath}文件已存在'],
         'file not exists' => ['code' => 5005, 'msg' => '${filepath}文件不存在'],
         'datatable already exists' => ['code' => 5004, 'msg' => '数据表${table}已存在'],
+        'datatable not exists' => ['code' => 5004, 'msg' => '数据表${table}不存在'],
 
     ];
 
