@@ -30,24 +30,45 @@ class ParseModel
      */
     public function renderModel(string $path)
     {
-        $modelClassArr   = explode("\\", $path);
-        $modelActionName = $modelClassArr[count($modelClassArr) - 1];
-        $modelClassName  = $modelClassArr[count($modelClassArr) - 2];
-        unset($modelClassArr[count($modelClassArr) - 1]);
-        $modelClassPath  = implode("\\", $modelClassArr);
-        $classReflect    = new \ReflectionClass($modelClassPath);
-        $modelActionName = trim($modelActionName);
-        $methodAction    = $classReflect->getMethod($modelActionName);
-        // 获取所有模型属性
-        $propertys = $classReflect->getDefaultProperties();
 
-        // 获取表字段
-        $model = $this->getModel($methodAction, $modelClassName);
+        if (strpos($path, '@') !== false){
+            $pathArr   = explode("@", $path);
+            $modelClassPath = $pathArr[0];
+            $methodName =  $pathArr[1];
+            $model = $this->getModelClass($modelClassPath);
+            return $this->parseModelTable($model,$modelClassPath,$methodName);
+        }else if (class_exists($path)) {
+            $model = $this->getModelClass($path);
+            return $this->parseModelTable($model,$path,"");
+        } else {
+            $modelClassArr   = explode("\\", $path);
+            $methodName = $modelClassArr[count($modelClassArr) - 1];
+            unset($modelClassArr[count($modelClassArr) - 1]);
+            $modelClassPath  = implode("\\", $modelClassArr);
+            if (class_exists($modelClassPath)){
+                $model = $this->getModelClass($modelClassPath);
+                return $this->parseModelTable($model,$modelClassPath,$methodName);
+            }else{
+                throw new ErrorException("ref file not exists", 412, [
+                    'filepath' => $path
+                ]);
+            }
+        }
+    }
+
+    protected function parseModelTable($model,$path,$methodName=""){
         if (!is_callable(array($model, 'getTable'))) {
             return false;
         }
-        $table = $this->getTableDocument($model, $propertys);
+        $classReflect    = new \ReflectionClass($path);
+        // 获取所有模型属性
+        $propertys = $classReflect->getDefaultProperties();
 
+        $table = $this->getTableDocument($model, $propertys);
+        if (empty($methodName)){
+            return $table;
+        }
+        $methodAction    = $classReflect->getMethod($methodName);
         // 模型注释-field
         if ($fieldAnnotations = $this->reader->getMethodAnnotation($methodAction, Field::class)) {
             $table = (new Utils())->filterParamsField($table, $fieldAnnotations->value, 'field');
@@ -132,42 +153,18 @@ class ParseModel
     /**
      * 获取模型实例
      * @param $method
-     * @param $modelClassName
      * @return mixed|null
      */
-    public function getModel($method, $modelClassName)
+    public function getModelClass($namespaceName)
     {
-        if (!empty($method->class)) {
-            $relationModelClass = $this->getIncludeClassName($method->class, $modelClassName);
-            if ($relationModelClass) {
-                $modelInstance = new $relationModelClass();
-                return $modelInstance;
-            } else {
-                return null;
-            }
+        if (!empty($namespaceName) && class_exists($namespaceName)) {
+            $modelInstance = new $namespaceName();
+            return $modelInstance;
         } else {
             return null;
         }
     }
 
-
-    /**
-     * 获取模型类
-     * @param $mainClass
-     * @param $class
-     * @return string
-     * @throws \ReflectionException
-     */
-    protected function getIncludeClassName($mainClass, $class)
-    {
-        $classReflect  = new \ReflectionClass($mainClass);
-        $possibleClass = $classReflect->getNamespaceName() . "\\" . $class;
-        if (class_exists($possibleClass)) {
-            return $possibleClass;
-        } else {
-            return "";
-        }
-    }
 
     /**
      * 获取模型注解数据
