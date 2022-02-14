@@ -280,7 +280,7 @@ class ApiDocTest
 { 
     /**
      * @Apidoc\Title("引入模型注释")
-     * @Apidoc\Desc("param参数为直接引用模型参数；return则是引用逻辑层，通过逻辑层引用模型参数")
+     * @Apidoc\Desc("param参数为直接引用模型数据表参数")
      * @Apidoc\Author("HG")
      * @Apidoc\Url("/v1/baseDemo/model")
      * @Apidoc\Method("GET")
@@ -293,6 +293,13 @@ class ApiDocTest
 }
 ```
 
+如上Param的ref参数有3种写法：
+
+1、`@Apidoc\Param(ref="app\model\User")` ref为模型命名空间，将该模型数据表所有字段进行引用，适合无需模型注释的引用。
+
+2、`@Apidoc\Param(ref="app\model\User\getInfo")` 最后的`\getInfo`为模型中的方法，该将该模型数据表字段将通过方法的注解处理。
+
+3、`@Apidoc\Param(ref="app\model\User@getInfo")` `@getInfo`为模型中的方法，效果同上。
 
 ![apidoc-api-model-demo](/thinkphp-apidoc/images/apidoc-api-model-demo.png "apidoc-api-model-demo")
 
