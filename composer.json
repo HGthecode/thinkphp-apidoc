@@ -16,7 +16,7 @@
     "require": {
         "php": ">=7.1.0",
         "doctrine/annotations": "^1.6",
-        "symfony/class-loader": "~3.2.0"
+        "symfony/class-loader": "~3.4.47"
     },
     "license": "MIT",
     "authors": [
