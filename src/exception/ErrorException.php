@@ -21,12 +21,12 @@ class ErrorException extends HttpException
         'no config apps'       => ['code' => 5000, 'msg' => 'apps配置不可为空'],
         'no debug'             => ['code' => 5001, 'msg' => '请在debug模式下，使用该功能'],
         'no config crud'       => ['code' => 5002, 'msg' => 'crud未配置'],
-        'datatable crud error' => ['code' => 5003, 'msg' => '数据表创建失败，请检查配置'],
+        'datatable create error' => ['code' => 5003, 'msg' => '${table}数据表创建失败，请检查配置。【error】${message}。【sql】：${sql}'],
         'file already exists' => ['code' => 5004, 'msg' => '${filepath}文件已存在'],
         'file not exists' => ['code' => 5005, 'msg' => '${filepath}文件不存在'],
-        'datatable already exists' => ['code' => 5004, 'msg' => '数据表${table}已存在'],
-        'datatable not exists' => ['code' => 5004, 'msg' => '数据表${table}不存在'],
-
+        'datatable already exists' => ['code' => 5006, 'msg' => '数据表${table}已存在'],
+        'datatable not exists' => ['code' => 5007, 'msg' => '数据表${table}不存在'],
+        'ref file not exists' => ['code' => 5008, 'msg' => 'ref引入文件${filepath}不存在'],
     ];
 
     public function __construct(string $exceptionCode, int $statusCode = 412, array $data = [])

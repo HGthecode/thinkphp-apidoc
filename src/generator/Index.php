@@ -42,9 +42,10 @@ class Index
             }
         }
 
+        $this->createModels($checkParams['createModels'],$tplParams);
+
         $this->createFiles($checkParams['createFiles'],$tplParams);
 
-        $this->createModels($checkParams['createModels'],$tplParams);
 
         // 执行after
         if (count($this->middlewares)){
@@ -247,14 +248,15 @@ class Index
         if (!empty($createModels) && count($createModels)>0){
             foreach ($createModels as $k=>$item) {
                 $table = $item['table'];
+                if (!empty($table['table_name'])){
+                    $res =  $this->createTable($table);
+                }
                 if (!empty($table['model_name'])){
                     $tplParams['tables'][$k]['class_name'] =$table['model_name'];
                     $html = (new ParseTemplate())->compile($item['templatePath'],$tplParams);
                     Utils::createFile($item['fileFullPath'],$html);
                 }
-                if ($table['table_name']){
-                    $res =  $this->createTable($table);
-                }
+
             }
         }
     }
@@ -274,8 +276,8 @@ class Index
         $table_name = $table_prefix.$table['table_name'];
         $table_data = '';
         $main_keys = '';
-        foreach ($datas as $item){
-            if (isset($item['not_table_field']) && $item['not_table_field']===true){
+        foreach ($datas as $k=>$item){
+            if (!empty($item['not_table_field'])){
                 continue;
             }
             $table_field="`".$item['field']."` ".$item['type'];
@@ -283,13 +285,13 @@ class Index
                 $table_field.="(".$item['length'].")";
             }
 
-            if (isset($item['main_key']) && $item['main_key']===true){
+            if (!empty($item['main_key'])){
                 $main_keys.=$item['field'];
                 $table_field.=" NOT NULL";
-            }else if (isset($item['not_null']) && $item['not_null']===true){
+            }else if (!empty($item['not_null'])){
                 $table_field.=" NOT NULL";
             }
-            if (isset($item['incremental']) && $item['incremental']===true && isset($item['main_key']) && $item['main_key']===true){
+            if (!empty($item['incremental']) && !empty($item['main_key'])){
                 $table_field.=" AUTO_INCREMENT";
             }
             if (!empty($item['default'])){
@@ -297,13 +299,18 @@ class Index
             }else if (!empty($item['main_key']) && !$item['not_null']){
                 $table_field.=" DEFAULT NULL";
             }
-            $table_field.=" COMMENT '".$item['desc']."',";
+            $fh = $k < (count($datas)-1)?",":"";
+            $table_field.=" COMMENT '".$item['desc']."'".$fh;
             $table_data.=$table_field;
         }
-
+        $primaryKey = "";
+        if (!empty($main_keys)){
+            $table_data.=",";
+            $primaryKey = "PRIMARY KEY (`$main_keys`)";
+        }
         $sql = "CREATE TABLE IF NOT EXISTS `$table_name` (
         $table_data
-        PRIMARY KEY (`$main_keys`)
+        $primaryKey
         ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='$comment' AUTO_INCREMENT=1 ;";
 
         $tp_version = \think\facade\App::version();
@@ -325,7 +332,11 @@ class Index
                 return true;
             } catch (\Exception $e) {
                 Db::rollback();
-                return $e->getMessage();
+                throw new ErrorException("datatable create error", 412, [
+                    'table' => $table_name,
+                    'message'=>$e->getMessage(),
+                    'sql'=>$sql
+                ]);
             }
         }
 
