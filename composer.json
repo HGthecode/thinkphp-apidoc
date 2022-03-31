@@ -40,5 +40,5 @@
             }
         }
     },
-    "minimum-stability": "beta"
+    "minimum-stability": "stable"
 }
