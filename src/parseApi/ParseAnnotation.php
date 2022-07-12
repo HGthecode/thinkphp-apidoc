@@ -370,7 +370,7 @@ class ParseAnnotation
         // 无url,自动生成
         if (empty($methodItem['url'])) {
             $methodItem['url'] = $this->autoCreateUrl($refClass->name,$refMethod);
-        } else if (!empty($routeGroup->value)) {
+        } else if (!empty($methodItem['url']) && $methodItem['isAnnotationUrl']===false && !empty($routeGroup->value)) {
             // 路由分组，url加上分组
             $methodItem['url'] = '/' . $routeGroup->value . '/' . $methodItem['url'];
         }else if (!empty($methodItem['url']) && substr($methodItem['url'], 0, 1) != "/") {
@@ -541,6 +541,7 @@ class ParseAnnotation
             $returns = [];
             $before = [];
             $after = [];
+            $isAnnotationUrl = false;
 
             foreach ($annotations as $annotation) {
                 switch (true) {
@@ -610,6 +611,7 @@ class ParseAnnotation
                         break;
                     case $annotation instanceof Url:
                         $data['url'] = $annotation->value;
+                        $isAnnotationUrl=true;
                         break;
                     case $annotation instanceof Method:
                         $data['method'] = $annotation->value;
@@ -637,6 +639,7 @@ class ParseAnnotation
             $data['return'] = $returns;
             $data['before'] = $before;
             $data['after'] = $after;
+            $data['isAnnotationUrl'] = $isAnnotationUrl;
         }
         return $data;
     }
