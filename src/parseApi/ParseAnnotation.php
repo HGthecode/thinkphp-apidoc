@@ -52,6 +52,11 @@ class ParseAnnotation
     {
         $this->reader = new AnnotationReader();
         $this->config = Config::get('apidoc')?Config::get('apidoc'):Config::get('apidoc.');
+        if (!empty($this->config['ignored_annitation'])){
+            foreach ($this->config['ignored_annitation'] as $item) {
+                AnnotationReader::addGlobalIgnoredName($item);
+            }
+        }
         $this->controller_layer = Config::get('route.controller_layer',"controller");
     }
 

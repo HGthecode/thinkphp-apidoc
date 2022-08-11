@@ -294,7 +294,7 @@ class Index
             if (!empty($item['incremental']) && !empty($item['main_key'])){
                 $table_field.=" AUTO_INCREMENT";
             }
-            if (!empty($item['default'])){
+            if (!empty($item['default']) || $item['default']=="0"){
                 $table_field.=" DEFAULT '".$item['default']."'";
             }else if (!empty($item['main_key']) && !$item['not_null']){
                 $table_field.=" DEFAULT NULL";

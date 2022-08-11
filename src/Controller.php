@@ -86,8 +86,8 @@ class Controller
             if ($this->tp_version === 5){
                 Lang::setLangCookieVar($params['lang']);
             }else{
-                Lang::setLangSet($params['lang']);
                 \think\facade\App::loadLangPack($params['lang']);
+                Lang::setLangSet($params['lang']);
             }
 
         }
@@ -150,7 +150,8 @@ class Controller
             if ($this->tp_version === 5){
                 Lang::setLangCookieVar($lang);
             }else{
-                \think\facade\App::loadLangPack($lang);
+                \think\facade\App::loadLangPack($params['lang']);
+                Lang::setLangSet($params['lang']);
             }
 
         }
@@ -211,8 +212,8 @@ class Controller
             if ($this->tp_version === 5){
                 Lang::setLangCookieVar($params['lang']);
             }else{
-                Lang::setLangSet($params['lang']);
                 \think\facade\App::loadLangPack($params['lang']);
+                Lang::setLangSet($params['lang']);
             }
         }
         if (!empty($params['appKey'])){
@@ -241,8 +242,8 @@ class Controller
             if ($this->tp_version === 5){
                 Lang::setLangCookieVar($params['lang']);
             }else{
-                Lang::setLangSet($params['lang']);
                 \think\facade\App::loadLangPack($params['lang']);
+                Lang::setLangSet($params['lang']);
             }
         }
         try {
