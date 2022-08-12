@@ -126,6 +126,10 @@ apps中groups控制器分组参数说明
 指定公共注释定义的控制器地址
 
 
+## ignored_annitation
+- 类型: array
+
+指定忽略带@的注解报错，如：` 'ignored_annitation'=>['abc','name']`
 
 
 ## cache
