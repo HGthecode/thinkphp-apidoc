@@ -187,6 +187,7 @@ class Index
                 // 验证表是否存在
                 if ($table['table_name']){
                     $driver = Config::get('database.default');
+
                     $table_prefix=Config::get('database.connections.'.$driver.'.prefix');
                     $table_name = $table_prefix.$table['table_name'];
 
@@ -207,7 +208,8 @@ class Index
                     'path'=>$path,
                     'templatePath' =>$templatePath,
                     'table'=>$table,
-                    'fileFullPath'=>$fileFullPath
+                    'fileFullPath'=>$fileFullPath,
+                    'database_engine'=>!empty($tableConfig['items'][$k]['database_engine'])?$tableConfig['items'][$k]['database_engine']:''
                 ];
             }
         }
@@ -249,6 +251,7 @@ class Index
             foreach ($createModels as $k=>$item) {
                 $table = $item['table'];
                 if (!empty($table['table_name'])){
+                    $table['database_engine'] = !empty($item['database_engine'])?$item['database_engine']:"";
                     $res =  $this->createTable($table);
                 }
                 if (!empty($table['model_name'])){
@@ -267,11 +270,20 @@ class Index
      */
     protected function createTable($table){
         $datas = $table['datas'];
+        $tp_version = \think\facade\App::version();
         $comment= "";
         if (!empty($table['table_comment'])){
             $comment =$table['table_comment'];
         }
         $driver = Config::get('database.default');
+
+        $engine = !empty($table['database_engine'])?$table['database_engine']:'InnoDB';
+        if (substr($tp_version, 0, 2) == '5.'){
+            $charset = Config::get('database.charset');
+        }else{
+            $charset = Config::get('database.connections.'.$driver.'.charset');//获取配置内的数据库字符集
+        }
+
         $table_prefix=Config::get('database.connections.'.$driver.'.prefix');
         $table_name = $table_prefix.$table['table_name'];
         $table_data = '';
@@ -294,7 +306,7 @@ class Index
             if (!empty($item['incremental']) && !empty($item['main_key'])){
                 $table_field.=" AUTO_INCREMENT";
             }
-            if (!empty($item['default']) || $item['default']=="0"){
+            if (!empty($item['default']) || (isset($item['default']) && $item['default']=="0")){
                 $table_field.=" DEFAULT '".$item['default']."'";
             }else if (!empty($item['main_key']) && !$item['not_null']){
                 $table_field.=" DEFAULT NULL";
@@ -311,9 +323,8 @@ class Index
         $sql = "CREATE TABLE IF NOT EXISTS `$table_name` (
         $table_data
         $primaryKey
-        ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='$comment' AUTO_INCREMENT=1 ;";
+        ) ENGINE=$engine DEFAULT CHARSET=$charset COMMENT='$comment' AUTO_INCREMENT=1 ;";
 
-        $tp_version = \think\facade\App::version();
         if (substr($tp_version, 0, 2) == '5.'){
             Db5::startTrans();
             try {
