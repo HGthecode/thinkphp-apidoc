@@ -1,5 +1,5 @@
 {
-    "name": "hg/apidoc",
+    "name": "hg/apidoc-thinkphp",
     "description": "thinkphp API文档自动生成",
     "type": "think-extend",
     "keywords": [
