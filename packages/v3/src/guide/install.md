@@ -4,6 +4,7 @@ category: 指南
 sidebarDepth: 2
 ---
 
+
 # 安装/升级
 
 ::: tip 在安装本插件时，确保你已成功安装ThinkPHP的项目并成功运行
@@ -12,11 +13,20 @@ sidebarDepth: 2
 :::
 
 
+<h1 style="color:red;">
+注意、注意、注意！！！
+</h1>
+<div style="font-size: 20px">
+本项目已迁移至 <a href="https://github.com/HGthecode/apidoc-php" target="_blank">https://github.com/HGthecode/apidoc-php</a> ，全新Apidoc兼容ThinkPHP、Laravel、Hyperf、Webman等基于Composer的PHP框架，更多实用功能。本项目不再维护，请移步新项目。
+</div>
+
+
+
 
 ## 安装插件
 进入ThinkPHP 项目根目录，执行如下命令：
 ```sh
-composer require hg/apidoc
+composer require hg/apidoc-thinkphp
 ```
 
 > TP5版本需[手动添加apidoc所需路由](#tp5添加路由)，如未自动生成config/apidoc.php 配置文件，可参考 [没有生成apidoc.php配置文件解决方案](/use/help/notConfig/)
@@ -59,14 +69,3 @@ Route::group('apidoc', function () {
 ```
 
 
-## 升级插件
-
-1、如果你之前已经安装过，那么切换到你的应用根目录下面，然后执行下面的命令进行更新。
-```sh
-composer update hg/apidoc
-```
-2、更新前端页面，可通过安装时的[添加前端页面](/install/#添加前端页面) 方式下载最新的前端文件，覆盖/public/apidoc的文件夹即可。
-
-::: warning TP5升级注意
-TP5.1项目需对照一下上面的[TP5添加路由](#tp5添加路由)，手动添加的路由是否有变化，升级时覆盖一下
-:::

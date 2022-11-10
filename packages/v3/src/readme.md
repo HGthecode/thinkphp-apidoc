@@ -48,3 +48,11 @@ copyrightText: false
 footer: MIT Licensed | Copyright © 2020-present HG
 ---
 
+
+
+<h1 style="color:red;">
+注意、注意、注意！！！
+</h1>
+<div style="font-size: 20px">
+本项目已迁移至 <a href="https://github.com/HGthecode/apidoc-php" target="_blank">https://github.com/HGthecode/apidoc-php</a> ，全新Apidoc兼容ThinkPHP、Laravel、Hyperf、Webman等基于Composer的PHP框架，更多实用功能。本项目不再维护，请移步新项目。
+</div>

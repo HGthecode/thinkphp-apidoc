@@ -17,6 +17,15 @@ category: 指南
 - 修订版本号：日常 bugfix 更新
 
 
+
+## v4.0.0 
+
+`2022-10-24`
+
+本项目已迁移至 <a href="https://github.com/HGthecode/apidoc-php" target="_blank">https://github.com/HGthecode/apidoc-php</a> ，全新Apidoc兼容ThinkPHP、Laravel、Hyperf、Webman等基于Composer的PHP框架，更多实用功能。本项目不再维护，请移步新项目。
+
+
+
 ## v3.1.9
 
 `2022-08-26`
